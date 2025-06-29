@@ -8,8 +8,8 @@ const claimSchema = new mongoose.Schema({
   },
   fullName: { type: String, required: true },
   contactNumber: { type: String, required: true },
-  pictureDescription: String,
-  itemProof: String,
+  description: String,
+  imageProof: String,
   additionalInfo: String,
   status: {
     type: String,

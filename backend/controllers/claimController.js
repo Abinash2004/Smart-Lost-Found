@@ -1,31 +1,36 @@
 const Claim = require("../models/Claim");
+const cloudinary = require("../config/cloudinary");
 
-// @desc  Create a new claim request
+// @desc Create a new claim
 const createClaim = async (req, res) => {
   try {
+    const { description, additionalInfo } = req.body;
     const { foundItemId } = req.params;
-    const {
-      pictureDescription,
-      itemDescriptionProof,
-      additionalInfo
-    } = req.body;
 
-    // Extract user info from JWT
     const fullName = req.user.fullName;
     const contactNumber = req.user.contactNumber;
+
+    let imageProof = "";
+
+    if (req.file) {
+      const result = await cloudinary.uploader.upload(req.file.path);
+      imageProof = result.secure_url;
+    }
 
     const newClaim = new Claim({
       foundItemId,
       fullName,
       contactNumber,
-      pictureDescription,
-      itemDescriptionProof,
+      description,
+      imageProof,
       additionalInfo
     });
 
     await newClaim.save();
-    res.status(201).json({ message: "Claim submitted successfully", newClaim });
-
+    res.status(201).json({
+      message: "Claim submitted successfully",
+      claim: newClaim
+    });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
