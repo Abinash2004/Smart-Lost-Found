@@ -8,7 +8,11 @@ const Register = () => {
   const handleRegister = async (formData) => {
     try {
       await axios.post('/auth/send-register-otp', formData)
-      navigate('/verify-register', { state: { email: formData.email } })
+
+      // ✅ Store form data temporarily for OTP verification step
+      localStorage.setItem('otpFormData', JSON.stringify(formData))
+
+      navigate('/verify-register')
     } catch (err) {
       console.error('Send OTP failed:', err.response?.data || err.message)
       alert('Failed to send OTP. Please check your details.')

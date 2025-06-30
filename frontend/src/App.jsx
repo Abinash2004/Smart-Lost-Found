@@ -1,8 +1,13 @@
-import React from 'react'
 import AppRoutes from './routes/AppRoutes'
+import Navbar from './shared/Navbar'
 
 const App = () => {
-  return <AppRoutes />
+  return (
+    <>
+      <Navbar />
+      <AppRoutes />
+    </>
+  ) 
 }
 
 export default App
