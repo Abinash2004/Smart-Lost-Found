@@ -10,8 +10,11 @@ const foundItemRoutes = require("./routes/foundItemRoutes");
 const claimRoutes = require("./routes/claimRoutes");
 
 const app = express();
-app.use(cors());
 app.use(express.json());
+app.use(cors({
+  origin: 'http://localhost:5173', // frontend Vite server
+  credentials: true
+}))
 
 app.use("/api/auth", authRoutes);
 app.use("/api/found-items", foundItemRoutes);
