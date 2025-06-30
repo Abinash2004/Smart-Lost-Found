@@ -17,7 +17,8 @@ const approveClaim = async (req, res) => {
     // Reject all other claims for same item
     await Claim.updateMany(
       { foundItemId: claim.foundItemId, _id: { $ne: claimId } },
-      { $set: { status: "Rejected" } }
+      { $set: { status: "Rejected" } },
+      { $set: { rejectionFeedback: "Your description didn't matched with the item." } }
     );
 
     // Update found item as resolved

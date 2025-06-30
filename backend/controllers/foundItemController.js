@@ -87,9 +87,27 @@ const deleteFoundItem = async (req, res) => {
   }
 };
 
+// @desc  Get a single found item by ID
+const getFoundItemById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const item = await FoundItem.findById(id);
+    if (!item) {
+      return res.status(404).json({ message: "Item not found" });
+    }
+
+    res.status(200).json(item);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+
 module.exports = {
   createFoundItem,
   getAllFoundItems,
   getPersonalFoundItems,
-  deleteFoundItem
+  deleteFoundItem,
+  getFoundItemById
 };

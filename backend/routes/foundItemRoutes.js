@@ -3,7 +3,7 @@ const router = express.Router();
 const {
   createFoundItem,
   getAllFoundItems,
-  resolveFoundItem,
+  getFoundItemById,
   getPersonalFoundItems,
   deleteFoundItem
 } = require("../controllers/foundItemController");
@@ -21,5 +21,8 @@ router.delete("/:id", verifyToken, deleteFoundItem);
 
 // GET: Get all found items posted by the current user
 router.get("/personal", verifyToken, getPersonalFoundItems);
+
+// ⚠️ Place BEFORE DELETE route to avoid collision
+router.get("/:id", verifyToken, getFoundItemById);
 
 module.exports = router;

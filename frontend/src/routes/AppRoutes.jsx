@@ -1,21 +1,34 @@
+// src/routes/AppRoutes.jsx
 import { Routes, Route } from 'react-router-dom'
+import Dashboard from '../pages/Dashboard'
+import Login from '../pages/Login'
 import Register from '../pages/Register'
 import RegisterOtpVerify from '../pages/RegisterOtpVerify'
-import Login from '../pages/Login'
 import LoginOtpVerify from '../pages/LoginOtpVerify'
-import Dashboard from '../pages/Dashboard'
-import ProtectedRoute from '../shared/ProtectedRoute'
-import HomeRedirect from '../pages/HomeRedirect'
+import FoundPost from '../pages/FoundPost'
+import FoundPending from '../pages/FoundPending'
+import FoundResolved from '../pages/FoundResolved'
+import MyFoundPosts from '../pages/MyFoundPosts'
+import ClaimPost from '../pages/ClaimPost'
+import ViewClaims from '../pages/ViewClaims'
+import MyClaims from '../pages/MyClaims'
 
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<HomeRedirect />} />
+      <Route path="/" element={<Dashboard />} />
+      <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/verify-register" element={<RegisterOtpVerify />} />
-      <Route path="/login" element={<Login />} />
       <Route path="/verify-login" element={<LoginOtpVerify />} />
-      <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>}/>
+      <Route path="/found/post" element={<FoundPost />} />
+      <Route path="/found/pending" element={<FoundPending />} />
+      <Route path="/found/resolved" element={<FoundResolved />} />
+      <Route path="/found/mine" element={<MyFoundPosts />} />
+      <Route path="/claim/:foundItemId" element={<ClaimPost />} />
+      <Route path="/found/:foundItemId/claims" element={<ViewClaims />} />
+      <Route path="/claims/mine" element={<MyClaims />} />
+
     </Routes>
   )
 }
