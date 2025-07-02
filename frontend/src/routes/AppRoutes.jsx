@@ -16,7 +16,7 @@ import MyClaims from '../pages/MyClaims'
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<Dashboard />} />
+      <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/verify-register" element={<RegisterOtpVerify />} />
