@@ -12,6 +12,7 @@ import MyFoundPosts from '../pages/MyFoundPosts'
 import ClaimPost from '../pages/ClaimPost'
 import ViewClaims from '../pages/ViewClaims'
 import MyClaims from '../pages/MyClaims'
+import NotificationsPage from '../pages/NotificationsPage'
 import HomeRedirect from '../pages/HomeRedirect'
 
 const AppRoutes = () => {
@@ -30,6 +31,7 @@ const AppRoutes = () => {
       <Route path="/claim/:foundItemId" element={<ClaimPost />} />
       <Route path="/found/:foundItemId/claims" element={<ViewClaims />} />
       <Route path="/claims/mine" element={<MyClaims />} />
+      <Route path="/notifications" element={<NotificationsPage />} />
 
     </Routes>
   )

@@ -17,7 +17,7 @@ const approveClaim = async (req, res) => {
 
     // Get found item for notification
     const foundItem = await FoundItem.findById(claim.foundItemId);
-    const itemName = foundItem?.itemName || 'the item';
+    const itemName = foundItem?.title || 'the item';
 
     // Send approval notification to claimant
     if (claim.contactNumber) {
@@ -94,7 +94,7 @@ const rejectClaim = async (req, res) => {
     // Send rejection notification
     try {
       const foundItem = await FoundItem.findById(claim.foundItemId);
-      const itemName = foundItem?.itemName || 'the item';
+      const itemName = foundItem?.title || 'the item';
       
       if (claim.contactNumber) {
         const notification = new Notification({

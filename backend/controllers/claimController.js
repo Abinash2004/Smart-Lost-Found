@@ -39,7 +39,7 @@ const createClaim = async (req, res) => {
         // Create notification for the found item owner
         const notification = new Notification({
           contactNumber: foundItem.foundByContact,
-          message: `You received a new claim on your found item: ${foundItem.itemName || 'unnamed item'}`,
+          message: `You received a new claim on your found item: ${foundItem.title || 'unnamed item'}`,
           tag: 'claim_received',
           isRead: false
         });
