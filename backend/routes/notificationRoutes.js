@@ -7,9 +7,9 @@ const {
 const verifyToken = require('../middleware/authMiddleware');
 
 // Get all notifications for a user
-router.get('/:contactNumber', getAllNotifications);
+router.get('/:contactNumber', verifyToken, getAllNotifications);
 
 // Mark all notifications as read for a user
-router.patch('/mark-all-read/:contactNumber', markAllAsRead);
+router.patch('/mark-all-read/:contactNumber', verifyToken, markAllAsRead);
 
 module.exports = router;
