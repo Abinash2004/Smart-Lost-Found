@@ -1,19 +1,20 @@
 
-import { Routes, Route } from 'react-router-dom'
-import Dashboard from '../pages/Dashboard'
-import Login from '../pages/Login'
-import Register from '../pages/Register'
-import RegisterOtpVerify from '../pages/RegisterOtpVerify'
-import LoginOtpVerify from '../pages/LoginOtpVerify'
-import FoundPost from '../pages/FoundPost'
-import FoundPending from '../pages/FoundPending'
-import FoundResolved from '../pages/FoundResolved'
-import MyFoundPosts from '../pages/MyFoundPosts'
-import ClaimPost from '../pages/ClaimPost'
-import ViewClaims from '../pages/ViewClaims'
-import MyClaims from '../pages/MyClaims'
-import NotificationsPage from '../pages/NotificationsPage'
-import HomeRedirect from '../pages/HomeRedirect'
+import { Routes, Route } from 'react-router-dom';
+import Dashboard from '../pages/Dashboard';
+import Login from '../pages/auth/Login';
+import Register from '../pages/auth/Register';
+import FoundPost from '../pages/found/FoundPost';
+import FoundPending from '../pages/found/FoundPending';
+import FoundResolved from '../pages/found/FoundResolved';
+import MyFoundPosts from '../pages/found/MyFoundPosts';
+import ClaimPost from '../pages/claim/ClaimPost';
+import ViewClaims from '../pages/claim/ViewClaims';
+import MyClaims from '../pages/claim/MyClaims';
+import NotificationsPage from '../pages/NotificationsPage';
+import HomeRedirect from '../pages/HomeRedirect';
+import ForgotPassword from '../pages/auth/ForgotPassword';
+import UpdatePassword from '../pages/auth/UpdatePassword';
+import VerifyOtpPage from '../pages/auth/VerifyOtpPage';
 
 const AppRoutes = () => {
   return (
@@ -22,8 +23,7 @@ const AppRoutes = () => {
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/verify-register" element={<RegisterOtpVerify />} />
-      <Route path="/verify-login" element={<LoginOtpVerify />} />
+      <Route path="/verify-register" element={<VerifyOtpPage />} />
       <Route path="/found/post" element={<FoundPost />} />
       <Route path="/found/pending" element={<FoundPending />} />
       <Route path="/found/resolved" element={<FoundResolved />} />
@@ -32,7 +32,11 @@ const AppRoutes = () => {
       <Route path="/found/:foundItemId/claims" element={<ViewClaims />} />
       <Route path="/claims/mine" element={<MyClaims />} />
       <Route path="/notifications" element={<NotificationsPage />} />
-
+      
+      {/* Password Reset Flow */}
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/verify-reset-otp" element={<VerifyOtpPage />} />
+      <Route path="/update-password" element={<UpdatePassword />} />
     </Routes>
   )
 }

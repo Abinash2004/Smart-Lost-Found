@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
-import axios from '../lib/axios'
-import LoadingSpinner from '../shared/LoadingSpinner'
-import EmptyState from '../shared/EmptyState'
-import ClaimCard from '../features/claim/ClaimCard'
+import axios from '../../lib/axios'
+import LoadingSpinner from '../../shared/LoadingSpinner'
+import EmptyState from '../../shared/EmptyState'
+import ClaimCard from '../../features/claim/ClaimCard'
 
 const MyClaims = () => {
   const [claims, setClaims] = useState([])

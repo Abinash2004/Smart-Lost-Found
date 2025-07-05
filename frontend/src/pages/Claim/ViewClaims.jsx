@@ -1,11 +1,10 @@
-// ✅ ViewClaims.jsx (updated)
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import axios from '../lib/axios'
-import LoadingSpinner from '../shared/LoadingSpinner'
-import EmptyState from '../shared/EmptyState'
+import axios from '../../lib/axios'
+import LoadingSpinner from '../../shared/LoadingSpinner'
+import EmptyState from '../../shared/EmptyState'
 import { format } from 'date-fns'
-import ClaimCard from '../features/claim/ClaimCard'
+import ClaimCard from '../../features/claim/ClaimCard'
 
 const ViewClaims = () => {
   const { foundItemId } = useParams()

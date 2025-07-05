@@ -1,4 +1,4 @@
-import ClaimForm from '../features/claim/ClaimForm'
+import ClaimForm from '../../features/claim/ClaimForm'
 
 const ClaimPost = () => {
   return (

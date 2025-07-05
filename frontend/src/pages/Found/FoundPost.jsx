@@ -1,7 +1,7 @@
-import axios from '../lib/axios'
+import axios from '../../lib/axios'
 import { useNavigate } from 'react-router-dom'
-import FoundForm from '../features/found/FoundForm'
-import useAuthStore from '../store/useAuthStore'
+import FoundForm from '../../features/found/FoundForm'
+import useAuthStore from '../../store/useAuthStore'
 
 const FoundPost = () => {
   const navigate = useNavigate()

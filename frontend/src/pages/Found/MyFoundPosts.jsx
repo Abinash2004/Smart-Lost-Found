@@ -1,6 +1,6 @@
 // src/pages/MyFoundPosts.jsx
 import FoundList from './FoundList'
-import useAuthStore from '../store/useAuthStore'
+import useAuthStore from '../../store/useAuthStore'
 
 const MyFoundPosts = () => {
   const { user } = useAuthStore()

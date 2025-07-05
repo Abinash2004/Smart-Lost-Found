@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
-import axios from '../lib/axios'
-import FoundCard from '../features/found/FoundCard'
-import LoadingSpinner from '../shared/LoadingSpinner'
-import EmptyState from '../shared/EmptyState'
-import useAuthStore from '../store/useAuthStore'
+import axios from '../../lib/axios'
+import FoundCard from '../../features/found/FoundCard'
+import LoadingSpinner from '../../shared/LoadingSpinner'
+import EmptyState from '../../shared/EmptyState'
+import useAuthStore from '../../store/useAuthStore'
 
 const categories = [
   'All Categories',

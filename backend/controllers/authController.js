@@ -95,52 +95,121 @@ const verifyRegisterOtp = async (req, res) => {
   }
 };
 
-const sendLoginOtp = async (req, res) => {
+const sendPasswordOtp = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email } = req.body;
 
     // 1. Check if user exists
     const user = await User.findOne({ email });
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    // 2. Check password
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(401).json({ message: "Invalid credentials" });
-
-    // 3. Generate OTP and hash
+    // 2. Generate OTP and hash
     const otp = generateOtp();
     const hashedOtp = await bcrypt.hash(otp, 10);
 
-    const redisKey = `login:${email}`;
-    await redisClient.setEx(redisKey, 300, hashedOtp); // TTL 5 minutes
+    // 3. Store OTP in Redis with TTL (5 min)
+    const redisKey = `reset-password:${email}`;
+    await redisClient.setEx(redisKey, 300, hashedOtp);
 
-    // 4. Send OTP
-    await sendEmail(email, "Your Login OTP", `Your OTP is: ${otp}`);
+    // 4. Send OTP via email
+    await sendEmail(email, "Password Reset OTP", `Your OTP for password reset is: ${otp}`);
 
     res.status(200).json({ message: "OTP sent to your email" });
-
   } catch (err) {
-    res.status(500).json({ message: "Server error", error: err.message });
+    res.status(500).json({ message: "Failed to send OTP", error: err.message });
   }
 };
 
-const verifyLoginOtp = async (req, res) => {
+const verifyPasswordOtp = async (req, res) => {
   try {
     const { email, otp } = req.body;
 
-    const redisKey = `login:${email}`;
+    const redisKey = `reset-password:${email}`;
     const hashedOtp = await redisClient.get(redisKey);
 
-    if (!hashedOtp)
+    if (!hashedOtp) {
       return res.status(400).json({ message: "OTP expired or invalid" });
+    }
 
     const isMatch = await bcrypt.compare(otp, hashedOtp);
-    if (!isMatch)
+    if (!isMatch) {
       return res.status(401).json({ message: "Invalid OTP" });
+    }
 
-    // Fetch user again
+    // Generate a reset token that will be used to update the password
+    const resetToken = jwt.sign(
+      { email },
+      process.env.JWT_SECRET,
+      { expiresIn: '15m' } // Short-lived token for security
+    );
+
+    // Store the reset token in Redis with a short TTL
+    const resetTokenKey = `reset-token:${email}`;
+    await redisClient.setEx(resetTokenKey, 900, resetToken); // 15 minutes
+
+    // Delete the OTP after successful verification
+    await redisClient.del(redisKey);
+
+    res.status(200).json({ 
+      message: "OTP verified successfully",
+      resetToken
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+const updatePassword = async (req, res) => {
+  try {
+    const { email, resetToken, newPassword } = req.body;
+
+    // 1. Verify the reset token
+    const resetTokenKey = `reset-token:${email}`;
+    const storedToken = await redisClient.get(resetTokenKey);
+
+    if (!storedToken || storedToken !== resetToken) {
+      return res.status(400).json({ message: "Invalid or expired reset token" });
+    }
+
+    // 2. Find the user
     const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
+    // 3. Hash the new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // 4. Update the user's password
+    user.password = hashedPassword;
+    await user.save();
+
+    // 5. Delete the used reset token
+    await redisClient.del(resetTokenKey);
+
+    res.status(200).json({ message: "Password updated successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to update password", error: error.message });
+  }
+};
+
+const login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // 1. Check if user exists
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+
+    // 2. Verify password
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+
+    // 3. Generate JWT token
     const token = jwt.sign(
       {
         id: user._id,
@@ -150,28 +219,33 @@ const verifyLoginOtp = async (req, res) => {
         designation: user.designation
       },
       process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRE }
+      { expiresIn: process.env.JWT_EXPIRE || '24h' }
     );
 
-    // Clean up
-    await redisClient.del(redisKey);
+    // 4. Return user data (excluding password) and token
+    const userData = {
+      id: user._id,
+      fullName: user.fullName,
+      email: user.email,
+      contactNumber: user.contactNumber,
+      designation: user.designation
+    };
 
     res.status(200).json({
       message: "Login successful",
       token,
-      user: {
-        id: user._id,
-        fullName: user.fullName,
-        email: user.email,
-        contactNumber: user.contactNumber,
-        designation: user.designation
-      }
+      user: userData
     });
-
-  } catch (err) {
-    res.status(500).json({ message: "Server error", error: err.message });
+  } catch (error) {
+    res.status(500).json({ message: "Login failed", error: error.message });
   }
 };
 
-
-module.exports = {sendRegisterOtp,verifyRegisterOtp,sendLoginOtp,verifyLoginOtp};
+module.exports = {
+  sendRegisterOtp,
+  verifyRegisterOtp,
+  sendPasswordOtp,
+  verifyPasswordOtp,
+  updatePassword,
+  login
+};
