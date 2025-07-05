@@ -1,15 +1,27 @@
 import { useState } from 'react'
 import useAuthStore from '../../store/useAuthStore'
+import {
+  FiMonitor,
+  FiFileText,
+  FiKey,
+  FiBox,
+  FiMapPin,
+  FiLoader,
+  FiPlus,
+  FiAward,
+  FiBook,
+} from 'react-icons/fi'
 
 const categories = [
-  'Electronics',
-  'Documents & ID',
-  'Clothing & Accessories',
-  'Stationery & Books',
-  'Keys & Cards',
-  'Jewelry & Valuables',
-  'Miscellaneous'
+  { name: 'Electronics', icon: <FiMonitor className="w-5 h-5" /> },
+  { name: 'Documents & ID', icon: <FiFileText className="w-5 h-5" /> },
+  { name: 'Clothing & Accessories', icon: <FiAward className="w-5 h-5" /> },
+  { name: 'Stationery & Books', icon: <FiBook className="w-5 h-5" /> },
+  { name: 'Keys & Cards', icon: <FiKey className="w-5 h-5" /> },
+  { name: 'Jewelry & Valuables', icon: <FiAward className="w-5 h-5" /> },
+  { name: 'Miscellaneous', icon: <FiBox className="w-5 h-5" /> }
 ]
+
 
 const FoundForm = ({ onSubmit }) => {
   const { user } = useAuthStore()
@@ -19,82 +31,163 @@ const FoundForm = ({ onSubmit }) => {
     description: '',
     location: '',
     categoryTag: '',
+    images: []
   })
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleChange = (e) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    if (!user) return alert('Login required.')
+    if (!user) return alert('Please log in to post an item.')
+    
+    setIsSubmitting(true)
+    
+    try {
+      const now = new Date()
+      const payload = {
+        title: formData.title.trim(),
+        description: formData.description.trim(),
+        categoryTag: formData.categoryTag,
+        foundLocation: formData.location.trim(),
+        foundDate: now.toISOString(),
+        foundByName: user.fullName,
+        foundByContact: user.contactNumber,
+        images: formData.images
+      }
 
-    const now = new Date()
-    const payload = {
-      title: formData.title,
-      description: formData.description,
-      categoryTag: formData.categoryTag,
-      foundLocation: formData.location,
-      foundDate: now.toISOString(), // ISO string to support `Date` type in backend
-      foundByName: user.fullName,
-      foundByContact: user.contactNumber,
+      await onSubmit(payload)
+    } catch (error) {
+      console.error('Error submitting form:', error)
+    } finally {
+      setIsSubmitting(false)
     }
-
-    onSubmit(payload)
   }
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-md mx-auto bg-white p-6 rounded-xl shadow space-y-4">
-      <h2 className="text-2xl font-bold">Post a Found Item</h2>
+    <div className="min-h-screen bg-gray-50 py-6 px-3 sm:px-4 md:px-6 lg:px-8">
+      <div className="max-w-3xl mx-auto">
+          <div className="text-center mb-6 sm:mb-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Report Found Item</h1>
+          <p className="text-gray-600">Help reunite lost items with their owners</p>
+        </div>
+        
+        <form onSubmit={handleSubmit} className="space-y-5 bg-white p-4 sm:p-6 md:p-8 rounded-xl shadow-sm border border-gray-100">
+          {/* Item Title */}
+          <div>
+            <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
+              Item Title
+            </label>
+            <input
+              type="text"
+              id="title"
+              name="title"
+              value={formData.title}
+              onChange={handleChange}
+              placeholder="e.g., Black Wallet, iPhone 13, etc."
+              required
+              className="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 placeholder-gray-400"
+            />
+          </div>
 
-      <input
-        type="text"
-        name="title"
-        value={formData.title}
-        onChange={handleChange}
-        placeholder="Item Title"
-        required
-        className="w-full p-2 border rounded"
-      />
+          {/* Category */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Category
+            </label>
+              <div className="grid grid-cols-3 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 gap-2">
+              {categories.map((category) => (
+                <button
+                  key={category.name}
+                  type="button"
+                  onClick={() => setFormData({...formData, categoryTag: category.name})}
+                  className={`flex flex-col items-center justify-center p-3 rounded-lg border-2 transition-all duration-200 text-center h-full cursor-pointer ${formData.categoryTag === category.name 
+                    ? 'border-blue-500 bg-blue-50 text-blue-600 shadow-sm' 
+                    : 'border-gray-200 hover:border-blue-300 hover:bg-blue-50 text-gray-600 hover:text-blue-500'}`}
+                >
+                  <span className="text-gray-500 mb-1.5">{category.icon}</span>
+                  <span className="text-xs font-medium">{category.name}</span>
+                </button>
+              ))}
+            </div>
+          </div>
 
-      <textarea
-        name="description"
-        value={formData.description}
-        onChange={handleChange}
-        placeholder="Item Description"
-        required
-        className="w-full p-2 border rounded"
-        rows={4}
-      />
+          {/* Description */}
+          <div>
+            <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
+              Description
+            </label>
+            <textarea
+              id="description"
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              placeholder="Provide detailed description of the item..."
+              required
+              rows={4}
+              className="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 placeholder-gray-400"
+            />
+          </div>
 
-      <input
-        type="text"
-        name="location"
-        value={formData.location}
-        onChange={handleChange}
-        placeholder="Found Location"
-        required
-        className="w-full p-2 border rounded"
-      />
+          {/* Found Location */}
+          <div>
+            <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-1">
+              Found Location
+            </label>
+            <div className="relative">
+              <input
+                type="text"
+                id="location"
+                name="location"
+                value={formData.location}
+                onChange={handleChange}
+                placeholder="Where did you find this item?"
+                required
+                className="w-full pl-10 pr-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 placeholder-gray-400 focus:outline-none"
+              />
+              <FiMapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+            </div>
+          </div>
 
-      <select
-        name="categoryTag"
-        value={formData.categoryTag}
-        onChange={handleChange}
-        required
-        className="w-full p-2 border rounded"
-      >
-        <option value="">Select Category</option>
-        {categories.map((cat) => (
-          <option key={cat} value={cat}>{cat}</option>
-        ))}
-      </select>
 
-      <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
-        Post Item
-      </button>
-    </form>
+
+          {/* Submit Button */}
+          <div className="pt-2">
+            <button 
+              type="submit" 
+              disabled={isSubmitting}
+              className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200 disabled:opacity-70 disabled:cursor-not-allowed"
+            >
+              {isSubmitting ? (
+                <>
+                  <FiLoader className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" />
+                  Posting...
+                </>
+              ) : (
+                <>
+                  <FiPlus className="w-4 h-4 mr-2" />
+                  Post Found Item
+                </>
+              )}
+            </button>
+          </div>
+        </form>
+        
+        <p className="mt-6 text-center text-sm text-gray-500">
+          By posting, you agree to our{' '}
+          <a href="/terms" className="font-medium text-blue-600 hover:text-blue-500">
+            Terms of Service
+          </a>{' '}
+          and{' '}
+          <a href="/privacy" className="font-medium text-blue-600 hover:text-blue-500">
+            Privacy Policy
+          </a>.
+        </p>
+      </div>
+    </div>
   )
 }
 

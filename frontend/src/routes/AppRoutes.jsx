@@ -16,7 +16,8 @@ import ForgotPassword from '../pages/auth/ForgotPassword';
 import UpdatePassword from '../pages/auth/UpdatePassword';
 import VerifyOtpPage from '../pages/auth/VerifyOtpPage';
 import Profile from '../pages/Profile';
-import ProtectedRoute from '../shared/ProtectedRoute';
+import Terms from '../pages/Terms';
+import Privacy from '../pages/Privacy';
 
 const AppRoutes = () => {
   return (
@@ -34,19 +35,16 @@ const AppRoutes = () => {
       <Route path="/found/:foundItemId/claims" element={<ViewClaims />} />
       <Route path="/claims/mine" element={<MyClaims />} />
       <Route path="/notifications" element={<NotificationsPage />} />
-      <Route 
-        path="/profile" 
-        element={
-          <ProtectedRoute>
-            <Profile />
-          </ProtectedRoute>
-        } 
-      />
+      <Route path="/profile" element={ <Profile /> } />
       
       {/* Password Reset Flow */}
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/verify-reset-otp" element={<VerifyOtpPage />} />
       <Route path="/update-password" element={<UpdatePassword />} />
+      
+      {/* Legal Pages */}
+      <Route path="/terms" element={<Terms />} />
+      <Route path="/privacy" element={<Privacy />} />
     </Routes>
   )
 }

@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { FiUser, FiMail, FiLock, FiPhone, FiEye, FiEyeOff, FiBriefcase } from 'react-icons/fi';
+import { FiUser, FiMail, FiLock, FiPhone, FiEye, FiEyeOff, FiBriefcase, FiExternalLink } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
 
 const RegisterForm = ({ onSubmit, isLoading = false }) => {
   const [formData, setFormData] = useState({
@@ -11,6 +12,7 @@ const RegisterForm = ({ onSubmit, isLoading = false }) => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
 
   const validatePhoneNumber = (number) => {
     const phoneRegex = /^\d{10}$/;
@@ -43,6 +45,15 @@ const RegisterForm = ({ onSubmit, isLoading = false }) => {
       setErrors({
         ...errors,
         contactNumber: 'Please enter a valid 10-digit phone number',
+      });
+      return;
+    }
+
+    // Validate terms acceptance
+    if (!acceptedTerms) {
+      setErrors({
+        ...errors,
+        terms: 'You must accept the Terms & Conditions to continue'
       });
       return;
     }
@@ -164,6 +175,50 @@ const RegisterForm = ({ onSubmit, isLoading = false }) => {
         {errors.contactNumber && (
           <p className="mt-1 text-sm text-red-600">{errors.contactNumber}</p>
         )}
+      </div>
+
+      {/* Terms & Conditions and Privacy Policy Checkbox */}
+      <div className="flex items-start mt-4">
+        <div className="flex items-center h-5">
+          <input
+            id="terms"
+            name="terms"
+            type="checkbox"
+            checked={acceptedTerms}
+            onChange={(e) => {
+              setAcceptedTerms(e.target.checked);
+              if (errors.terms) {
+                setErrors({ ...errors, terms: '' });
+              }
+            }}
+            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+          />
+        </div>
+        <div className="ml-3 text-sm">
+          <label htmlFor="terms" className="font-medium text-gray-700">
+            I agree to the{' '}
+            <Link 
+              to="/terms" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:text-blue-800 hover:underline inline-flex items-center"
+            >
+              Terms & Conditions <FiExternalLink className="ml-1 h-3 w-3" />
+            </Link>{' '}
+            and{' '}
+            <Link 
+              to="/privacy" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:text-blue-800 hover:underline inline-flex items-center"
+            >
+              Privacy Policy <FiExternalLink className="ml-1 h-3 w-3" />
+            </Link>
+          </label>
+          {errors.terms && (
+            <p className="mt-1 text-sm text-red-600">{errors.terms}</p>
+          )}
+        </div>
       </div>
 
       <button
