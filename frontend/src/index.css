@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+@layer base {
+  html {
+    font-family: 'Poppins', sans-serif;
+  }
+}
+
 @keyframes marquee {
   0% {
     transform: translateX(0%);

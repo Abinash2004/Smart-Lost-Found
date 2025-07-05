@@ -15,6 +15,8 @@ import HomeRedirect from '../pages/HomeRedirect';
 import ForgotPassword from '../pages/auth/ForgotPassword';
 import UpdatePassword from '../pages/auth/UpdatePassword';
 import VerifyOtpPage from '../pages/auth/VerifyOtpPage';
+import Profile from '../pages/Profile';
+import ProtectedRoute from '../shared/ProtectedRoute';
 
 const AppRoutes = () => {
   return (
@@ -32,6 +34,14 @@ const AppRoutes = () => {
       <Route path="/found/:foundItemId/claims" element={<ViewClaims />} />
       <Route path="/claims/mine" element={<MyClaims />} />
       <Route path="/notifications" element={<NotificationsPage />} />
+      <Route 
+        path="/profile" 
+        element={
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        } 
+      />
       
       {/* Password Reset Flow */}
       <Route path="/forgot-password" element={<ForgotPassword />} />

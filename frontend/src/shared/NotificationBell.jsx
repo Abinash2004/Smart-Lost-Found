@@ -77,7 +77,7 @@ const NotificationBell = () => {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={handleBellClick}
-        className="p-2 rounded-full text-gray-600 hover:bg-gray-100 relative"
+        className="p-2 rounded-full text-gray-600 hover:bg-gray-100 relative cursor-pointer"
         aria-label="Notifications"
       >
         <BellIcon className="h-6 w-6" />
