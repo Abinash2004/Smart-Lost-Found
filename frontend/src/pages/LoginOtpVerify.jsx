@@ -1,6 +1,6 @@
-import axios from '../lib/axios'
 import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
+import axios from '../lib/axios'
 import OtpInput from '../features/auth/OtpInput'
 import useAuthStore from '../store/useAuthStore'
 
@@ -15,7 +15,6 @@ const LoginOtpVerify = () => {
   const setAuth = useAuthStore((state) => state.setAuth)
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
     if (!isOtpComplete || !email) return
 
     const otpCode = otp.join('').trim()
@@ -28,8 +27,7 @@ const LoginOtpVerify = () => {
       })
 
       const { token, user } = res.data
-      setAuth({ token, user }) // ✅ Store in Zustand
-
+      setAuth({ token, user })
       navigate('/dashboard')
     } catch (err) {
       console.error('Login OTP failed:', err.response?.data || err.message)
@@ -40,26 +38,15 @@ const LoginOtpVerify = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white p-6 rounded-xl shadow-md max-w-sm w-full space-y-6"
-      >
-        <h2 className="text-2xl font-bold text-center">Verify Login</h2>
-        <OtpInput otp={otp} setOtp={setOtp} />
-        <button
-          type="submit"
-          disabled={!isOtpComplete || loading}
-          className={`w-full py-2 rounded text-white transition ${
-            !isOtpComplete || loading
-              ? 'bg-gray-400 cursor-not-allowed'
-              : 'bg-blue-600 hover:bg-blue-700'
-          }`}
-        >
-          {loading ? 'Verifying...' : 'Verify & Continue'}
-        </button>
-      </form>
-    </div>
+    <OtpInput
+      otp={otp}
+      setOtp={setOtp}
+      title="Verify Login"
+      buttonText="Verify & Continue"
+      loading={loading}
+      onSubmit={handleSubmit}
+      isOtpComplete={isOtpComplete}
+    />
   )
 }
 

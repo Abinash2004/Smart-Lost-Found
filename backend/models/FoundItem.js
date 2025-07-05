@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const foundItemSchema = new mongoose.Schema({
   title: { type: String, required: true },
   description: String,
-  summarizedDescription: String, // optional for now
   categoryTag: {
     type: String,
     enum: [
