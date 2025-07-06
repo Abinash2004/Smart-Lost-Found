@@ -1,68 +1,92 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
+import { FaGavel, FaEdit, FaCheckCircle, FaShieldAlt, FaSync } from 'react-icons/fa';
+
+const sections = [{
+  icon: <FaGavel className="w-5 h-5 text-gray-600" />,
+  title: "1. User Responsibility",
+  items: [
+    "You are responsible for the accuracy of any item you post.",
+    "Misuse of the claim process may lead to account suspension."
+  ]
+}, {
+  icon: <FaEdit className="w-5 h-5 text-gray-600" />,
+  title: "2. Posting Guidelines",
+  items: [
+    "Only legitimate found items should be posted.",
+    "Offensive, misleading, or fraudulent content is prohibited."
+  ]
+}, {
+  icon: <FaCheckCircle className="w-5 h-5 text-gray-600" />,
+  title: "3. Claim Verification",
+  items: [
+    "The platform does not guarantee the approval of any claim.",
+    "All approvals are handled manually by the item poster."
+  ]
+}, {
+  icon: <FaShieldAlt className="w-5 h-5 text-gray-600" />,
+  title: "4. Liability",
+  content: "Smart Lost & Found is not liable for any loss, damage, or incorrect item recovery due to misinformation provided by users."
+}, {
+  icon: <FaSync className="w-5 h-5 text-gray-600" />,
+  title: "5. Modifications",
+  content: "We reserve the right to update these terms at any time."
+}];
 
 const TermsPage = () => {
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-3xl mx-auto bg-white p-6 sm:p-8 rounded-lg shadow-sm">
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold text-gray-900 mb-6">Terms & Conditions</h1>
-          <p className="text-gray-600 mb-8">Welcome to Smart Lost & Found!</p>
-          
-          <div className="space-y-6">
-            <section>
-              <h2 className="text-lg font-semibold text-gray-800 mb-3">1. User Responsibility</h2>
-              <ul className="list-disc pl-5 space-y-2 text-gray-600">
-                <li>You are responsible for the accuracy of any item you post.</li>
-                <li>Misuse of the claim process may lead to account suspension.</li>
-              </ul>
-            </section>
-
-            <section>
-              <h2 className="text-lg font-semibold text-gray-800 mb-3">2. Posting Guidelines</h2>
-              <ul className="list-disc pl-5 space-y-2 text-gray-600">
-                <li>Only legitimate found items should be posted.</li>
-                <li>Offensive, misleading, or fraudulent content is prohibited.</li>
-              </ul>
-            </section>
-
-            <section>
-              <h2 className="text-lg font-semibold text-gray-800 mb-3">3. Claim Verification</h2>
-              <ul className="list-disc pl-5 space-y-2 text-gray-600">
-                <li>The platform does not guarantee the approval of any claim.</li>
-                <li>All approvals are handled manually by the item poster.</li>
-              </ul>
-            </section>
-
-            <section>
-              <h2 className="text-lg font-semibold text-gray-800 mb-3">4. Liability</h2>
-              <p className="text-gray-600">
-                Smart Lost & Found is not liable for any loss, damage, or incorrect item recovery due to misinformation provided by users.
-              </p>
-            </section>
-
-            <section>
-              <h2 className="text-lg font-semibold text-gray-800 mb-3">5. Modifications</h2>
-              <p className="text-gray-600">
-                We reserve the right to update these terms at any time.
-              </p>
-            </section>
+    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 relative">
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:24px_24px] opacity-10"></div>
+      <div className="max-w-4xl mx-auto relative z-10">
+        <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
+          <div className="bg-gray-50 px-6 py-5 border-b border-gray-100">
+            <div className="flex items-center space-x-3">
+              <div className="p-2 rounded-lg bg-gray-100"><FaGavel className="w-6 h-6 text-gray-700" /></div>
+              <div>
+                <h1 className="text-2xl font-bold text-gray-900">Terms & Conditions</h1>
+                <p className="text-gray-600 mt-1">Last updated: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+              </div>
+            </div>
           </div>
-
-          <div className="mt-8 pt-6 border-t border-gray-100">
-            <p className="text-gray-600">
-              By continuing to use the platform, you acknowledge and accept these terms.
-            </p>
+          <div className="p-6 sm:p-8">
+            <p className="text-gray-600 mb-8 leading-relaxed">Welcome to Smart Lost & Found! These terms and conditions outline the rules and regulations for using our platform.</p>
+            <div className="space-y-10">
+              {sections.map(({ icon, title, items, content }, i) => (
+                <section key={i} className="group">
+                  <div className="flex items-start space-x-4">
+                    <span className="text-gray-400 group-hover:text-gray-600 transition-colors duration-200 mt-1">{icon}</span>
+                    <div className="flex-1">
+                      <h2 className="text-lg font-semibold text-gray-900 mb-3">{title}</h2>
+                      {items ? (
+                        <ul className="space-y-2 text-gray-600">
+                          {items.map((item, i) => (
+                            <li key={i} className="relative pl-5 before:absolute before:left-0 before:top-2.5 before:w-1.5 before:h-1.5 before:rounded-full before:bg-gray-300">
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      ) : <p className="text-gray-600 leading-relaxed">{content}</p>}
+                    </div>
+                  </div>
+                </section>
+              ))}
+            </div>
+            <div className="mt-12 pt-8 border-t border-gray-100">
+              <div className="bg-gray-50 p-4 rounded-lg">
+                <p className="text-center text-gray-600">
+                  By continuing to use the platform, you acknowledge and accept these terms.
+                  If you have any questions, please contact us at{' '}
+                  <a href="mailto:abinashparida2021@gmail.com" className="font-medium text-gray-900 hover:underline">
+                    abinashparida2021@gmail.com
+                  </a>.
+                </p>
+              </div>
+            </div>
           </div>
-        </div>
-        
-        <div className="mt-8 text-center">
-          <Link 
-            to="/" 
-            className="inline-flex items-center text-blue-600 hover:text-blue-800 text-sm font-medium"
-          >
-            ← Back to Home
-          </Link>
+          <div className="bg-gray-50 px-6 py-4 border-t border-gray-100 text-center">
+            <Link to="/" className="text-sm font-medium text-gray-600 hover:text-gray-900 hover:underline transition-colors duration-200">
+              Back to Home
+            </Link>
+          </div>
         </div>
       </div>
     </div>

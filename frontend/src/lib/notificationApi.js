@@ -37,3 +37,22 @@ export const markAllAsRead = async (contactNumber) => {
     throw error;
   }
 };
+
+/**
+ * Mark a single notification as read
+ * @param {string} notificationId - ID of the notification to mark as read
+ * @returns {Promise<Object>} Response data
+ */
+export const markNotificationAsRead = async (notificationId) => {
+  if (!notificationId) {
+    throw new Error('Notification ID is required');
+  }
+  
+  try {
+    const response = await axiosInstance.patch(`notifications/mark-read/${notificationId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error marking notification as read:', error);
+    throw error;
+  }
+};
