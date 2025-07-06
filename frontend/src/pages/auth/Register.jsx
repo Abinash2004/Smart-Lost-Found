@@ -12,13 +12,9 @@ const Register = () => {
     try {
       setIsLoading(true);
       setError('');
-      
       await axios.post('/auth/send-register-otp', formData);
-      
-      // Store form data temporarily for OTP verification step
       localStorage.setItem('otpFormData', JSON.stringify(formData));
       navigate('/verify-register');
-      
     } catch (err) {
       console.error('Registration failed:', err.response?.data || err.message);
       setError(err.response?.data?.message || 'Registration failed. Please check your details and try again.');
@@ -28,31 +24,30 @@ const Register = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
-      <div className="w-full max-w-md space-y-4">
-        <h1 className="text-3xl font-bold text-center text-gray-800">Create an Account</h1>
+    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+      <div className="sm:mx-auto sm:w-full sm:max-w-4xl">
+        <h1 className="text-4xl font-bold text-gray-800 text-center">Create an Account</h1>
         
         {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-            <span className="block sm:inline">{error}</span>
+          <div className="mt-6 bg-gray-50 border border-gray-300 text-gray-800 px-4 py-3 rounded-md shadow-sm flex" role="alert">
+            <svg className="h-5 w-5 text-gray-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h2a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+            </svg>
+            <p className="text-sm ml-3">{error}</p>
           </div>
         )}
         
-        <div className="bg-white p-8 rounded-lg shadow-md">
-          <RegisterForm 
-            onSubmit={handleRegister} 
-            isLoading={isLoading} 
-          />
+        <div className="mt-8 bg-white py-8 px-6 shadow rounded-lg sm:px-10">
+          <div className="max-w-2xl mx-auto">
+            <RegisterForm onSubmit={handleRegister} isLoading={isLoading} />
+          </div>
           
-          <div className="mt-6 text-center text-sm">
-            <span className="text-gray-600">Already have an account? </span>
-            <Link 
-              to="/login" 
-              className="font-medium text-blue-600 hover:text-blue-800 hover:underline"
-            >
+          <p className="mt-8 text-center text-sm text-gray-600">
+            Already have an account?{' '}
+            <Link to="/login" className="font-medium text-gray-800 hover:text-gray-600 hover:underline transition-colors">
               Sign in
             </Link>
-          </div>
+          </p>
         </div>
       </div>
     </div>

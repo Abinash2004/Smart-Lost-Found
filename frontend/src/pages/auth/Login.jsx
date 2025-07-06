@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from '../../lib/axios';
 import LoginForm from '../../features/auth/LoginForm';
 import { useNavigate, Link } from 'react-router-dom';
@@ -8,66 +8,69 @@ const Login = () => {
   const navigate = useNavigate();
   const { setAuth } = useAuthStore();
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [message, setMessage] = useState({ text: '', type: '' });
 
-  const handleLogin = async ({ email, password }) => {
+
+  useEffect(() => {
+    if (message.text) {
+      const timer = setTimeout(() => {
+        setMessage({ text: '', type: '' });
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [message]);
+
+  const handleLogin = async (formData) => {
+    const { email, password } = formData;
+    setIsLoading(true);
+    setMessage({ text: '', type: '' });
+
     try {
-      setIsLoading(true);
-      setError('');
-      
       const res = await axios.post('/auth/login', { email, password });
-      
-      if (res.data && res.data.token && res.data.user) {
-        setAuth({ 
-          token: res.data.token, 
-          user: res.data.user 
-        });
-        navigate('/dashboard');
+      if (res.data?.token && res.data?.user) {
+        setMessage({ text: 'Successfully Signed In', type: 'success' });
+        setAuth({ token: res.data.token, user: res.data.user });
+        setTimeout(() => navigate('/dashboard'), 1000);
       } else {
         throw new Error('Invalid response from server');
       }
     } catch (err) {
-      console.error('Login failed:', err.response?.data || err.message);
-      setError(err.response?.data?.message || 'Invalid email or password. Please try again.');
+      const errorMessage = err.response?.data?.message || 'Invalid email or password';
+      console.error('Login failed:', errorMessage);
+      setMessage({ text: errorMessage, type: 'error' });
+      // Keep the error message for 1 second before clearing loading state
+      await new Promise(resolve => setTimeout(resolve, 1000));
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
-      <div className="w-full max-w-md space-y-4">
-        <h1 className="text-3xl font-bold text-center text-gray-800">Welcome Back</h1>
-        
-        {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-            <span className="block sm:inline">{error}</span>
-          </div>
-        )}
-        
-        <div className="bg-white p-8 rounded-lg shadow-md">
-          <LoginForm 
-            onSubmit={handleLogin} 
-            isLoading={isLoading} 
+    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md">
+        <h1 className="text-center text-3xl font-extrabold text-gray-900">Welcome Back</h1>
+        <p className="mt-2 text-center text-sm text-gray-600">Sign in to your account</p>
+      </div>
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+          {message.text && (
+            <div className={`mb-4 p-3 rounded-md text-sm ${
+              message.type === 'success' 
+                ? 'bg-green-100 text-green-700' 
+                : 'bg-red-100 text-red-700'
+            }`}>
+              {message.text}
+            </div>
+          )}
+          <LoginForm
+            onSubmit={handleLogin}
+            isLoading={isLoading}
+            onForgotPassword={() => navigate('/forgot-password')}
+            className="cursor-pointer"
           />
-          
-          <div className="mt-4 text-center text-sm">
-            <Link 
-              to="/forgot-password" 
-              className="text-blue-600 hover:text-blue-800 hover:underline"
-            >
-              Forgot your password?
-            </Link>
-          </div>
-          
           <div className="mt-6 text-center text-sm">
             <span className="text-gray-600">Don't have an account? </span>
-            <Link 
-              to="/register" 
-              className="font-medium text-blue-600 hover:text-blue-800 hover:underline"
-            >
-              Sign up
-            </Link>
+            <Link to="/register" className="font-medium text-gray-700 hover:underline">Sign up</Link>
           </div>
         </div>
       </div>

@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from '../../lib/axios';
 import OtpInput from '../../features/auth/OtpInput';
 import useAuthStore from '../../store/useAuthStore';
 
 const VerifyOtpPage = () => {
-  const [otp, setOtp] = useState(['', '', '', '', '', '']);
+  const [otp, setOtp] = useState(Array(6).fill(''));
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [email, setEmail] = useState('');
@@ -13,27 +13,31 @@ const VerifyOtpPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { setAuth } = useAuthStore();
-
-  // Determine if this is a password reset flow
   const isPasswordReset = location.pathname === '/verify-reset-otp';
+  const isOtpComplete = otp.every(digit => digit !== '');
+  
+  // UI text based on flow type
+  const title = isPasswordReset ? 'Verify Your Identity' : 'Verify Your Email';
+  const description = isPasswordReset 
+    ? `Enter the 6-digit verification code sent to ${email}`
+    : `We've sent a 6-digit verification code to ${email}`;
+  const buttonText = isPasswordReset ? 'Continue to Reset' : 'Verify & Continue';
+  const msgClass = 'mb-6 p-3 bg-gray-100 border border-gray-300 rounded-md text-sm text-gray-700';
+  const btnClass = `w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white transition-colors duration-200 ${
+    !isOtpComplete || isLoading ? 'bg-gray-400 cursor-not-allowed' : 'bg-gray-800 hover:bg-gray-700 cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500'}`;
 
   // Set up component based on flow type
   useEffect(() => {
     if (isPasswordReset) {
-      // For password reset flow
       if (location.state?.email) {
-        setEmail(location.state.email);
-        localStorage.setItem('otpEmail', location.state.email);
+        const { email } = location.state;
+        setEmail(email);
+        localStorage.setItem('otpEmail', email);
       } else {
         const savedEmail = localStorage.getItem('otpEmail');
-        if (savedEmail) {
-          setEmail(savedEmail);
-        } else {
-          navigate('/forgot-password');
-        }
+        savedEmail ? setEmail(savedEmail) : navigate('/forgot-password');
       }
     } else {
-      // For registration flow
       const savedFormData = localStorage.getItem('otpFormData');
       if (savedFormData) {
         const parsedData = JSON.parse(savedFormData);
@@ -45,11 +49,9 @@ const VerifyOtpPage = () => {
     }
   }, [isPasswordReset, location.state, navigate]);
 
-  const handleOtpSubmit = async (e, err) => {
-    if (err) {
-      setError(err.response?.data?.message || 'Invalid OTP. Please try again.');
-      return;
-    }
+  const handleOtpSubmit = useCallback(async (e, err) => {
+    if (err) return setError(err.response?.data?.message || 'Invalid OTP. Please try again.');
+    if (!isOtpComplete) return;
 
     try {
       setIsLoading(true);
@@ -57,99 +59,48 @@ const VerifyOtpPage = () => {
       const otpString = otp.join('');
 
       if (isPasswordReset) {
-        // Handle password reset OTP verification
-        const response = await axios.post('/auth/verify-password-otp', {
-          email,
-          otp: otpString,
-        });
-
-        const { resetToken } = response.data;
-        navigate('/update-password', {
-          state: { email, resetToken },
-        });
+        const { data } = await axios.post('/auth/verify-password-otp', { email, otp: otpString });
+        navigate('/update-password', { state: { email, resetToken: data.resetToken } });
       } else {
-        // Handle registration OTP verification
-        const response = await axios.post('/auth/verify-register-otp', {
-          ...formData,
-          otp: otpString,
-        });
-
-        const { token, user } = response.data;
-        setAuth({ token, user });
-        
-        // Clear temp data
+        const { data } = await axios.post('/auth/verify-register-otp', { ...formData, otp: otpString });
+        setAuth({ token: data.token, user: data.user });
         localStorage.removeItem('otpFormData');
         localStorage.removeItem('otpEmail');
-        
-        // Redirect to dashboard
         navigate('/dashboard');
       }
     } catch (err) {
-      console.error('OTP verification failed:', err);
       setError(err.response?.data?.message || 'Failed to verify OTP. Please try again.');
+      console.error('OTP verification failed:', err);
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [otp, email, formData, isPasswordReset, isOtpComplete, navigate, setAuth]);
 
-  const handleResendOtp = async () => {
+  const handleResendOtp = useCallback(async () => {
     try {
       setIsLoading(true);
       setError('');
-      
-      const endpoint = isPasswordReset 
-        ? '/auth/send-password-otp' 
-        : '/auth/send-register-otp';
-      
-      const data = isPasswordReset ? { email } : formData;
-      
-      await axios.post(endpoint, data);
-      
+      const endpoint = isPasswordReset ? '/auth/send-password-otp' : '/auth/send-register-otp';
+      await axios.post(endpoint, isPasswordReset ? { email } : formData);
       alert('A new OTP has been sent to your email.');
     } catch (err) {
-      console.error('Failed to resend OTP:', err);
       setError(err.response?.data?.message || 'Failed to resend OTP. Please try again.');
+      console.error('Failed to resend OTP:', err);
     } finally {
       setIsLoading(false);
     }
-  };
-
-  // UI text based on flow type
-  const title = isPasswordReset ? 'Verify Your Identity' : 'Verify Your Email';
-  const description = isPasswordReset 
-    ? `Enter the 6-digit verification code sent to ${email}`
-    : `We've sent a 6-digit verification code to ${email}`;
-  const buttonText = isPasswordReset 
-    ? 'Continue to Reset Password' 
-    : 'Verify & Continue';
+  }, [email, formData, isPasswordReset]);
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          {title}
-        </h2>
-        <p className="mt-2 text-center text-sm text-gray-600">
-          {description}
-        </p>
+        <h2 className="text-center text-3xl font-extrabold text-gray-900">{title}</h2>
+        <p className="mt-2 text-center text-sm text-gray-600">{description}</p>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          {error && (
-            <div className="mb-4 bg-red-50 border-l-4 border-red-400 p-4">
-              <div className="flex">
-                <div className="flex-shrink-0">
-                  <svg className="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                  </svg>
-                </div>
-                <div className="ml-3">
-                  <p className="text-sm text-red-700">{error}</p>
-                </div>
-              </div>
-            </div>
-          )}
+        <div className="bg-white py-8 px-6 shadow rounded-lg sm:px-10">
+          {error && <div className={msgClass}>{error}</div>}
 
           <OtpInput
             otp={otp}
@@ -158,23 +109,21 @@ const VerifyOtpPage = () => {
             buttonText={buttonText}
             loading={isLoading}
             onSubmit={handleOtpSubmit}
-            isOtpComplete={otp.every(digit => digit !== '')}
+            isOtpComplete={isOtpComplete}
             email={email}
             isPasswordReset={isPasswordReset}
           />
 
-          <div className="mt-6">
-            <p className="text-center text-sm text-gray-600">
-              Didn't receive the code?{' '}
-              <button
-                type="button"
-                onClick={handleResendOtp}
-                disabled={isLoading}
-                className="font-medium text-blue-600 hover:text-blue-500 focus:outline-none"
-              >
-                Resend OTP
-              </button>
-            </p>
+          <div className="mt-6 text-center text-sm">
+            <span className="text-gray-600">Didn't receive the code? </span>
+            <button
+              type="button"
+              onClick={handleResendOtp}
+              disabled={isLoading}
+              className="font-medium text-gray-700 hover:text-gray-900 hover:underline focus:outline-none cursor-pointer"
+            >
+              Resend OTP
+            </button>
           </div>
         </div>
       </div>

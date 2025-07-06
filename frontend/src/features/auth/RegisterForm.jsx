@@ -37,10 +37,55 @@ const RegisterForm = ({ onSubmit, isLoading = false }) => {
     }
   };
 
+  const formFields = [
+    {
+      id: 'fullName',
+      label: 'Full Name',
+      type: 'text',
+      icon: <FiUser />,
+      placeholder: 'Enter your full name'
+    },
+    {
+      id: 'contactNumber',
+      label: 'Contact Number',
+      type: 'tel',
+      icon: <FiPhone />,
+      placeholder: 'Enter your contact number',
+      maxLength: 10,
+      inputMode: 'numeric',
+      pattern: '\\d{10}'
+    },
+    {
+      id: 'email',
+      label: 'Email',
+      type: 'email',
+      icon: <FiMail />,
+      placeholder: 'Enter your email',
+      autoComplete: 'email'
+    },
+    {
+      id: 'password',
+      label: 'Password',
+      type: showPassword ? 'text' : 'password',
+      icon: <FiLock />,
+      placeholder: 'Enter your password',
+      autoComplete: 'new-password',
+      rightIcon: (
+        <button
+          type="button"
+          onClick={() => setShowPassword(!showPassword)}
+          className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600 cursor-pointer"
+          aria-label={showPassword ? "Hide password" : "Show password"}
+          tabIndex="-1"
+        >
+          {showPassword ? <FiEyeOff className="h-5 w-5" /> : <FiEye className="h-5 w-5" />}
+        </button>
+      )
+    }
+  ];
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    // Validate phone number
     if (!validatePhoneNumber(formData.contactNumber)) {
       setErrors({
         ...errors,
@@ -65,120 +110,80 @@ const RegisterForm = ({ onSubmit, isLoading = false }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      {/* Full Name Field */}
-      <div className="relative">
-        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          <FiUser className="h-5 w-5 text-gray-400" />
+    <form onSubmit={handleSubmit} className="space-y-6 flex flex-col" noValidate>
+      <div className="space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {formFields.map((field) => (
+            <div key={field.id}>
+              <label htmlFor={field.id} className="block text-sm font-medium text-gray-700">
+                {field.label}
+              </label>
+              <div className="mt-1 relative">
+                <span className="absolute left-3 top-2.5 text-gray-400">
+                  {field.icon}
+                </span>
+                <input
+                  id={field.id}
+                  name={field.id}
+                  type={field.type}
+                  value={formData[field.id]}
+                  onChange={handleChange}
+                  placeholder={field.placeholder}
+                  required
+                  disabled={isLoading}
+                  className={`w-full pl-10 pr-10 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 sm:text-sm ${
+                    errors[field.id] ? 'border-red-500' : ''
+                  }`}
+                  {...(field.maxLength && { maxLength: field.maxLength })}
+                  {...(field.inputMode && { inputMode: field.inputMode })}
+                  {...(field.pattern && { pattern: field.pattern })}
+                  {...(field.autoComplete && { autoComplete: field.autoComplete })}
+                />
+              </div>
+              {errors[field.id] && (
+                <p className="mt-1 text-xs text-red-600">{errors[field.id]}</p>
+              )}
+            </div>
+          ))}
         </div>
-        <input
-          name="fullName"
-          value={formData.fullName}
-          onChange={handleChange}
-          placeholder="Full Name"
-          required
-          className="w-full pl-10 p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          disabled={isLoading}
-        />
-      </div>
 
-      {/* Email Field */}
-      <div className="relative">
-        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          <FiMail className="h-5 w-5 text-gray-400" />
-        </div>
-        <input
-          name="email"
-          type="email"
-          placeholder="Email"
-          required
-          value={formData.email}
-          onChange={handleChange}
-          className="w-full pl-10 p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          disabled={isLoading}
-        />
-      </div>
-
-      {/* Password Field */}
-      <div className="relative">
-        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          <FiLock className="h-5 w-5 text-gray-400" />
-        </div>
-        <input
-          name="password"
-          type={showPassword ? 'text' : 'password'}
-          placeholder="Password"
-          required
-          value={formData.password}
-          onChange={handleChange}
-          className="w-full pl-10 pr-10 p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          disabled={isLoading}
-        />
-        <button
-          type="button"
-          onClick={() => setShowPassword(!showPassword)}
-          className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
-          tabIndex="-1"
-        >
-          {showPassword ? (
-            <FiEyeOff className="h-5 w-5" />
-          ) : (
-            <FiEye className="h-5 w-5" />
-          )}
-        </button>
-      </div>
-
-      {/* Designation Field */}
-      <div className="relative">
-        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          <FiBriefcase className="h-5 w-5 text-gray-400" />
-        </div>
-        <select
-          name="designation"
-          value={formData.designation}
-          onChange={handleChange}
-          required
-          className="w-full pl-10 p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white"
-          disabled={isLoading}
-        >
-          <option value="">Select Designation</option>
-          <option value="Student">Student</option>
-          <option value="Staff">Staff</option>
-        </select>
-        <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-          <svg className="h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-            <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-          </svg>
+        <div>
+          <label htmlFor="designation" className="block text-sm font-medium text-gray-700">
+            Designation
+          </label>
+          <div className="mt-1 relative">
+            <FiBriefcase className="absolute left-3 top-2.5 text-gray-400" />
+            <select
+              id="designation"
+              name="designation"
+              value={formData.designation}
+              onChange={handleChange}
+              required
+              className="w-full pl-10 pr-10 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 sm:text-sm appearance-none bg-white cursor-pointer"
+              disabled={isLoading}
+            >
+              {['', 'Student', 'Staff'].map((opt) => (
+                <option key={opt || 'select'} value={opt}>
+                  {opt || 'Select Designation'}
+                </option>
+              ))}
+            </select>
+            <svg
+              className="h-5 w-5 text-gray-400 absolute right-3 top-2.5 pointer-events-none"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                fillRule="evenodd"
+                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </div>
         </div>
       </div>
 
-      {/* Contact Number Field */}
-      <div className="relative">
-        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          <FiPhone className="h-5 w-5 text-gray-400" />
-        </div>
-        <input
-          name="contactNumber"
-          type="tel"
-          placeholder="Contact Number"
-          required
-          value={formData.contactNumber}
-          onChange={handleChange}
-          className={`w-full pl-10 p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-            errors.contactNumber ? 'border-red-500' : ''
-          }`}
-          disabled={isLoading}
-          maxLength={10}
-          inputMode="numeric"
-          pattern="\d{10}"
-        />
-        {errors.contactNumber && (
-          <p className="mt-1 text-sm text-red-600">{errors.contactNumber}</p>
-        )}
-      </div>
-
-      {/* Terms & Conditions and Privacy Policy Checkbox */}
-      <div className="flex items-start mt-4">
+      <div className="flex items-start">
         <div className="flex items-center h-5">
           <input
             id="terms"
@@ -188,31 +193,31 @@ const RegisterForm = ({ onSubmit, isLoading = false }) => {
             onChange={(e) => {
               setAcceptedTerms(e.target.checked);
               if (errors.terms) {
-                setErrors({ ...errors, terms: '' });
+                setErrors((prev) => ({ ...prev, terms: '' }));
               }
             }}
-            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+            className="h-4 w-4 text-gray-700 focus:ring-gray-500 border-gray-300 rounded cursor-pointer"
           />
         </div>
         <div className="ml-3 text-sm">
-          <label htmlFor="terms" className="font-medium text-gray-700">
+          <label htmlFor="terms" className="text-gray-600">
             I agree to the{' '}
-            <Link 
-              to="/terms" 
-              target="_blank" 
+            <Link
+              to="/terms"
+              target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-600 hover:text-blue-800 hover:underline inline-flex items-center"
+              className="font-medium text-gray-900 hover:text-gray-700 hover:underline transition-colors"
             >
-              Terms & Conditions <FiExternalLink className="ml-1 h-3 w-3" />
+              Terms & Conditions <FiExternalLink className="ml-1 h-3 w-3 inline" />
             </Link>{' '}
             and{' '}
-            <Link 
-              to="/privacy" 
-              target="_blank" 
+            <Link
+              to="/privacy"
+              target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-600 hover:text-blue-800 hover:underline inline-flex items-center"
+              className="font-medium text-gray-900 hover:text-gray-700 hover:underline transition-colors"
             >
-              Privacy Policy <FiExternalLink className="ml-1 h-3 w-3" />
+              Privacy Policy <FiExternalLink className="ml-1 h-3 w-3 inline" />
             </Link>
           </label>
           {errors.terms && (
@@ -223,25 +228,17 @@ const RegisterForm = ({ onSubmit, isLoading = false }) => {
 
       <button
         type="submit"
-        disabled={isLoading}
-        className={`w-full bg-blue-600 hover:bg-blue-700 text-white p-2 rounded flex justify-center items-center ${
-          isLoading ? 'opacity-70 cursor-not-allowed' : ''
+        disabled={isLoading || !acceptedTerms}
+        className={`w-full py-2 px-4 text-sm font-medium rounded-md shadow-sm text-white transition-colors ${
+          isLoading || !acceptedTerms
+            ? 'bg-gray-400 cursor-not-allowed'
+            : 'bg-gray-800 hover:bg-gray-700 focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 cursor-pointer'
         }`}
       >
-        {isLoading ? (
-          <>
-            <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-            Sending OTP...
-          </>
-        ) : (
-          'Send OTP'
-        )}
+        {isLoading ? <LoadingSpinner /> : 'Send OTP'}
       </button>
     </form>
-  )
-}
+  );
+};
 
-export default RegisterForm
+export default RegisterForm;
