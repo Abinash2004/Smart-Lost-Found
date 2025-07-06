@@ -15,6 +15,9 @@ const ClaimForm = () => {
     additionalInfo: '',
     imageProof: null,
   })
+  
+  // Check if all required fields are filled
+  const isFormValid = formData.description.trim() !== ''
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
@@ -67,73 +70,204 @@ const ClaimForm = () => {
   }
 
   return (
-    <div className="max-w-2xl mx-auto bg-white p-6 rounded shadow space-y-6">
-      <h2 className="text-2xl font-bold">Submit Claim</h2>
-
-      {/* 🔍 Found Item Details */}
-      {foundItem ? (
-        <div className="border rounded p-4 bg-gray-50 space-y-1">
-          <h3 className="text-lg font-semibold">{foundItem.title}</h3>
-          <p className="text-sm text-gray-700">{foundItem.categoryTag}</p>
-          <p className="text-sm text-gray-600">📍 {foundItem.foundLocation}</p>
-          <p className="text-sm text-gray-600">
-            📅 {format(new Date(foundItem.foundDate), 'dd MMM yyyy')}
-          </p>
-          <p className="text-xs text-gray-500">
-            Found by: <span className="font-medium">{foundItem.foundByName}</span>
-          </p>
+    <div className="p-6 space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Left Column - Found Item Info */}
+        <div className="space-y-6">
+          <div className="border border-gray-200 rounded-lg p-4 bg-gray-50 space-y-3">
+            <h3 className="text-lg font-semibold text-gray-900">Found Item Info</h3>
+            {foundItem ? (
+              <div className="space-y-2">
+                <h4 className="font-medium text-gray-900">{foundItem.title}</h4>
+                <div className="flex items-center space-x-2 text-sm text-gray-700">
+                  <span className="px-2 py-1 bg-gray-100 rounded-full text-xs font-medium">
+                    {foundItem.categoryTag}
+                  </span>
+                </div>
+                <div className="flex items-start text-sm text-gray-600">
+                  <svg className="w-4 h-4 mt-0.5 mr-1.5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span>{foundItem.foundLocation}</span>
+                </div>
+                <div className="flex items-center text-sm text-gray-600">
+                  <svg className="w-4 h-4 mr-1.5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  Found on {format(new Date(foundItem.foundDate), 'MMM dd, yyyy')}
+                </div>
+                <p className="text-xs text-gray-500 pt-1">
+                  Found by: <span className="font-medium">{foundItem.foundByName}</span>
+                </p>
+              </div>
+            ) : (
+              <p className="text-gray-500">Loading found item details...</p>
+            )}
+          </div>
         </div>
-      ) : (
-        <p className="text-gray-500">Loading found item details...</p>
-      )}
+
+        {/* Right Column - Your Information */}
+        <div className="space-y-6">
+          <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+            <h3 className="text-lg font-semibold text-gray-900 mb-3">Your Information</h3>
+            <div className="space-y-3">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                <input
+                  type="text"
+                  value={user.fullName}
+                  disabled
+                  className="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg bg-gray-50 text-gray-700"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Contact Number</label>
+                <input
+                  type="text"
+                  value={user.contactNumber}
+                  disabled
+                  className="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg bg-gray-50 text-gray-700"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Description and Additional Info Row */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
+            Description of Claim <span className="text-red-500">*</span>
+          </label>
+          <textarea
+            id="description"
+            name="description"
+            placeholder="Describe why you believe this is your item..."
+            value={formData.description}
+            onChange={handleChange}
+            required
+            rows={4}
+            className="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-400 focus:border-gray-300 transition-all duration-200 placeholder-gray-400 bg-white focus:bg-white"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="additionalInfo" className="block text-sm font-medium text-gray-700 mb-1">
+            Additional Information (Optional)
+          </label>
+          <textarea
+            id="additionalInfo"
+            name="additionalInfo"
+            placeholder="Any other details that can help verify your claim..."
+            value={formData.additionalInfo}
+            onChange={handleChange}
+            rows={4}
+            className="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-400 focus:border-gray-300 transition-all duration-200 placeholder-gray-400 bg-white focus:bg-white"
+          />
+        </div>
+      </div>
 
       {/* 📝 Claim Form */}
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          type="text"
-          value={user.fullName}
-          disabled
-          className="w-full p-2 border rounded bg-gray-100"
-        />
-        <input
-          type="text"
-          value={user.contactNumber}
-          disabled
-          className="w-full p-2 border rounded bg-gray-100"
-        />
+      <form onSubmit={handleSubmit} className="space-y-5">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Proof of Ownership (Optional)
+          </label>
+          <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-dashed border-gray-300 rounded-lg">
+            <div className="space-y-3 text-center">
+              {formData.imageProof ? (
+                <div className="flex flex-col items-center">
+                  <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center mb-2">
+                    <svg className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <p className="text-sm font-medium text-gray-700 truncate max-w-xs">
+                    {formData.imageProof.name}
+                  </p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Click to change or drag and drop
+                  </p>
+                </div>
+              ) : (
+                <>
+                  <svg
+                    className="mx-auto h-12 w-12 text-gray-400"
+                    stroke="currentColor"
+                    fill="none"
+                    viewBox="0 0 48 48"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                  <div className="flex text-sm text-gray-600 justify-center">
+                    <label
+                      htmlFor="file-upload"
+                      className="relative cursor-pointer bg-white rounded-md font-medium text-gray-700 hover:text-gray-900 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-gray-500 group"
+                    >
+                      <span className="relative">
+                        Upload a file
+                        <span className="absolute left-0 right-0 h-0.5 bg-gray-800 scale-x-0 group-hover:scale-x-100 transition-transform duration-200 ease-out bottom-0"></span>
+                      </span>
+                      <input
+                        id="file-upload"
+                        name="file-upload"
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFileChange}
+                        className="sr-only"
+                      />
+                    </label>
+                    <p className="pl-1">or drag and drop</p>
+                  </div>
+                  <p className="text-xs text-gray-500">
+                    PNG, JPG, GIF up to 5MB
+                  </p>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
 
-        <textarea
-          name="description"
-          placeholder="Describe your claim..."
-          value={formData.description}
-          onChange={handleChange}
-          required
-          className="w-full p-2 border rounded"
-        />
-
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleFileChange}
-          className="w-full p-2 border rounded"
-        />
-
-        <textarea
-          name="additionalInfo"
-          placeholder="Any additional info (optional)"
-          value={formData.additionalInfo}
-          onChange={handleChange}
-          className="w-full p-2 border rounded"
-        />
-
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
-        >
-          {loading ? 'Submitting...' : 'Submit Claim'}
-        </button>
+        <div className="pt-2">
+          <button
+            type="submit"
+            disabled={!isFormValid || loading}
+            className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gray-800 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-gray-800 cursor-pointer"
+          >
+            {loading ? (
+              <>
+                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Submitting...
+              </>
+            ) : (
+              'Submit Claim'
+            )}
+          </button>
+        </div>
       </form>
+      <div className="border-t border-gray-200 pt-4">
+        <p className="text-sm text-gray-500 text-center">
+          By submitting this claim, you agree to our{' '}
+          <a href="/terms" className="font-medium text-gray-700 hover:text-gray-900 hover:underline">
+            Terms of Service
+          </a>{' '}
+          and{' '}
+          <a href="/privacy" className="font-medium text-gray-700 hover:text-gray-900 hover:underline">
+            Privacy Policy
+          </a>.
+        </p>
+      </div>
     </div>
   )
 }

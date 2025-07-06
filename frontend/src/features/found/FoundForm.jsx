@@ -33,6 +33,12 @@ const FoundForm = ({ onSubmit }) => {
     categoryTag: '',
     images: []
   })
+  
+  // Check if all required fields are filled
+  const isFormValid = formData.title.trim() !== '' && 
+                    formData.description.trim() !== '' && 
+                    formData.location.trim() !== '' && 
+                    formData.categoryTag !== ''
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleChange = (e) => {
@@ -68,14 +74,8 @@ const FoundForm = ({ onSubmit }) => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-6 px-3 sm:px-4 md:px-6 lg:px-8">
-      <div className="max-w-3xl mx-auto">
-          <div className="text-center mb-6 sm:mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Report Found Item</h1>
-          <p className="text-gray-600">Help reunite lost items with their owners</p>
-        </div>
-        
-        <form onSubmit={handleSubmit} className="space-y-5 bg-white p-4 sm:p-6 md:p-8 rounded-xl shadow-sm border border-gray-100">
+    <div className="p-4 sm:p-6">
+      <form onSubmit={handleSubmit} className="space-y-6">
           {/* Item Title */}
           <div>
             <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
@@ -89,7 +89,7 @@ const FoundForm = ({ onSubmit }) => {
               onChange={handleChange}
               placeholder="e.g., Black Wallet, iPhone 13, etc."
               required
-              className="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 placeholder-gray-400"
+              className="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-400 focus:border-gray-300 transition-all duration-200 placeholder-gray-400 bg-white focus:bg-white"
             />
           </div>
 
@@ -98,15 +98,16 @@ const FoundForm = ({ onSubmit }) => {
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Category
             </label>
-              <div className="grid grid-cols-3 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 gap-2">
+              <div className="grid grid-cols-3 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 gap-2.5">
               {categories.map((category) => (
                 <button
                   key={category.name}
                   type="button"
                   onClick={() => setFormData({...formData, categoryTag: category.name})}
-                  className={`flex flex-col items-center justify-center p-3 rounded-lg border-2 transition-all duration-200 text-center h-full cursor-pointer ${formData.categoryTag === category.name 
-                    ? 'border-blue-500 bg-blue-50 text-blue-600 shadow-sm' 
-                    : 'border-gray-200 hover:border-blue-300 hover:bg-blue-50 text-gray-600 hover:text-blue-500'}`}
+                  className={`flex flex-col items-center justify-center p-3 rounded-lg border-2 transition-all duration-200 text-center h-full cursor-pointer transform hover:scale-105 ${
+                    formData.categoryTag === category.name 
+                      ? 'border-gray-700 bg-gray-50 text-gray-900 shadow-md' 
+                      : 'border-gray-200 hover:border-gray-700 hover:bg-gray-50 text-gray-600 hover:text-gray-900 shadow-sm hover:shadow'}`}
                 >
                   <span className="text-gray-500 mb-1.5">{category.icon}</span>
                   <span className="text-xs font-medium">{category.name}</span>
@@ -128,7 +129,7 @@ const FoundForm = ({ onSubmit }) => {
               placeholder="Provide detailed description of the item..."
               required
               rows={4}
-              className="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 placeholder-gray-400"
+              className="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-400 focus:border-gray-300 transition-all duration-200 placeholder-gray-400 bg-white focus:bg-white"
             />
           </div>
 
@@ -146,7 +147,7 @@ const FoundForm = ({ onSubmit }) => {
                 onChange={handleChange}
                 placeholder="Where did you find this item?"
                 required
-                className="w-full pl-10 pr-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 placeholder-gray-400 focus:outline-none"
+                className="w-full pl-10 pr-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-400 focus:border-gray-300 transition-all duration-200 placeholder-gray-400 bg-white focus:bg-white"
               />
               <FiMapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
             </div>
@@ -158,8 +159,8 @@ const FoundForm = ({ onSubmit }) => {
           <div className="pt-2">
             <button 
               type="submit" 
-              disabled={isSubmitting}
-              className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200 disabled:opacity-70 disabled:cursor-not-allowed"
+              disabled={!isFormValid || isSubmitting}
+              className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gray-800 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-gray-800 cursor-pointer"
             >
               {isSubmitting ? (
                 <>
@@ -178,16 +179,15 @@ const FoundForm = ({ onSubmit }) => {
         
         <p className="mt-6 text-center text-sm text-gray-500">
           By posting, you agree to our{' '}
-          <a href="/terms" className="font-medium text-blue-600 hover:text-blue-500">
+          <a href="/terms" className="font-medium text-gray-700 hover:text-gray-900 hover:underline">
             Terms of Service
           </a>{' '}
-          and{' '}
-          <a href="/privacy" className="font-medium text-blue-600 hover:text-blue-500">
+          and {' '}
+          <a href="/privacy" className="font-medium text-gray-700 hover:text-gray-900 hover:underline">
             Privacy Policy
           </a>.
         </p>
       </div>
-    </div>
   )
 }
 
