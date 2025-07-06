@@ -33,7 +33,7 @@ const Navbar = () => {
   }, [])
 
   return (
-    <nav className="bg-white shadow-sm sticky top-0 z-50 w-full overflow-x-hidden">
+    <nav className="bg-white shadow-sm sticky top-0 z-50 w-full">
       <div className="w-full px-4 py-3 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-12">
           {/* Logo */}
@@ -112,7 +112,8 @@ const Navbar = () => {
       {/* Mobile menu */}
       <div 
         ref={menuRef}
-        className={`md:hidden transition-all duration-300 ease-in-out w-full ${isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}
+        className={`fixed left-0 right-0 bg-white shadow-md transition-all duration-300 ease-in-out w-full ${isOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}
+        style={{ top: '76px' }} // Height of the navbar (h-16 = 4rem = 64px) + py-3 (0.75rem = 12px) = 76px
       >
         <div className="pt-2 pb-3 space-y-1 px-2">
           {token ? (

@@ -22,7 +22,7 @@ const CardGrid = ({ items, type, onApprove, onReject }) => {
     return (
       <div className="overflow-hidden relative group">
         <div
-          className="flex w-5xl gap-4 animate-marquee group-hover:paused"
+          className="flex gap-4 animate-marquee group-hover:paused"
           style={{ animationDuration: `${items.length * 4}s` }}
         >
           {[...items, ...items].map((item, index) => (
