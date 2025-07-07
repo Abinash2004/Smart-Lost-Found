@@ -4,13 +4,14 @@ import { formatDistanceToNow } from 'date-fns';
 import { FiBell, FiCheckCircle, FiChevronRight, FiCheck, FiClock } from 'react-icons/fi';
 import { getNotifications, markAllAsRead, markNotificationAsRead } from '../lib/notificationApi';
 import useAuthStore from '../store/useAuthStore';
+import useNotificationStore from '../store/useNotificationStore';
 
 const NotificationsPage = () => {
-  const [notifications, setNotifications] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const { user } = useAuthStore();
   const contactNumber = user?.contactNumber;
   const navigate = useNavigate();
+  const { notifications, setNotifications, markAllAsRead: markAllAsReadInStore } = useNotificationStore();
 
   const fetchNotifications = useCallback(async () => {
     if (!contactNumber) return;
@@ -37,14 +38,10 @@ const NotificationsPage = () => {
 
   const handleNotificationClick = async (notification) => {
     try {
-      // Mark notification as read in the backend
+      // Mark notification as read in the backend and update store
       if (!notification.isRead) {
         await markNotificationAsRead(notification._id);
-        // Update local state
-        const updatedNotifications = notifications.map(n => 
-          n._id === notification._id ? { ...n, isRead: true } : n
-        );
-        setNotifications(updatedNotifications);
+        // The store will handle updating the notification state
       }
 
       // Navigate based on notification tag
@@ -67,8 +64,7 @@ const NotificationsPage = () => {
   const handleMarkAllAsRead = async () => {
     try {
       await markAllAsRead(contactNumber);
-      const updatedNotifications = notifications.map(n => ({ ...n, isRead: true }));
-      setNotifications(updatedNotifications);
+      markAllAsReadInStore();
     } catch (error) {
       console.error('Error marking all as read:', error);
     }
@@ -123,7 +119,7 @@ const NotificationsPage = () => {
             {notifications.length > 0 && (
               <button
                 onClick={handleMarkAllAsRead}
-                className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200 flex items-center"
+                className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200 flex items-center cursor-pointer"
                 disabled={notifications.every(n => n.isRead)}
               >
                 <FiCheck className="mr-1.5 h-4 w-4" />

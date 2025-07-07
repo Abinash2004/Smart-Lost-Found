@@ -4,17 +4,17 @@ import { formatDistanceToNow } from 'date-fns';
 import { BellIcon, ClockIcon, CheckIcon } from '@heroicons/react/24/outline';
 import { getNotifications, markNotificationAsRead } from '../lib/notificationApi';
 import useAuthStore from '../store/useAuthStore';
+import useNotificationStore from '../store/useNotificationStore';
 
 const NotificationBell = () => {
-  const [notifications, setNotifications] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
   const { user } = useAuthStore();
   const contactNumber = user?.contactNumber;
-
-  const unreadCount = notifications.filter(n => !n.isRead).length;
+  
+  const { notifications, unreadCount, setNotifications, markAsRead } = useNotificationStore();
 
   useEffect(() => {
     if (contactNumber) {
@@ -53,15 +53,10 @@ const NotificationBell = () => {
 
   const handleNotificationClick = async (notification) => {
     try {
-      // Mark notification as read in the backend
+      // Mark notification as read in the backend and update store
       if (!notification.isRead) {
         await markNotificationAsRead(notification._id);
-        // Update local state
-        setNotifications(prev =>
-          prev.map(n =>
-            n._id === notification._id ? { ...n, isRead: true } : n
-          )
-        );
+        markAsRead(notification._id);
       }
 
       // Redirect based on notification tag
