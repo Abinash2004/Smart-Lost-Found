@@ -10,6 +10,7 @@ import MyFoundPosts from '../pages/found/MyFoundPosts';
 import ClaimPost from '../pages/claim/ClaimPost';
 import ViewClaims from '../pages/claim/ViewClaims';
 import MyClaims from '../pages/claim/MyClaims';
+import ClaimDetails from '../pages/claim/ClaimDetails';
 import NotificationsPage from '../pages/NotificationsPage';
 import HomeRedirect from '../pages/HomeRedirect';
 import ForgotPassword from '../pages/auth/ForgotPassword';
@@ -34,6 +35,7 @@ const AppRoutes = () => {
       <Route path="/claim/:foundItemId" element={<ClaimPost />} />
       <Route path="/found/:foundItemId/claims" element={<ViewClaims />} />
       <Route path="/claims/mine" element={<MyClaims />} />
+      <Route path="/claims/:claimId" element={<ClaimDetails />} />
       <Route path="/notifications" element={<NotificationsPage />} />
       <Route path="/profile" element={ <Profile /> } />
       

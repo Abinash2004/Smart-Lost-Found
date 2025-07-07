@@ -56,7 +56,7 @@ const FoundCard = React.memo(({ item, onDelete, showDelete, showClaims, filter }
     if (canClaim) return (
       <button
         onClick={() => navigate(`/claim/${item._id}`)}
-        className="flex items-center gap-2 px-4 py-1.5 text-sm font-medium rounded-lg transition-all duration-150 bg-gray-900 text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700 cursor-pointer"
+        className="flex items-center gap-2 px-4 py-1.5 text-sm font-medium rounded-lg transition-all duration-300 bg-gray-900 text-white hover:bg-gray-800 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700 cursor-pointer transform hover:-translate-y-0.5"
         aria-label="Claim this item"
       >
         <FiPlus className="w-3.5 h-3.5" />
@@ -77,8 +77,8 @@ const FoundCard = React.memo(({ item, onDelete, showDelete, showClaims, filter }
   }
 
   return (
-    <div className="group bg-gray-50 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 flex flex-col h-full overflow-hidden hover:-translate-y-0.5">
-      <div className="p-6 pb-4 flex-grow">
+    <div className="group bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col h-full overflow-hidden transform hover:-translate-y-1 hover:scale-[1.01]">
+      <div className="p-6 pb-4 flex-grow group-hover:bg-gray-50 transition-colors duration-300">
         <div className="flex flex-col space-y-4">
           <div className="flex justify-between items-start gap-3">
             <h3 className="text-xl font-semibold text-gray-900 line-clamp-2 leading-tight">{item.title}</h3>
@@ -87,27 +87,29 @@ const FoundCard = React.memo(({ item, onDelete, showDelete, showClaims, filter }
 
           <div className="space-y-3 text-gray-600">
             <div className="flex items-start gap-3">
-              <div className="p-1.5 bg-gray-50 rounded-lg">
+              <div className="p-1.5 bg-gray-50 rounded-lg group-hover:bg-white transition-colors duration-300">
                 <FiMapPin className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
               </div>
               <span className="text-gray-700">{item.foundLocation}</span>
             </div>
             <div className="flex items-start gap-3">
-              <div className="p-1.5 bg-gray-50 rounded-lg">
+              <div className="p-1.5 bg-gray-50 rounded-lg group-hover:bg-white transition-colors duration-300">
                 <FiCalendar className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
               </div>
               <span className="text-gray-700">{format(new Date(item.foundDate), 'MMM d, yyyy')}</span>
             </div>
             <div className="flex items-start gap-3">
-              <div className="p-1.5 bg-gray-50 rounded-lg">
+              <div className="p-1.5 bg-gray-50 rounded-lg group-hover:bg-white transition-colors duration-300">
                 <FiUser className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
               </div>
               <span className="text-gray-700">Found by <span className="font-medium text-gray-900">{item.foundByName}</span></span>
             </div>
             
             {item.categoryTag && (
-              <div className="flex items-center gap-3">
-                <FiTag className="w-4 h-4 text-gray-500 flex-shrink-0 mt-0.5" />
+              <div className="flex items-start gap-3">
+                <div className="p-1.5 bg-gray-50 rounded-lg group-hover:bg-white transition-colors duration-300">
+                  <FiTag className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
+                </div>
                 <StatusBadge 
                   status={item.categoryTag} 
                   category={true} 
@@ -119,7 +121,7 @@ const FoundCard = React.memo(({ item, onDelete, showDelete, showClaims, filter }
         </div>
       </div>
 
-        <div className="mt-4 pt-3 border-t border-gray-100 mx-6 mb-3">
+        <div className="px-6 py-4 bg-gray-50 border-t border-gray-100 group-hover:bg-gray-100 transition-colors duration-300">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center text-sm text-gray-500">
               <FiClock className="w-3.5 h-3.5 mr-1.5 text-gray-400" />

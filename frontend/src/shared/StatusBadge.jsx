@@ -6,6 +6,14 @@ const statusConfig = status => ({
     className: 'bg-yellow-50 text-yellow-700 border border-yellow-200', 
     icon: <FiClock className="w-3 h-3" /> 
   },
+  Approved: { 
+    className: 'bg-green-50 text-green-700 border border-green-200', 
+    icon: <FiCheck className="w-3 h-3" /> 
+  },
+  Rejected: { 
+    className: 'bg-red-50 text-red-700 border border-red-200', 
+    icon: <FiX className="w-3 h-3" /> 
+  },
   Resolved: { 
     className: 'bg-green-50 text-green-700 border border-green-200', 
     icon: <FiCheckCircle className="w-3 h-3" /> 
