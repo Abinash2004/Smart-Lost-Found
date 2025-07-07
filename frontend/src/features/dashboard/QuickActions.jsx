@@ -18,7 +18,7 @@ const actions = [
     route: '/claims/mine'
   },
   {
-    label: 'Pending Found Items',
+    label: 'Pending Items',
     icon: Clock,
     route: '/found/pending'
   }
@@ -28,13 +28,22 @@ const QuickActions = () => {
   const navigate = useNavigate()
 
   return (
-    <div>
-      <h3 className="text-lg font-semibold mb-4">Quick Actions</h3>
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+    <div className="mb-10">
+      <div className="mb-5">
+        <h2 className="text-lg font-semibold text-gray-900">Quick Actions</h2>
+        <p className="mt-1 text-sm text-gray-500">Common tasks at your fingertips</p>
+      </div>
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         {actions.map(({ label, icon: Icon, route }) => (
-          <button key={label} onClick={() => navigate(route)} className="flex flex-col items-center bg-white shadow rounded-xl p-4 hover:shadow-md transition">
-            <Icon className="w-6 h-6 mb-2 text-indigo-600" />
-            <span className="text-sm font-medium text-gray-700 text-center">{label}</span>
+          <button 
+            key={label} 
+            onClick={() => navigate(route)} 
+            className="group flex flex-col items-center justify-center bg-white rounded-xl p-5 border border-gray-100 hover:border-gray-200 transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer"
+          >
+            <div className="p-2.5 rounded-xl bg-gray-50 text-gray-800 group-hover:bg-gray-100 transition-colors duration-200 mb-3">
+              <Icon className="w-5 h-5" />
+            </div>
+            <span className="text-sm font-medium text-gray-700 text-center leading-tight">{label}</span>
           </button>
         ))}
       </div>

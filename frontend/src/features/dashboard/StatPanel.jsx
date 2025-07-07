@@ -1,14 +1,14 @@
 import { CircleDollarSign, HandCoins, CircleCheck, CircleX, Clock } from 'lucide-react'
 
-const StatCard = ({ icon: Icon, label, count, color }) => {
+const StatCard = ({ icon: Icon, label, count }) => {
   return (
-    <div className="flex items-center gap-4 bg-white shadow rounded-2xl p-4 w-full">
-      <div className={`p-3 rounded-full ${color} text-white`}>
-        <Icon className="w-6 h-6" />
+    <div className="group flex items-center gap-4 bg-white rounded-xl p-5 w-full border border-gray-100 hover:border-gray-200 transition-all duration-200 shadow-sm hover:shadow-md">
+      <div className="p-2.5 rounded-xl bg-gray-50 text-gray-800 group-hover:bg-gray-100 transition-colors duration-200">
+        <Icon className="w-5 h-5" />
       </div>
-      <div>
-        <p className="text-sm text-gray-500">{label}</p>
-        <h3 className="text-xl font-semibold">{count}</h3>
+      <div className="min-w-0">
+        <p className="text-sm font-medium text-gray-500 truncate">{label}</p>
+        <h3 className="text-2xl font-bold text-gray-900 tracking-tight">{count}</h3>
       </div>
     </div>
   )
@@ -24,15 +24,15 @@ const StatPanel = ({ stats }) => {
   } = stats
 
   const items = [
-    { label: 'My Found Items', count: foundCount, icon: CircleDollarSign, color: 'bg-blue-500' },
-    { label: 'My Total Claims', count: totalClaims, icon: HandCoins, color: 'bg-green-500' },
-    { label: 'Claims Approved', count: approvedClaims, icon: CircleCheck, color: 'bg-emerald-500' },
-    { label: 'Claims Rejected', count: rejectedClaims, icon: CircleX, color: 'bg-rose-500' },
-    { label: 'Claims Pending', count: pendingClaims, icon: Clock, color: 'bg-yellow-500' }
+    { label: 'My Found Items', count: foundCount, icon: CircleDollarSign },
+    { label: 'My Total Claims', count: totalClaims, icon: HandCoins },
+    { label: 'Claims Approved', count: approvedClaims, icon: CircleCheck },
+    { label: 'Claims Rejected', count: rejectedClaims, icon: CircleX },
+    { label: 'Claims Pending', count: pendingClaims, icon: Clock }
   ]
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
       {items.map((item) => (
         <StatCard key={item.label} {...item} />
       ))}

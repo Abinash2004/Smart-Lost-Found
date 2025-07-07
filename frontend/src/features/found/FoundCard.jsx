@@ -77,8 +77,8 @@ const FoundCard = React.memo(({ item, onDelete, showDelete, showClaims, filter }
   }
 
   return (
-    <div className="group bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col h-full overflow-hidden transform hover:-translate-y-1 hover:scale-[1.01]">
-      <div className="p-6 pb-4 flex-grow group-hover:bg-gray-50 transition-colors duration-300">
+    <div className="group bg-gray-100 rounded-xl border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col h-full overflow-hidden transform hover:-translate-y-1 hover:scale-[1.01]">
+      <div className="p-6 pb-4 flex-grow group-hover:bg-gray-200 transition-colors duration-300">
         <div className="flex flex-col space-y-4">
           <div className="flex justify-between items-start gap-3">
             <h3 className="text-xl font-semibold text-gray-900 line-clamp-2 leading-tight">{item.title}</h3>

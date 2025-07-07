@@ -18,9 +18,9 @@ const ClaimCard = ({ claim }) => {
   return (
     <div
       onClick={() => navigate(`/claims/${_id}`, { state: { claim } })}
-      className="group bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col h-full overflow-hidden cursor-pointer hover:border-gray-300 transform hover:-translate-y-1 hover:scale-[1.01]"
+      className="group bg-gray-100 rounded-xl border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col h-full overflow-hidden cursor-pointer hover:border-gray-300 transform hover:-translate-y-1 hover:scale-[1.01]"
     >
-      <div className="p-5 group-hover:bg-gray-50 transition-colors duration-300">
+      <div className="p-5 group-hover:bg-gray-200 transition-colors duration-300">
         <div className="flex justify-between items-start mb-3">
           <h3 className="text-lg font-semibold text-gray-900 line-clamp-1 pr-2">
             {foundItem?.title || 'Untitled Item'}
