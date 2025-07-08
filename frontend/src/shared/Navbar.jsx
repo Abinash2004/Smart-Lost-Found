@@ -126,8 +126,8 @@ const Navbar = () => {
                         to={to}
                         className={`px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 ${
                           isLogin
-                            ? 'text-white bg-neutral-800 border border-neutral-600 hover:bg-neutral-700 hover:border-neutral-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-400 focus:ring-offset-neutral-900 shadow-sm'
-                            : 'text-neutral-300 hover:text-white hover:bg-neutral-800/50 border border-transparent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-400 focus:ring-offset-neutral-900'
+                            ? 'py-2 px-4 text-sm font-medium rounded-md shadow-sm transition-all duration-200 bg-neutral-300 hover:bg-neutral-400 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-500 cursor-pointer'
+                            : 'py-2 px-4 text-sm font-medium rounded-md shadow-sm transition-all duration-200 text-neutral-300 hover:bg-neutral-800/50 border border-transparent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-500'
                         }`}
                       >
                         {label}
@@ -191,8 +191,8 @@ const Navbar = () => {
                   to={to}
                   className={`w-full text-center px-4 py-2.5 rounded-md text-sm font-medium transition-all ${
                     index === 0
-                      ? 'bg-neutral-800 text-white hover:bg-neutral-700 focus:outline-none focus:ring-1 focus:ring-neutral-400 focus:ring-offset-1'
-                      : 'border border-neutral-700 text-neutral-300 hover:bg-neutral-800 hover:border-neutral-600 focus:outline-none focus:ring-1 focus:ring-neutral-400 focus:ring-offset-1'
+                      ? 'py-2.5 px-4 text-sm font-medium rounded-md shadow-sm bg-neutral-300 hover:bg-neutral-400 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-500 cursor-pointer transition-all duration-200'
+                      : 'py-2.5 px-4 text-sm font-medium rounded-md border border-neutral-700 text-neutral-300 hover:bg-neutral-800 hover:border-neutral-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-500 transition-all duration-200'
                   }`}
                   onClick={() => setIsOpen(false)}
                 >

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { FiUser, FiMail, FiLock, FiPhone, FiEye, FiEyeOff, FiBriefcase, FiExternalLink } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
+import LoadingSpinner from '../../shared/LoadingSpinner';
 
 const RegisterForm = ({ onSubmit, isLoading = false }) => {
   const [formData, setFormData] = useState({
@@ -222,7 +223,13 @@ const RegisterForm = ({ onSubmit, isLoading = false }) => {
             : 'bg-neutral-300 hover:bg-neutral-400 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-500 cursor-pointer'
         }`}
       >
-        {isLoading ? <LoadingSpinner /> : 'Send OTP'}
+        {isLoading ? (
+          <div className="flex justify-center items-center h-5">
+            <LoadingSpinner />
+          </div>
+        ) : (
+          'Send OTP'
+        )}
       </button>
     </form>
   );

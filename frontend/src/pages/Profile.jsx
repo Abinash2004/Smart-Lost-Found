@@ -273,7 +273,7 @@ export default function ProfilePage() {
                   className={`w-full flex justify-center items-center py-2.5 px-4 border rounded-md shadow-sm text-sm font-medium transition-all duration-200 ${
                     !hasChanges() || !isFormValid() || isSubmitting
                       ? 'bg-neutral-800 border-neutral-700 text-neutral-500 cursor-not-allowed'
-                      : 'bg-neutral-800 hover:bg-neutral-700 border-neutral-700 text-white hover:border-neutral-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-500 focus:ring-offset-neutral-900'
+                      : 'bg-neutral-800 hover:bg-neutral-700 border-neutral-700 text-white hover:border-neutral-600 focus:outline-none focus:ring-2 focus:ring-offset-2 cursor-pointer focus:ring-neutral-500 focus:ring-offset-neutral-900'
                   }`}
                 >
                   {isSubmitting ? (
