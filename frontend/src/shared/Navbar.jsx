@@ -4,7 +4,6 @@ import { Menu, X } from 'lucide-react';
 import useAuthStore from '../store/useAuthStore';
 import NotificationBell from './NotificationBell';
 import UserProfile from './UserProfile';
-import DarkModeToggle from './DarkModeToggle';
 import { mainNavLinks, authNavLinks } from '../config/navigation';
 
 const Navbar = () => {
@@ -62,14 +61,12 @@ const Navbar = () => {
           <div className="hidden md:flex items-center space-x-5">
             {token ? (
               <div className="flex items-center space-x-4">
-                <DarkModeToggle />
                 <NotificationBell />
                 <div className="h-6 w-px bg-gray-200"></div>
                 <UserProfile />
               </div>
             ) : (
               <div className="flex items-center space-x-4">
-                <DarkModeToggle />
                 <div className="flex space-x-3">
                   {authNavLinks.map(({ to, label }, index) => (
                     <Link
@@ -96,7 +93,6 @@ const Navbar = () => {
                 <NotificationBell />
               </div>
             )}
-            <DarkModeToggle />
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-200 focus:outline-none transition-colors border border-transparent hover:border-gray-300"
