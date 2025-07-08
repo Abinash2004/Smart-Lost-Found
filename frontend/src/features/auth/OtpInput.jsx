@@ -16,10 +16,10 @@ const OtpInput = ({
   const navigate = useNavigate();
   const location = useLocation();
   const inputs = useRef([]);
-  const btnClass = `w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white transition-colors duration-200 ${
+  const btnClass = `w-full py-2.5 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white transition-colors duration-200 ${
     !isOtpComplete || loading
-      ? 'bg-gray-400 cursor-not-allowed'
-      : 'bg-gray-800 hover:bg-gray-700 cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500'}`;
+      ? 'bg-neutral-800 cursor-not-allowed text-neutral-500'
+      : 'bg-neutral-800 hover:bg-neutral-700 cursor-pointer focus:outline-none focus:ring-1 focus:ring-neutral-400 focus:ring-offset-1'}`;
 
   const handleOtpVerification = useCallback(async (e) => {
     e?.preventDefault();
@@ -77,7 +77,7 @@ const OtpInput = ({
             onKeyDown={(e) => handleKeyDown(e, i)}
             onPaste={handlePaste}
             ref={(el) => (inputs.current[i] = el)}
-            className="w-12 h-12 text-xl text-center border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-400 focus:border-gray-400"
+            className="w-12 h-12 text-xl text-center bg-neutral-800 border border-neutral-700 text-neutral-100 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-neutral-400 focus:border-neutral-400 transition-colors"
             disabled={loading}
             autoComplete={i === 0 ? 'one-time-code' : 'off'}
             autoFocus={i === 0}
@@ -93,7 +93,7 @@ const OtpInput = ({
         {loading ? (
           <span className="flex items-center justify-center">
             <svg
-              className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+              className="animate-spin -ml-1 mr-2 h-4 w-4 text-neutral-100"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"

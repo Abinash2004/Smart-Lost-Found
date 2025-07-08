@@ -35,6 +35,49 @@ exports.getAllNotifications = async (req, res) => {
 };
 
 /**
+ * @desc    Mark a single notification as read
+ * @route   PATCH /api/v1/notifications/mark-read/:id
+ * @access  Private
+ */
+exports.markAsRead = async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    if (!id) {
+      return res.status(400).json({
+        success: false,
+        message: 'Notification ID is required'
+      });
+    }
+
+    const notification = await Notification.findByIdAndUpdate(
+      id,
+      { isRead: true },
+      { new: true, runValidators: true }
+    );
+
+    if (!notification) {
+      return res.status(404).json({
+        success: false,
+        message: 'Notification not found'
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: notification
+    });
+  } catch (error) {
+    console.error('Error marking notification as read:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error',
+      error: error.message
+    });
+  }
+};
+
+/**
  * @desc    Mark all notifications as read for a user
  * @route   PATCH /api/v1/notifications/mark-all-read/:contactNumber
  * @access  Private

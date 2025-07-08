@@ -29,38 +29,38 @@ const UserProfile = () => {
     <div className="relative" ref={profileRef}>
       <button
         onClick={() => setDropdownOpen(!dropdownOpen)}
-        className="flex items-center space-x-2 focus:outline-none group cursor-pointer px-2.5 py-1.5 rounded-md hover:bg-gray-200 hover:shadow-sm transition-all duration-200 border border-transparent hover:border-gray-300"
+        className="flex items-center space-x-2 focus:outline-none group cursor-pointer px-2.5 py-1.5 rounded-md hover:bg-neutral-800/50 hover:shadow-sm transition-all duration-200 border border-transparent hover:border-neutral-600"
       >
         <div className="flex items-center space-x-2">
-          <div className="h-8 w-8 rounded-full bg-gray-800 text-white flex items-center justify-center font-medium group-hover:bg-gray-700 transition-all duration-200 shadow-sm">
+          <div className="h-8 w-8 rounded-full bg-neutral-300 text-black flex items-center justify-center font-medium group-hover:bg-neutral-200 transition-all duration-200 shadow-sm">
             {user?.fullName?.charAt(0).toUpperCase() || 'U'}
           </div>
-          <span className="text-gray-700 text-sm font-medium group-hover:text-gray-900 transition-colors duration-200">
+          <span className="text-neutral-200 text-sm font-medium group-hover:text-white transition-colors duration-200">
             {user?.fullName || 'User'}
           </span>
         </div>
       </button>
 
       {dropdownOpen && (
-        <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-1.5 z-50 border border-gray-200">
+        <div className="absolute right-0 mt-2 w-80 bg-neutral-800 rounded-lg shadow-lg py-1.5 z-50 border border-neutral-700">
+          <div className="px-4 py-2.5 border-b border-neutral-700">
+            <p className="text-xs font-medium text-neutral-400">Signed in as</p>
+            <p className="text-sm font-medium text-white truncate">{user?.email || 'user@example.com'}</p>
+          </div>
           <Link
             to="/profile"
-            className="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-all duration-200 group"
+            className="flex items-center px-4 py-2.5 text-sm text-neutral-200 hover:bg-neutral-700/50 transition-all duration-200 group"
             onClick={() => setDropdownOpen(false)}
           >
-            <PencilIcon className="h-4 w-4 mr-3 text-gray-500 group-hover:text-gray-700 transition-colors" />
-            <span>Edit Profile</span>
+            <PencilIcon className="h-4 w-4 mr-3 text-neutral-400 group-hover:text-white" />
+            Edit Profile
           </Link>
-          <div className="h-px w-full bg-gray-200 my-1"></div>
           <button
-            onClick={() => {
-              setDropdownOpen(false);
-              handleLogout();
-            }}
-            className="flex items-center w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-all duration-200 cursor-pointer group"
+            onClick={handleLogout}
+            className="w-full text-left px-4 py-2.5 text-sm text-red-400 hover:bg-red-900/20 hover:text-red-300 transition-all duration-200 group flex items-center cursor-pointer"
           >
-            <ArrowRightOnRectangleIcon className="h-4 w-4 mr-3 text-gray-500 group-hover:text-gray-700 transition-colors" />
-            <span>Logout</span>
+            <ArrowRightOnRectangleIcon className="h-4 w-4 mr-3 text-red-500 group-hover:text-red-400" />
+            Logout
           </button>
         </div>
       )}

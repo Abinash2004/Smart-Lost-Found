@@ -10,9 +10,9 @@ const ForgotPassword = () => {
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
   const isDisabled = isLoading || !email.trim();
-  const btnClass = `w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white transition-colors duration-200 ${
-    isDisabled ? 'bg-gray-400 cursor-not-allowed' : 'bg-gray-800 hover:bg-gray-700 cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500'}`;
-  const msgClass = 'mb-6 p-3 bg-gray-100 border border-gray-300 rounded-md text-sm text-gray-700';
+  const btnClass = `w-full flex justify-center py-2.5 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white transition-colors ${
+    isDisabled ? 'bg-neutral-800 cursor-not-allowed text-neutral-500' : 'bg-neutral-800 hover:bg-neutral-700 cursor-pointer focus:outline-none focus:ring-1 focus:ring-neutral-400 focus:ring-offset-1'}`;
+  const msgClass = 'mb-6 p-3 bg-neutral-900 border border-neutral-800 rounded-md text-sm text-neutral-200';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,23 +33,23 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-neutral-950 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="text-center">
-          <h2 className="text-3xl font-extrabold text-gray-900">Reset Password</h2>
-          <p className="mt-2 text-sm text-gray-600">Enter your email to receive a password reset OTP</p>
+          <h2 className="text-3xl font-extrabold text-neutral-100">Reset Password</h2>
+          <p className="mt-2 text-sm text-neutral-400">Enter your email to receive a password reset OTP</p>
         </div>
 
-        <div className="mt-8 bg-white py-8 px-6 shadow rounded-lg sm:px-10">
+        <div className="mt-8 bg-neutral-900 py-8 px-6 shadow-lg rounded-lg sm:px-10 border border-neutral-800">
           {error && <div className={msgClass}>{error}</div>}
           {message && <div className={msgClass}>{message}</div>}
 
           <form className="mb-0 space-y-6" onSubmit={handleSubmit}>
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email address</label>
+              <label htmlFor="email" className="block text-sm font-medium text-neutral-200 mb-1">Email address</label>
               <div className="relative rounded-md shadow-sm">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FiMail className="h-5 w-5 text-gray-400" />
+                  <FiMail className="h-5 w-5 text-neutral-400" />
                 </div>
                 <input
                   id="email"
@@ -58,7 +58,7 @@ const ForgotPassword = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   disabled={isLoading}
-                  className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-400 focus:border-gray-400"
+                  className="w-full pl-10 pr-3 py-2.5 bg-neutral-800 border border-neutral-700 text-neutral-100 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-neutral-400 focus:border-neutral-400 sm:text-sm placeholder-neutral-500 transition-colors"
                   placeholder="Enter your email address"
                 />
               </div>
@@ -71,7 +71,7 @@ const ForgotPassword = () => {
 
           <button
             onClick={() => navigate('/login')}
-            className="w-full text-sm font-medium text-gray-600 hover:text-gray-800 hover:underline focus:outline-none transition-colors duration-200 cursor-pointer mt-6"
+            className="w-full text-sm font-medium text-neutral-300 hover:text-white hover:underline focus:outline-none focus:ring-1 focus:ring-neutral-400 focus:ring-offset-1 rounded transition-colors cursor-pointer mt-6 px-2 py-1 -ml-2"
           >
             Back to Login
           </button>

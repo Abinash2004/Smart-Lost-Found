@@ -74,7 +74,7 @@ const RegisterForm = ({ onSubmit, isLoading = false }) => {
         <button
           type="button"
           onClick={() => setShowPassword(!showPassword)}
-          className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600 cursor-pointer"
+          className="absolute right-3 top-2.5 text-neutral-400 hover:text-neutral-300 cursor-pointer"
           aria-label={showPassword ? "Hide password" : "Show password"}
           tabIndex="-1"
         >
@@ -110,16 +110,16 @@ const RegisterForm = ({ onSubmit, isLoading = false }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 flex flex-col" noValidate>
-      <div className="space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <form onSubmit={handleSubmit} className="space-y-6 w-full" noValidate>
+      <div className="space-y-5 w-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {formFields.map((field) => (
             <div key={field.id}>
-              <label htmlFor={field.id} className="block text-sm font-medium text-gray-700">
+              <label htmlFor={field.id} className="block text-sm font-medium text-neutral-200">
                 {field.label}
               </label>
               <div className="mt-1 relative">
-                <span className="absolute left-3 top-2.5 text-gray-400">
+                <span className="absolute left-3 top-2.5 text-neutral-400">
                   {field.icon}
                 </span>
                 <input
@@ -131,9 +131,7 @@ const RegisterForm = ({ onSubmit, isLoading = false }) => {
                   placeholder={field.placeholder}
                   required
                   disabled={isLoading}
-                  className={`w-full pl-10 pr-10 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 sm:text-sm ${
-                    errors[field.id] ? 'border-red-500' : ''
-                  }`}
+                  className={`w-full pl-10 pr-10 py-2.5 bg-neutral-800 border ${errors[field.id] ? 'border-red-400' : 'border-neutral-700'} text-neutral-100 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-neutral-400 focus:border-neutral-400 sm:text-sm placeholder-neutral-500 transition-colors`}
                   {...(field.maxLength && { maxLength: field.maxLength })}
                   {...(field.inputMode && { inputMode: field.inputMode })}
                   {...(field.pattern && { pattern: field.pattern })}
@@ -141,25 +139,25 @@ const RegisterForm = ({ onSubmit, isLoading = false }) => {
                 />
               </div>
               {errors[field.id] && (
-                <p className="mt-1 text-xs text-red-600">{errors[field.id]}</p>
+                <p className="mt-1 text-xs text-red-400">{errors[field.id]}</p>
               )}
             </div>
           ))}
         </div>
 
         <div>
-          <label htmlFor="designation" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="designation" className="block text-sm font-medium text-neutral-200">
             Designation
           </label>
           <div className="mt-1 relative">
-            <FiBriefcase className="absolute left-3 top-2.5 text-gray-400" />
+            <FiBriefcase className="absolute left-3 top-2.5 text-neutral-400" />
             <select
               id="designation"
               name="designation"
               value={formData.designation}
               onChange={handleChange}
               required
-              className="w-full pl-10 pr-10 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 sm:text-sm appearance-none bg-white cursor-pointer"
+              className={`w-full py-2.5 pl-10 pr-8 border ${errors.designation ? 'border-red-400' : 'border-neutral-700'} rounded-md shadow-sm text-sm text-white bg-neutral-800 focus:outline-none focus:ring-1 focus:ring-neutral-400 focus:border-neutral-400 transition-colors ${isLoading ? 'opacity-70 cursor-not-allowed' : 'cursor-pointer'}`}
               disabled={isLoading}
             >
               {['', 'Student', 'Staff'].map((opt) => (
@@ -168,22 +166,11 @@ const RegisterForm = ({ onSubmit, isLoading = false }) => {
                 </option>
               ))}
             </select>
-            <svg
-              className="h-5 w-5 text-gray-400 absolute right-3 top-2.5 pointer-events-none"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path
-                fillRule="evenodd"
-                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                clipRule="evenodd"
-              />
-            </svg>
           </div>
         </div>
       </div>
 
-      <div className="flex items-start">
+      <div className="flex items-start mt-1">
         <div className="flex items-center h-5">
           <input
             id="terms"
@@ -196,17 +183,17 @@ const RegisterForm = ({ onSubmit, isLoading = false }) => {
                 setErrors((prev) => ({ ...prev, terms: '' }));
               }
             }}
-            className="h-4 w-4 text-gray-700 focus:ring-gray-500 border-gray-300 rounded cursor-pointer"
+            className="h-4 w-4 text-neutral-400 rounded border-neutral-700 focus:ring-neutral-500 cursor-pointer"
           />
         </div>
         <div className="ml-3 text-sm">
-          <label htmlFor="terms" className="text-gray-600">
+          <label htmlFor="terms" className="text-neutral-400">
             I agree to the{' '}
             <Link
               to="/terms"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-medium text-gray-900 hover:text-gray-700 hover:underline transition-colors"
+              className="font-medium text-neutral-200 hover:text-white hover:underline transition-colors"
             >
               Terms & Conditions <FiExternalLink className="ml-1 h-3 w-3 inline" />
             </Link>{' '}
@@ -215,13 +202,13 @@ const RegisterForm = ({ onSubmit, isLoading = false }) => {
               to="/privacy"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-medium text-gray-900 hover:text-gray-700 hover:underline transition-colors"
+              className="font-medium text-neutral-200 hover:text-white hover:underline transition-colors"
             >
               Privacy Policy <FiExternalLink className="ml-1 h-3 w-3 inline" />
             </Link>
           </label>
           {errors.terms && (
-            <p className="mt-1 text-sm text-red-600">{errors.terms}</p>
+            <p className="mt-1 text-sm text-red-400">{errors.terms}</p>
           )}
         </div>
       </div>
@@ -229,10 +216,10 @@ const RegisterForm = ({ onSubmit, isLoading = false }) => {
       <button
         type="submit"
         disabled={isLoading || !acceptedTerms}
-        className={`w-full py-2 px-4 text-sm font-medium rounded-md shadow-sm text-white transition-colors ${
+        className={`w-full py-2.5 px-4 text-sm font-medium rounded-md shadow-sm transition-all duration-200 ${
           isLoading || !acceptedTerms
-            ? 'bg-gray-400 cursor-not-allowed'
-            : 'bg-gray-800 hover:bg-gray-700 focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 cursor-pointer'
+            ? 'bg-neutral-800 cursor-not-allowed text-neutral-500'
+            : 'bg-neutral-300 hover:bg-neutral-400 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-500 cursor-pointer'
         }`}
       >
         {isLoading ? <LoadingSpinner /> : 'Send OTP'}

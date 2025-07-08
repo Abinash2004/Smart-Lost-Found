@@ -137,20 +137,20 @@ export default function ProfilePage() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-50">
-        <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-gray-800"></div>
+      <div className="flex items-center justify-center min-h-screen bg-neutral-950">
+        <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-neutral-400"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-neutral-950 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-2xl mx-auto">
         {/* Back Button */}
         <div className="mb-6">
           <Link 
             to="/" 
-            className="inline-flex items-center text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200"
+            className="inline-flex items-center text-sm font-medium text-neutral-400 hover:text-white transition-colors duration-200"
           >
             <FiArrowLeft className="mr-1.5 h-4 w-4" />
             Back to Home
@@ -158,12 +158,12 @@ export default function ProfilePage() {
         </div>
 
         {/* Profile Card */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden transition-all duration-200 hover:shadow-md">
+        <div className="bg-neutral-900 rounded-xl shadow-sm border border-neutral-800 overflow-hidden transition-all duration-200 hover:shadow-neutral-900/20">
           <div className="px-6 py-8 sm:px-10 sm:py-10">
             {/* Header */}
             <div className="text-center mb-8">
               <div className="relative inline-block mb-4">
-                <div className="h-20 w-20 rounded-full bg-gray-800 flex items-center justify-center text-white text-2xl font-medium">
+                <div className="h-20 w-20 rounded-full bg-neutral-300 flex items-center justify-center text-black text-2xl font-medium">
                   {formData.fullName?.charAt(0).toUpperCase() || 'U'}
                   {isSuccess && (
                     <div className="absolute -bottom-1 -right-1 bg-green-500 text-white rounded-full p-1 shadow-sm">
@@ -172,13 +172,13 @@ export default function ProfilePage() {
                   )}
                 </div>
               </div>
-              <h1 className="text-2xl font-bold text-gray-900 mb-1">
+              <h1 className="text-2xl font-bold text-white mb-1">
                 {formData.fullName || 'Profile'}
               </h1>
-              <p className="text-sm text-gray-500">Update your personal information</p>
+              <p className="text-sm text-neutral-400">Update your personal information</p>
               
               {isSuccess && (
-                <div className="mt-3 inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                <div className="mt-3 inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-green-500/10 text-green-400 border border-green-500/20">
                   <FiCheckCircle className="mr-1.5 h-4 w-4" />
                   Profile updated successfully
                 </div>
@@ -190,12 +190,12 @@ export default function ProfilePage() {
               <div className="space-y-5">
                 {/* Full Name Field */}
                 <div>
-                  <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="fullName" className="block text-sm font-medium text-neutral-300 mb-1">
                     Full Name
                   </label>
-                  <div className="relative rounded-md shadow-sm">
+                  <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <FiUser className="h-5 w-5 text-gray-400" />
+                      <FiUser className="h-5 w-5 text-neutral-500" />
                     </div>
                     <input
                       type="text"
@@ -203,23 +203,27 @@ export default function ProfilePage() {
                       name="fullName"
                       value={formData.fullName}
                       onChange={handleChange}
-                      className={`block w-full pl-10 pr-3 py-2.5 border ${errors.fullName ? 'border-red-300 focus:ring-red-500 focus:border-red-500' : 'border-gray-300 focus:ring-gray-500 focus:border-gray-500'} rounded-md shadow-sm focus:outline-none focus:ring-1 sm:text-sm transition-colors duration-200`}
+                      className={`block w-full pl-10 pr-3 py-2.5 bg-neutral-800 border ${
+                        errors.fullName 
+                          ? 'border-red-500/50 focus:ring-red-500/50 focus:border-red-500' 
+                          : 'border-neutral-700 focus:ring-neutral-400 focus:border-neutral-400'
+                      } rounded-md shadow-sm focus:outline-none focus:ring-1 sm:text-sm transition-colors duration-200 text-neutral-100 placeholder-neutral-500`}
                       placeholder="John Doe"
                     />
                   </div>
                   {errors.fullName && (
-                    <p className="mt-1.5 text-sm text-red-600">{errors.fullName}</p>
+                    <p className="mt-1.5 text-sm text-red-400">{errors.fullName}</p>
                   )}
                 </div>
 
                 {/* Email Field (Read-only) */}
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="email" className="block text-sm font-medium text-neutral-300 mb-1">
                     Email
                   </label>
-                  <div className="relative rounded-md shadow-sm">
+                  <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <FiMail className="h-5 w-5 text-gray-400" />
+                      <FiMail className="h-5 w-5 text-neutral-500" />
                     </div>
                     <input
                       type="email"
@@ -227,19 +231,19 @@ export default function ProfilePage() {
                       name="email"
                       value={formData.email}
                       readOnly
-                      className="block w-full pl-10 pr-3 py-2.5 bg-gray-50 border border-gray-200 rounded-md text-gray-600 sm:text-sm cursor-not-allowed"
+                      className="block w-full pl-10 pr-3 py-2.5 bg-neutral-800/50 border border-neutral-700 rounded-md text-neutral-300 sm:text-sm cursor-not-allowed"
                     />
                   </div>
                 </div>
 
                 {/* Contact Number Field */}
                 <div>
-                  <label htmlFor="contactNumber" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="contactNumber" className="block text-sm font-medium text-neutral-300 mb-1">
                     Contact Number
                   </label>
-                  <div className="relative rounded-md shadow-sm">
+                  <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <FiPhone className="h-5 w-5 text-gray-400" />
+                      <FiPhone className="h-5 w-5 text-neutral-500" />
                     </div>
                     <input
                       type="tel"
@@ -247,12 +251,16 @@ export default function ProfilePage() {
                       name="contactNumber"
                       value={formData.contactNumber}
                       onChange={handleChange}
-                      className={`block w-full pl-10 pr-3 py-2.5 border ${errors.contactNumber ? 'border-red-300 focus:ring-red-500 focus:border-red-500' : 'border-gray-300 focus:ring-gray-500 focus:border-gray-500'} rounded-md shadow-sm focus:outline-none focus:ring-1 sm:text-sm transition-colors duration-200`}
+                      className={`block w-full pl-10 pr-3 py-2.5 bg-neutral-800 border ${
+                        errors.contactNumber 
+                          ? 'border-red-500/50 focus:ring-red-500/50 focus:border-red-500' 
+                          : 'border-neutral-700 focus:ring-neutral-400 focus:border-neutral-400'
+                      } rounded-md shadow-sm focus:outline-none focus:ring-1 sm:text-sm transition-colors duration-200 text-neutral-100 placeholder-neutral-500`}
                       placeholder="+1 (555) 000-0000"
                     />
                   </div>
                   {errors.contactNumber && (
-                    <p className="mt-1.5 text-sm text-red-600">{errors.contactNumber}</p>
+                    <p className="mt-1.5 text-sm text-red-400">{errors.contactNumber}</p>
                   )}
                 </div>
               </div>
@@ -262,10 +270,10 @@ export default function ProfilePage() {
                 <button
                   type="submit"
                   disabled={!hasChanges() || !isFormValid() || isSubmitting}
-                  className={`w-full flex justify-center items-center py-2.5 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white transition-all duration-200 ${
+                  className={`w-full flex justify-center items-center py-2.5 px-4 border rounded-md shadow-sm text-sm font-medium transition-all duration-200 ${
                     !hasChanges() || !isFormValid() || isSubmitting
-                      ? 'bg-gray-300 cursor-not-allowed'
-                      : 'bg-gray-800 hover:bg-gray-900 focus:ring-2 focus:ring-offset-2 focus:ring-gray-500'
+                      ? 'bg-neutral-800 border-neutral-700 text-neutral-500 cursor-not-allowed'
+                      : 'bg-neutral-800 hover:bg-neutral-700 border-neutral-700 text-white hover:border-neutral-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-500 focus:ring-offset-neutral-900'
                   }`}
                 >
                   {isSubmitting ? (

@@ -18,74 +18,78 @@ const ClaimCard = ({ claim }) => {
   return (
     <div
       onClick={() => navigate(`/claims/${_id}`, { state: { claim } })}
-      className="group bg-gray-100 rounded-xl border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col h-full overflow-hidden cursor-pointer hover:border-gray-300 transform hover:-translate-y-1 hover:scale-[1.01]"
+      className="group bg-neutral-900 rounded-xl border border-neutral-700 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col h-full overflow-hidden transform hover:-translate-y-1 hover:scale-[1.01] cursor-pointer"
     >
-      <div className="p-5 group-hover:bg-gray-200 transition-colors duration-300">
-        <div className="flex justify-between items-start mb-3">
-          <h3 className="text-lg font-semibold text-gray-900 line-clamp-1 pr-2">
-            {foundItem?.title || 'Untitled Item'}
-          </h3>
-          <StatusBadge status={status} className="shrink-0 mt-0.5" />
-        </div>
-
-        <div className="flex items-center gap-2 mb-4 text-gray-700">
-          <div className="p-1.5 bg-gray-50 rounded-lg">
-            <FiMapPin className="w-3.5 h-3.5 text-gray-500" />
+      <div className="p-6 pb-4 flex-grow group-hover:bg-neutral-800/50 transition-colors duration-300">
+        <div className="flex flex-col space-y-4">
+          <div className="flex justify-between items-start gap-3">
+            <h3 className="text-xl font-semibold text-white line-clamp-1 pr-2">
+              {foundItem?.title || 'Untitled Item'}
+            </h3>
+            <StatusBadge status={status} className="shrink-0" />
           </div>
-          <span className="text-sm text-gray-700">{foundItem?.foundLocation || 'Location not specified'}</span>
-        </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <h4 className="text-xs font-medium text-gray-600 uppercase tracking-wide">
-              Claimant
-            </h4>
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <div className="p-1.5 bg-gray-50 rounded-lg group-hover:bg-white transition-colors duration-300">
-                  <FiUser className="w-3.5 h-3.5 text-gray-500" />
-                </div>
-                <span className="text-sm text-gray-800">{fullName || 'Not provided'}</span>
+          <div className="space-y-3 text-neutral-300">
+            <div className="flex items-start gap-3">
+              <div className="p-1.5 bg-neutral-700 rounded-lg group-hover:bg-neutral-600/50 transition-colors duration-300">
+                <FiMapPin className="w-4 h-4 text-neutral-300 mt-0.5 flex-shrink-0" />
               </div>
-              <div className="flex items-center gap-2">
-                <div className="p-1.5 bg-gray-50 rounded-lg group-hover:bg-white transition-colors duration-300">
-                  <FiPhone className="w-3.5 h-3.5 text-gray-500" />
-                </div>
-                <span className="text-sm text-gray-800">{contactNumber || 'Not provided'}</span>
-              </div>
+              <span className="text-neutral-200">{foundItem?.foundLocation || 'Location not specified'}</span>
             </div>
-          </div>
 
-          <div className="space-y-2">
-            <h4 className="text-xs font-medium text-gray-600 uppercase tracking-wide">
-              Founder
-            </h4>
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <div className="p-1.5 bg-gray-50 rounded-lg group-hover:bg-white transition-colors duration-300">
-                  <FiUser className="w-3.5 h-3.5 text-gray-500" />
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <h4 className="text-xs font-medium text-neutral-400 uppercase tracking-wide">
+                  Claimant
+                </h4>
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <div className="p-1.5 bg-neutral-700 rounded-lg group-hover:bg-neutral-600/50 transition-colors duration-300">
+                      <FiUser className="w-4 h-4 text-neutral-300 mt-0.5 flex-shrink-0" />
+                    </div>
+                    <span className="text-sm text-neutral-200">{fullName || 'Not provided'}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="p-1.5 bg-neutral-700 rounded-lg group-hover:bg-neutral-600/50 transition-colors duration-300">
+                      <FiPhone className="w-4 h-4 text-neutral-300 mt-0.5 flex-shrink-0" />
+                    </div>
+                    <span className="text-sm text-neutral-200">{contactNumber || 'Not provided'}</span>
+                  </div>
                 </div>
-                <span className="text-sm text-gray-800">{foundItem?.foundByName || 'Anonymous'}</span>
               </div>
-              <div className="flex items-center gap-2">
-                <div className="p-1.5 bg-gray-50 rounded-lg group-hover:bg-white transition-colors duration-300">
-                  <FiPhone className="w-3.5 h-3.5 text-gray-500" />
+
+              <div className="space-y-2">
+                <h4 className="text-xs font-medium text-neutral-400 uppercase tracking-wide">
+                  Founder
+                </h4>
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <div className="p-1.5 bg-neutral-700 rounded-lg group-hover:bg-neutral-600/50 transition-colors duration-300">
+                      <FiUser className="w-4 h-4 text-neutral-300 mt-0.5 flex-shrink-0" />
+                    </div>
+                    <span className="text-sm text-neutral-200">{foundItem?.foundByName || 'Anonymous'}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="p-1.5 bg-neutral-700 rounded-lg group-hover:bg-neutral-600/50 transition-colors duration-300">
+                      <FiPhone className="w-4 h-4 text-neutral-300 mt-0.5 flex-shrink-0" />
+                    </div>
+                    <span className="text-sm text-neutral-200">{foundItem?.foundByContact || 'Not provided'}</span>
+                  </div>
                 </div>
-                <span className="text-sm text-gray-800">{foundItem?.foundByContact || 'Not provided'}</span>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="px-5 py-3 bg-gray-50 border-t border-gray-100 mt-auto group-hover:bg-gray-100 transition-colors duration-300">
-        <div className="flex items-center justify-between text-xs text-gray-500">
-          <div className="flex items-center gap-2">
-            <FiCalendar className="w-3.5 h-3.5 text-gray-400" />
-            <span>{format(new Date(createdAt), 'MMM d, yyyy')}</span>
+      <div className="px-6 py-4 bg-neutral-800/50 border-t border-neutral-700 group-hover:bg-neutral-800 transition-colors duration-300">
+        <div className="flex items-center justify-between text-sm text-neutral-400">
+          <div className="flex items-center">
+            <FiCalendar className="w-3.5 h-3.5 mr-1.5 text-neutral-400" />
+            <span>Posted {format(new Date(createdAt), 'MMM d, yyyy')}</span>
           </div>
-          <div className="flex items-center gap-2">
-            <FiClockIcon className="w-3.5 h-3.5 text-gray-400" />
+          <div className="flex items-center">
+            <FiClockIcon className="w-3.5 h-3.5 mr-1.5 text-neutral-400" />
             <span>{format(new Date(createdAt), 'h:mm a')}</span>
           </div>
         </div>

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { formatDistanceToNow } from 'date-fns';
-import { BellIcon, ClockIcon, CheckIcon } from '@heroicons/react/24/outline';
+import { BellIcon, ClockIcon, CheckIcon, CheckCircleIcon, ExclamationCircleIcon, InformationCircleIcon } from '@heroicons/react/24/outline';
 import { getNotifications, markNotificationAsRead } from '../lib/notificationApi';
 import useAuthStore from '../store/useAuthStore';
 import useNotificationStore from '../store/useNotificationStore';
@@ -51,26 +51,40 @@ const NotificationBell = () => {
     setIsOpen(prev => !prev);
   };
 
+  const [updatingId, setUpdatingId] = useState(null);
+
   const handleNotificationClick = async (notification) => {
+    // Don't process clicks if already updating this notification
+    if (updatingId === notification._id) return;
+    
     try {
       // Mark notification as read in the backend and update store
       if (!notification.isRead) {
+        setUpdatingId(notification._id);
         await markNotificationAsRead(notification._id);
         markAsRead(notification._id);
       }
 
-      // Redirect based on notification tag
-      if (notification.tag === 'claim_received') {
-        navigate('/found/mine');
-      } else if (notification.tag === 'claim_approved' || notification.tag === 'claim_rejected') {
-        navigate('/claims/mine');
-      } else {
-        navigate('/');
-      }
-      
+      // Close the dropdown before navigation
       setIsOpen(false);
+      
+      // Small delay to allow dropdown to close before navigation
+      setTimeout(() => {
+        // Redirect based on notification tag
+        if (notification.tag === 'claim_received') {
+          navigate('/found/mine');
+        } else if (notification.tag === 'claim_approved' || notification.tag === 'claim_rejected') {
+          navigate('/claims/mine');
+        } else {
+          navigate('/');
+        }
+      }, 100);
     } catch (error) {
       console.error('Error handling notification click:', error);
+      // Optional: Show error toast to user
+      // toast.error('Failed to update notification status');
+    } finally {
+      setUpdatingId(null);
     }
   };
 
@@ -82,80 +96,92 @@ const NotificationBell = () => {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={handleBellClick}
-        className="p-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100 hover:shadow-sm transition-all duration-200 relative cursor-pointer border border-transparent hover:border-gray-300"
+        className="p-2 rounded-md text-neutral-400 hover:text-white hover:bg-neutral-800/50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-400 focus:ring-offset-neutral-900 relative transition-colors duration-200 cursor-pointer"
         aria-label="Notifications"
       >
-        <BellIcon className="h-5 w-5" />
+        <BellIcon className="h-6 w-6" />
         {unreadCount > 0 && (
-          <span className="absolute -top-0.5 -right-0.5 h-4 w-4 bg-gray-900 text-white text-[10px] font-medium rounded-full flex items-center justify-center">
-            {unreadCount}
+          <span className="absolute -top-0.5 -right-0.5 h-4 w-4 bg-white text-neutral-900 text-[10px] font-bold rounded-full flex items-center justify-center border border-neutral-200 shadow-sm leading-none">
+            <span className="mt-px">{unreadCount}</span>
           </span>
         )}
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg border border-gray-200 shadow-lg overflow-hidden z-50">
-          <div className="px-4 py-3 border-b border-gray-200 flex justify-between items-center bg-gray-50">
-            <h3 className="text-sm font-medium text-gray-900">Notifications</h3>
-            {unreadCount > 0 && (
-              <span className="text-xs font-medium text-gray-600">{unreadCount} unread</span>
-            )}
+        <div className="absolute right-0 mt-2 w-80 bg-neutral-800 rounded-lg shadow-lg overflow-y-auto max-h-[70vh] z-50 border border-neutral-700
+          scrollbar-thin scrollbar-thumb-neutral-600 scrollbar-track-neutral-800 scrollbar-thumb-rounded-full scrollbar-track-rounded-full">
+          <div className="p-3 border-b border-neutral-700 bg-neutral-800/95">
+            <div className="flex items-center justify-between">
+              <h3 className="text-sm font-medium text-white">Notifications</h3>
+              {unreadCount > 0 && (
+                <button
+                  onClick={() => {
+                    notifications.forEach(notification => markAsRead(notification._id));
+                  }}
+                  className="text-xs font-medium text-neutral-300 hover:text-white transition-colors"
+                  disabled={isLoading}
+                >
+                  Mark all as read
+                </button>
+              )}
+            </div>
           </div>
 
-          <div className="max-h-96 overflow-y-auto scrollbar-hide">
+          <div className="max-h-96 overflow-y-auto">
             {isLoading ? (
-              <div className="p-4">
-                <div className="animate-pulse space-y-3">
-                  {[1, 2, 3].map((i) => (
-                    <div key={i} className="flex space-x-3">
-                      <div className="h-10 w-10 rounded-full bg-gray-200"></div>
-                      <div className="flex-1 space-y-2">
-                        <div className="h-3 bg-gray-200 rounded w-3/4"></div>
-                        <div className="h-2 bg-gray-200 rounded w-1/2"></div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <div className="p-4 text-center text-sm text-neutral-400">Loading...</div>
             ) : notifications.length === 0 ? (
               <div className="p-6 text-center">
-                <div className="mx-auto h-12 w-12 bg-gray-100 rounded-full flex items-center justify-center mb-3">
-                  <BellIcon className="h-6 w-6 text-gray-400" />
-                </div>
-                <p className="text-sm text-gray-500">No notifications yet</p>
+                <BellIcon className="mx-auto h-8 w-8 text-neutral-500" />
+                <h3 className="mt-2 text-sm font-medium text-white">No notifications</h3>
+                <p className="mt-1 text-sm text-neutral-400">You don't have any notifications yet.</p>
               </div>
             ) : (
-              <ul className="divide-y divide-gray-100">
+              <ul className="divide-y divide-neutral-700">
                 {notifications.slice(0, 5).map((notification) => (
-                  <li
+                  <li 
                     key={notification._id}
                     onClick={() => handleNotificationClick(notification)}
-                    className={`p-3 transition-colors duration-150 cursor-pointer ${
+                    className={`px-4 py-3 transition-colors duration-150 ${
                       notification.isRead 
-                        ? 'bg-white hover:bg-gray-50' 
-                        : 'bg-gray-50 hover:bg-gray-100 border-l-2 border-gray-900'
+                        ? 'bg-neutral-900 hover:bg-neutral-700/50' 
+                        : 'bg-neutral-800 hover:bg-neutral-700/50'
+                    } ${
+                      updatingId === notification._id 
+                        ? 'opacity-70 cursor-wait' 
+                        : 'cursor-pointer'
                     }`}
+                    aria-busy={updatingId === notification._id}
                   >
                     <div className="flex items-start">
-                      <div className={`flex-shrink-0 h-8 w-8 rounded-full flex items-center justify-center ${
-                        notification.isRead ? 'bg-gray-200' : 'bg-gray-800'
-                      }`}>
-                        <BellIcon className={`h-4 w-4 ${notification.isRead ? 'text-gray-500' : 'text-white'}`} />
+                      <div className="flex-shrink-0 pt-0.5">
+                        {notification.type === 'success' || notification.tag === 'claim_approved' ? (
+                          <CheckCircleIcon className="h-5 w-5 text-green-400" />
+                        ) : notification.type === 'error' || notification.tag === 'claim_rejected' ? (
+                          <ExclamationCircleIcon className="h-5 w-5 text-red-400" />
+                        ) : (
+                          <BellIcon className="h-5 w-5 text-blue-400" />
+                        )}
                       </div>
-                      <div className="ml-3 flex-1 min-w-0">
-                        <p className={`text-sm ${
-                          notification.isRead ? 'text-gray-700' : 'text-gray-900 font-medium'
-                        }`}>
+                      <div className="ml-3 flex-1">
+                        <p className="text-sm font-medium text-white">
+                          {notification.title || 
+                           (notification.tag === 'claim_received' && 'New Claim Received') ||
+                           (notification.tag === 'claim_approved' && 'Claim Approved') ||
+                           (notification.tag === 'claim_rejected' && 'Claim Rejected') ||
+                           'Notification'}
+                        </p>
+                        <p className="mt-1 text-sm text-neutral-400">
                           {notification.message}
                         </p>
-                        <div className="mt-1 flex items-center text-xs text-gray-500">
+                        <div className="mt-1 flex items-center text-xs text-neutral-500">
                           <ClockIcon className="mr-1 h-3 w-3" />
                           <span>{formatTimeAgo(notification.createdAt)}</span>
                         </div>
                       </div>
                       {!notification.isRead && (
-                        <div className="ml-2">
-                          <div className="h-2 w-2 rounded-full bg-gray-900"></div>
+                        <div className="ml-2 flex-shrink-0">
+                          <span className="h-2 w-2 rounded-full bg-blue-500"></span>
                         </div>
                       )}
                     </div>
@@ -166,11 +192,11 @@ const NotificationBell = () => {
           </div>
 
           {notifications.length > 0 && (
-            <div className="p-3 border-t border-gray-200 text-center bg-gray-50">
+            <div className="bg-neutral-800/95 px-4 py-2.5 text-center border-t border-neutral-700">
               <Link
                 to="/notifications"
+                className="text-sm font-medium text-neutral-300 hover:text-white transition-colors"
                 onClick={() => setIsOpen(false)}
-                className="text-sm font-medium text-gray-700 hover:text-gray-900 hover:underline transition-colors"
               >
                 View all notifications
               </Link>

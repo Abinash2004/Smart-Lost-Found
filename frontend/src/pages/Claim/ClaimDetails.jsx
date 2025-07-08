@@ -43,12 +43,12 @@ const ClaimDetails = () => {
     }
   }, [claim, claimId])
 
-  if (loading) return <div className="p-4">Loading...</div>
+  if (loading) return <div className="p-4 text-neutral-200">Loading...</div>
   // Check if user is admin (you may want to implement proper auth check)
   const isAdmin = true; // Replace with actual admin check
 
-  if (error) return <div className="p-4 text-red-600">{error}</div>
-  if (!claim) return <div className="p-4">Claim not found</div>
+  if (error) return <div className="p-4 text-red-400">{error}</div>
+  if (!claim) return <div className="p-4 text-neutral-200">Claim not found</div>
 
   const {
     fullName,
@@ -99,11 +99,11 @@ const ClaimDetails = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-neutral-950 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-5xl mx-auto">
         <button
           onClick={() => navigate(-1)}
-          className="flex items-center text-gray-600 hover:text-gray-900 mb-8 transition-colors cursor-pointer"
+          className="flex items-center text-neutral-400 hover:text-neutral-200 mb-8 transition-colors cursor-pointer"
         >
           <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -111,13 +111,13 @@ const ClaimDetails = () => {
           Back to Claims
         </button>
 
-        <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+        <div className="bg-neutral-900 rounded-xl shadow-sm overflow-hidden border border-neutral-700">
           {/* Header */}
-          <div className="px-6 py-5 border-b border-gray-200">
+          <div className="px-6 py-5 border-b border-neutral-700">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <h1 className="text-2xl font-semibold text-gray-900">Claim Details</h1>
-                <div className="mt-1 flex items-center text-sm text-gray-500">
+                <h1 className="text-2xl font-semibold text-neutral-100">Claim Details</h1>
+                <div className="mt-1 flex items-center text-sm text-neutral-400">
                   <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
@@ -139,8 +139,8 @@ const ClaimDetails = () => {
               {/* Left Column */}
               <div className="flex-1 flex flex-col">
                 {/* Claimant Information */}
-                <div className="bg-gray-50 p-5 rounded-lg border border-gray-100 mb-6">
-                  <h2 className="text-lg font-medium text-gray-900 mb-4 flex items-center">
+                <div className="bg-neutral-800 p-5 rounded-lg border border-neutral-700 mb-6">
+                  <h2 className="text-lg font-medium text-neutral-100 mb-4 flex items-center">
                     <svg className="w-5 h-5 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                     </svg>
@@ -149,26 +149,26 @@ const ClaimDetails = () => {
                   <div className="space-y-4">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
-                        <p className="text-sm font-medium text-gray-500">Full Name</p>
-                        <p className="mt-1 text-gray-900">{fullName || 'N/A'}</p>
+                        <p className="text-sm font-medium text-neutral-400">Full Name</p>
+                        <p className="mt-1 text-neutral-100">{fullName || 'N/A'}</p>
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-gray-500">Contact Number</p>
-                        <p className="mt-1 text-gray-900">{contactNumber || 'N/A'}</p>
+                        <p className="text-sm font-medium text-neutral-400">Contact Number</p>
+                        <p className="mt-1 text-neutral-100">{contactNumber || 'N/A'}</p>
                       </div>
                     </div>
                   </div>
                 </div>
 
                 {/* Image Button - Always visible */}
-                <div className="bg-gray-50 p-5 rounded-lg border border-gray-100 mt-auto">
+                <div className="bg-neutral-800 p-5 rounded-lg border border-neutral-700 mt-auto">
                   <button
                     onClick={() => imageProof && window.open(imageProof, '_blank')}
                     disabled={!imageProof}
-                    className={`w-full py-3 px-4 border rounded-md shadow-sm text-sm font-medium flex items-center justify-center space-x-2 cursor-pointer ${
+                    className={`w-full py-3 px-4 rounded-md shadow-sm text-sm font-medium flex items-center justify-center space-x-2 ${
                       imageProof 
-                        ? 'border-gray-300 text-gray-700 bg-white hover:bg-gray-50 focus:ring-2 focus:ring-offset-2 focus:ring-gray-500' 
-                        : 'border-gray-200 text-gray-400 bg-gray-50 cursor-not-allowed'
+                        ? 'border border-neutral-600 text-neutral-200 bg-neutral-700 hover:bg-neutral-600 focus:ring-2 focus:ring-offset-2 focus:ring-neutral-500 cursor-pointer' 
+                        : 'border border-neutral-700 text-neutral-500 bg-neutral-800 cursor-not-allowed'
                     }`}
                   >
                     {imageProof ? (
@@ -192,8 +192,8 @@ const ClaimDetails = () => {
 
               {/* Right Column - Item Information */}
               <div className="flex-1">
-                <div className="bg-gray-50 p-5 rounded-lg border border-gray-100 h-full">
-                  <h2 className="text-lg font-medium text-gray-900 mb-4 flex items-center">
+                <div className="bg-neutral-800 p-5 rounded-lg border border-neutral-700 h-full">
+                  <h2 className="text-lg font-medium text-neutral-100 mb-4 flex items-center">
                     <svg className="w-5 h-5 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -203,12 +203,12 @@ const ClaimDetails = () => {
                   <div className="space-y-4">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
-                        <p className="text-sm font-medium text-gray-500">Item Name</p>
-                        <p className="mt-1 text-gray-900">{foundItem?.title || 'N/A'}</p>
+                        <p className="text-sm font-medium text-neutral-400">Item Name</p>
+                        <p className="mt-1 text-neutral-100">{foundItem?.title || 'N/A'}</p>
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-gray-500">Found Date</p>
-                        <p className="mt-1 text-gray-900">
+                        <p className="text-sm font-medium text-neutral-400">Found Date</p>
+                        <p className="mt-1 text-neutral-100">
                           {foundItem?.foundDate ? format(new Date(foundItem.foundDate), 'dd MMM yyyy') : 'N/A'}
                         </p>
                       </div>
@@ -216,18 +216,18 @@ const ClaimDetails = () => {
                     
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
-                        <p className="text-sm font-medium text-gray-500">Found By</p>
-                        <p className="mt-1 text-gray-900">{foundItem?.foundByName || 'N/A'}</p>
+                        <p className="text-sm font-medium text-neutral-400">Found By</p>
+                        <p className="mt-1 text-neutral-100">{foundItem?.foundByName || 'N/A'}</p>
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-gray-500">Contact</p>
-                        <p className="mt-1 text-gray-900">{foundItem?.foundByContact || 'N/A'}</p>
+                        <p className="text-sm font-medium text-neutral-400">Contact</p>
+                        <p className="mt-1 text-neutral-100">{foundItem?.foundByContact || 'N/A'}</p>
                       </div>
                     </div>
                     
                     <div>
-                      <p className="text-sm font-medium text-gray-500">Found Location</p>
-                      <p className="mt-1 text-gray-900">{foundItem?.foundLocation || 'N/A'}</p>
+                      <p className="text-sm font-medium text-neutral-400">Found Location</p>
+                      <p className="mt-1 text-neutral-100">{foundItem?.foundLocation || 'N/A'}</p>
                     </div>
                   </div>
                 </div>
@@ -235,20 +235,20 @@ const ClaimDetails = () => {
             </div>
 
             {/* Full Width Divider */}
-            <div className="border-t border-gray-200 my-8 w-full"></div>
+            <div className="border-t border-neutral-700 my-8 w-full"></div>
 
             {/* Bottom Section: Description and Additional Info */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Description */}
-              <div className="bg-gray-50 p-5 rounded-lg border border-gray-100">
-                <h2 className="text-lg font-medium text-gray-900 mb-4">Description</h2>
-                <p className="text-gray-700 whitespace-pre-line">{description || 'No description provided'}</p>
+              <div className="bg-neutral-800 p-5 rounded-lg border border-neutral-700">
+                <h2 className="text-lg font-medium text-neutral-100 mb-4">Description</h2>
+                <p className="text-neutral-300 whitespace-pre-line">{description || 'No description provided'}</p>
               </div>
 
               {/* Additional Info */}
-              <div className="bg-gray-50 p-5 rounded-lg border border-gray-100">
-                <h2 className="text-lg font-medium text-gray-900 mb-4">Additional Information</h2>
-                <p className="text-gray-700 whitespace-pre-line">
+              <div className="bg-neutral-800 p-5 rounded-lg border border-neutral-700">
+                <h2 className="text-lg font-medium text-neutral-100 mb-4">Additional Information</h2>
+                <p className="text-neutral-300 whitespace-pre-line">
                   {additionalInfo || 'No additional information provided'}
                 </p>
               </div>
@@ -257,14 +257,14 @@ const ClaimDetails = () => {
             {/* Rejection Feedback */}
             {status === 'Rejected' && rejectionFeedback && (
               <div className="mt-8">
-                <div className="bg-gray-50 p-5 rounded-lg border-l-4 border-gray-400">
-                  <div className="flex">
-                    <svg className="h-5 w-5 text-gray-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div className="bg-red-900/30 p-5 rounded-lg border-l-4 border-red-500">
+                  <div className="flex items-center">
+                    <svg className="h-5 w-5 text-red-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                     </svg>
-                    <h3 className="text-sm font-medium text-gray-900">Rejection Feedback</h3>
+                    <h3 className="text-sm font-medium text-red-100">Rejection Feedback</h3>
                   </div>
-                  <div className="mt-2 text-sm text-gray-700">
+                  <div className="mt-2 text-sm text-red-200">
                     <p>{rejectionFeedback}</p>
                   </div>
                 </div>
@@ -277,11 +277,15 @@ const ClaimDetails = () => {
                 <button
                   onClick={handleApprove}
                   disabled={processing}
-                  className="w-full px-4 py-3 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 cursor-pointer"
+                  className={`w-full py-2.5 px-4 text-sm font-medium rounded-md shadow-sm transition-all duration-200 flex items-center justify-center space-x-2 ${
+                    processing
+                      ? 'bg-neutral-800 cursor-not-allowed text-neutral-500'
+                      : 'bg-neutral-300 hover:bg-neutral-400 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-500 cursor-pointer'
+                  }`}
                 >
                   {processing ? (
                     <>
-                      <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <svg className="animate-spin -ml-1 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                       </svg>
@@ -289,7 +293,7 @@ const ClaimDetails = () => {
                     </>
                   ) : (
                     <>
-                      <svg className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
                       <span>Approve Claim</span>
@@ -299,7 +303,7 @@ const ClaimDetails = () => {
                 <button
                   onClick={handleReject}
                   disabled={processing}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 cursor-pointer"
+                  className="w-full px-4 py-3 border border-neutral-600 rounded-md shadow-sm text-sm font-medium text-neutral-200 bg-neutral-800 hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-500 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 cursor-pointer transition-colors"
                 >
                   {processing ? (
                     <>
@@ -307,11 +311,11 @@ const ClaimDetails = () => {
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                       </svg>
-                      <span>Processing...</span>
+                      <span className="text-neutral-200">Processing...</span>
                     </>
                   ) : (
                     <>
-                      <svg className="h-5 w-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg className="h-5 w-5 text-neutral-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                       </svg>
                       <span>Reject Claim</span>

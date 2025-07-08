@@ -17,30 +17,32 @@ const MyFoundPosts = () => {
   }, [])
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-neutral-950 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="mb-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h1 className="text-2xl font-semibold text-gray-900 flex items-center gap-2">
-                <FiUser className="w-6 h-6 text-gray-700" />
+              <h1 className="text-2xl font-semibold text-white flex items-center gap-2">
+                <FiUser className="w-6 h-6 text-blue-400" />
                 My Found Items
               </h1>
-              <p className="mt-1 text-sm text-gray-500">
+              <p className="mt-1 text-sm text-neutral-400">
                 Items you've reported as found
               </p>
             </div>
             
             {/* Category Filter Dropdown */}
-            <CategoryFilter 
-              selectedCategory={selectedCategory}
-              onSelectCategory={setSelectedCategory}
-            />
+            <div className="w-full sm:w-auto">
+              <CategoryFilter 
+                selectedCategory={selectedCategory}
+                onSelectCategory={setSelectedCategory}
+              />
+            </div>
           </div>
           
           {/* Divider */}
-          <div className="mt-6 border-t border-gray-200"></div>
+          <div className="mt-6 border-t border-neutral-800"></div>
         </div>
         
         {/* Main Content */}

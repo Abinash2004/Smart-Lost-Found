@@ -133,23 +133,23 @@ const FoundList = ({ filter, selectedCategory = 'All Categories' }) => {
       <div className="w-full overflow-hidden">
         {loading ? (
           <div className="flex flex-col items-center justify-center py-16 space-y-4">
-            <div className="w-12 h-12 border-4 border-gray-200 border-t-gray-400 rounded-full animate-spin"></div>
-            <p className="text-sm font-medium text-gray-500">Loading items...</p>
+            <div className="w-12 h-12 border-4 border-neutral-700 border-t-neutral-400 rounded-full animate-spin"></div>
+            <p className="text-sm font-medium text-neutral-400">Loading items...</p>
           </div>
         ) : items.length === 0 ? (
           <div className="py-12 text-center">
-            <div className="mx-auto w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mb-4">
-              <FiFileText className="w-8 h-8 text-gray-400" />
+            <div className="mx-auto w-16 h-16 rounded-full bg-neutral-800 flex items-center justify-center mb-4">
+              <FiFileText className="w-8 h-8 text-neutral-500" />
             </div>
-            <h3 className="text-lg font-medium text-gray-900 mb-1">No items found</h3>
-            <p className="text-sm text-gray-500 max-w-md mx-auto">
+            <h3 className="text-lg font-medium text-neutral-100 mb-1">No items found</h3>
+            <p className="text-sm text-neutral-400 max-w-md mx-auto">
               {selectedCategory !== 'All Categories' 
                 ? `No ${selectedCategory.toLowerCase()} items found. Try another category.`
                 : 'No items match your current filters.'}
             </p>
           </div>
         ) : (
-          <div className="space-y-6 bg-transparent">
+          <div className="space-y-6">
             <div className="w-full grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
               {displayedItems.map((item, index) => (
                 <div 
@@ -178,10 +178,10 @@ const FoundList = ({ filter, selectedCategory = 'All Categories' }) => {
                 <button
                   onClick={handleLoadMore}
                   disabled={loadingMore}
-                  className={`flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-all duration-150 w-full sm:w-auto max-w-xs ${
+                  className={`flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium rounded-md transition-all duration-200 w-full sm:w-auto max-w-xs ${
                     loadingMore 
-                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
-                      : 'bg-gray-800 text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 cursor-pointer'
+                      ? 'bg-neutral-800 text-neutral-500 cursor-not-allowed' 
+                      : 'bg-neutral-300 text-neutral-900 hover:bg-neutral-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-500 cursor-pointer'
                   }`}
                   aria-label={loadingMore ? 'Loading more items' : 'Load more items'}
                 >

@@ -22,9 +22,9 @@ const VerifyOtpPage = () => {
     ? `Enter the 6-digit verification code sent to ${email}`
     : `We've sent a 6-digit verification code to ${email}`;
   const buttonText = isPasswordReset ? 'Continue to Reset' : 'Verify & Continue';
-  const msgClass = 'mb-6 p-3 bg-gray-100 border border-gray-300 rounded-md text-sm text-gray-700';
-  const btnClass = `w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white transition-colors duration-200 ${
-    !isOtpComplete || isLoading ? 'bg-gray-400 cursor-not-allowed' : 'bg-gray-800 hover:bg-gray-700 cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500'}`;
+  const msgClass = 'mb-6 p-3 bg-neutral-900 border border-neutral-800 rounded-md text-sm text-neutral-200';
+  const btnClass = `w-full flex justify-center py-2.5 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white transition-colors ${
+    !isOtpComplete || isLoading ? 'bg-neutral-800 cursor-not-allowed text-neutral-500' : 'bg-neutral-800 hover:bg-neutral-700 cursor-pointer focus:outline-none focus:ring-1 focus:ring-neutral-400 focus:ring-offset-1'}`;
 
   // Set up component based on flow type
   useEffect(() => {
@@ -92,39 +92,28 @@ const VerifyOtpPage = () => {
   }, [email, formData, isPasswordReset]);
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-neutral-950 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="text-center text-3xl font-extrabold text-gray-900">{title}</h2>
-        <p className="mt-2 text-center text-sm text-gray-600">{description}</p>
+        <h2 className="text-center text-3xl font-extrabold text-neutral-100">{title}</h2>
+        <p className="mt-2 text-center text-sm text-neutral-400">{description}</p>
       </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-6 shadow rounded-lg sm:px-10">
-          {error && <div className={msgClass}>{error}</div>}
+      <div className="mt-8 mx-auto w-full max-w-md bg-neutral-900 py-8 px-6 shadow-lg rounded-lg sm:px-10 border border-neutral-800">
+        {error && <div className={msgClass}>{error}</div>}
+        <OtpInput
+          otp={otp}
+          setOtp={setOtp}
+          title={title}
+          buttonText={buttonText}
+          loading={isLoading}
+          onSubmit={handleOtpSubmit}
+          isOtpComplete={isOtpComplete}
+          email={email}
+          isPasswordReset={isPasswordReset}
+        />
 
-          <OtpInput
-            otp={otp}
-            setOtp={setOtp}
-            title="Enter Verification Code"
-            buttonText={buttonText}
-            loading={isLoading}
-            onSubmit={handleOtpSubmit}
-            isOtpComplete={isOtpComplete}
-            email={email}
-            isPasswordReset={isPasswordReset}
-          />
-
-          <div className="mt-6 text-center text-sm">
-            <span className="text-gray-600">Didn't receive the code? </span>
-            <button
-              type="button"
-              onClick={handleResendOtp}
-              disabled={isLoading}
-              className="font-medium text-gray-700 hover:text-gray-900 hover:underline focus:outline-none cursor-pointer"
-            >
-              Resend OTP
-            </button>
-          </div>
+        <div className="mt-6 text-center text-sm">
+          <p className="text-sm text-neutral-500">Didn't receive a code? <button type="button" onClick={handleResendOtp} disabled={isLoading} className="text-neutral-300 hover:text-white font-medium focus:outline-none focus:ring-1 focus:ring-neutral-400 focus:ring-offset-1 rounded px-2 py-1 -ml-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">Resend OTP</button></p>
         </div>
       </div>
     </div>

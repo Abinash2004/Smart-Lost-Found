@@ -46,18 +46,18 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-neutral-950 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h1 className="text-center text-3xl font-extrabold text-gray-900">Welcome Back</h1>
-        <p className="mt-2 text-center text-sm text-gray-600">Sign in to your account</p>
+        <h1 className="text-center text-3xl font-extrabold text-neutral-100">Welcome Back</h1>
+        <p className="mt-2 text-center text-sm text-neutral-400">Sign in to your account</p>
       </div>
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+        <div className="bg-neutral-900 py-8 px-4 shadow-lg sm:rounded-lg sm:px-10 border border-neutral-800">
           {message.text && (
             <div className={`mb-4 p-3 rounded-md text-sm ${
               message.type === 'success' 
-                ? 'bg-green-100 text-green-700' 
-                : 'bg-red-100 text-red-700'
+                ? 'bg-neutral-800 text-green-400' 
+                : 'bg-neutral-800 text-red-400'
             }`}>
               {message.text}
             </div>
@@ -69,8 +69,8 @@ const Login = () => {
             className="cursor-pointer"
           />
           <div className="mt-6 text-center text-sm">
-            <span className="text-gray-600">Don't have an account? </span>
-            <Link to="/register" className="font-medium text-gray-700 hover:underline">Sign up</Link>
+            <span className="text-neutral-400">Don't have an account? </span>
+            <Link to="/register" className="font-medium text-neutral-200 hover:text-white hover:underline">Sign up</Link>
           </div>
         </div>
       </div>

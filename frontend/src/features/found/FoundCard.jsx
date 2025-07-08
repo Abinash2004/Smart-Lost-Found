@@ -56,7 +56,7 @@ const FoundCard = React.memo(({ item, onDelete, showDelete, showClaims, filter }
     if (canClaim) return (
       <button
         onClick={() => navigate(`/claim/${item._id}`)}
-        className="flex items-center gap-2 px-4 py-1.5 text-sm font-medium rounded-lg transition-all duration-300 bg-gray-900 text-white hover:bg-gray-800 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700 cursor-pointer transform hover:-translate-y-0.5"
+        className="flex items-center justify-center gap-1.5 h-[34px] px-3 text-sm font-medium rounded-md shadow-sm transition-all duration-200 bg-neutral-300 hover:bg-neutral-400 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-500 cursor-pointer"
         aria-label="Claim this item"
       >
         <FiPlus className="w-3.5 h-3.5" />
@@ -66,7 +66,7 @@ const FoundCard = React.memo(({ item, onDelete, showDelete, showClaims, filter }
     if (hasClaimed && isPending) return (
       <button 
         disabled 
-        className="flex items-center gap-2 px-4 py-1.5 text-sm font-medium rounded-lg bg-white text-gray-500 border border-gray-200 cursor-not-allowed focus:outline-none"
+        className="flex items-center justify-center gap-1.5 h-[34px] px-3 text-sm font-medium rounded-md shadow-sm transition-all duration-200 bg-neutral-800 cursor-not-allowed text-neutral-500"
         aria-label="Claim request already submitted"
       >
         <FiCheck className="w-3.5 h-3.5" />
@@ -77,43 +77,43 @@ const FoundCard = React.memo(({ item, onDelete, showDelete, showClaims, filter }
   }
 
   return (
-    <div className="group bg-gray-100 rounded-xl border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col h-full overflow-hidden transform hover:-translate-y-1 hover:scale-[1.01]">
-      <div className="p-6 pb-4 flex-grow group-hover:bg-gray-200 transition-colors duration-300">
+    <div className="group bg-neutral-900 rounded-xl border border-neutral-700 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col h-full overflow-hidden transform hover:-translate-y-1 hover:scale-[1.01]">
+      <div className="p-6 pb-4 flex-grow group-hover:bg-neutral-800/50 transition-colors duration-300">
         <div className="flex flex-col space-y-4">
           <div className="flex justify-between items-start gap-3">
-            <h3 className="text-xl font-semibold text-gray-900 line-clamp-2 leading-tight">{item.title}</h3>
+            <h3 className="text-xl font-semibold text-white line-clamp-2 leading-tight">{item.title}</h3>
             <StatusBadge status={item.status} className="shrink-0" />
           </div>
 
-          <div className="space-y-3 text-gray-600">
+          <div className="space-y-3 text-neutral-300">
             <div className="flex items-start gap-3">
-              <div className="p-1.5 bg-gray-50 rounded-lg group-hover:bg-white transition-colors duration-300">
-                <FiMapPin className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
+              <div className="p-1.5 bg-neutral-700 rounded-lg group-hover:bg-neutral-600/50 transition-colors duration-300">
+                <FiMapPin className="w-4 h-4 text-neutral-300 mt-0.5 flex-shrink-0" />
               </div>
-              <span className="text-gray-700">{item.foundLocation}</span>
+              <span className="text-neutral-200">{item.foundLocation}</span>
             </div>
             <div className="flex items-start gap-3">
-              <div className="p-1.5 bg-gray-50 rounded-lg group-hover:bg-white transition-colors duration-300">
-                <FiCalendar className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
+              <div className="p-1.5 bg-neutral-700 rounded-lg group-hover:bg-neutral-600/50 transition-colors duration-300">
+                <FiCalendar className="w-4 h-4 text-neutral-300 mt-0.5 flex-shrink-0" />
               </div>
-              <span className="text-gray-700">{format(new Date(item.foundDate), 'MMM d, yyyy')}</span>
+              <span className="text-neutral-200">{format(new Date(item.foundDate), 'MMM d, yyyy')}</span>
             </div>
             <div className="flex items-start gap-3">
-              <div className="p-1.5 bg-gray-50 rounded-lg group-hover:bg-white transition-colors duration-300">
-                <FiUser className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
+              <div className="p-1.5 bg-neutral-700 rounded-lg group-hover:bg-neutral-600/50 transition-colors duration-300">
+                <FiUser className="w-4 h-4 text-neutral-300 mt-0.5 flex-shrink-0" />
               </div>
-              <span className="text-gray-700">Found by <span className="font-medium text-gray-900">{item.foundByName}</span></span>
+              <span className="text-neutral-200">Found by <span className="font-medium text-white">{item.foundByName}</span></span>
             </div>
             
             {item.categoryTag && (
               <div className="flex items-start gap-3">
-                <div className="p-1.5 bg-gray-50 rounded-lg group-hover:bg-white transition-colors duration-300">
-                  <FiTag className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
+                <div className="p-1.5 bg-neutral-700 rounded-lg group-hover:bg-neutral-600/50 transition-colors duration-300">
+                  <FiTag className="w-4 h-4 text-neutral-300 mt-0.5 flex-shrink-0" />
                 </div>
                 <StatusBadge 
                   status={item.categoryTag} 
                   category={true} 
-                  className="!bg-white !border !border-gray-200 !shadow-none !text-gray-700 hover:!text-gray-900" 
+                  className="!bg-neutral-700 !border !border-neutral-600 !shadow-none !text-neutral-200 hover:!text-white" 
                 />
               </div>
             )}
@@ -121,38 +121,38 @@ const FoundCard = React.memo(({ item, onDelete, showDelete, showClaims, filter }
         </div>
       </div>
 
-        <div className="px-6 py-4 bg-gray-50 border-t border-gray-100 group-hover:bg-gray-100 transition-colors duration-300">
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <div className="flex items-center text-sm text-gray-500">
-              <FiClock className="w-3.5 h-3.5 mr-1.5 text-gray-400" />
-              <span>Posted {format(new Date(item.createdAt || new Date()), 'MMM d, yyyy')}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              {renderButton()}
-              {canDelete && (
-                <button 
-                  onClick={handleDelete}
-                  className="p-1.5 bg-white border border-gray-200 rounded-lg shadow-sm text-gray-600 hover:text-gray-900 hover:border-gray-300 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:ring-offset-1 flex items-center justify-center h-[34px] w-[34px] cursor-pointer"
-                  aria-label="Delete this item"
-                  title="Delete"
-                >
-                  <FiTrash2 className="w-3.5 h-3.5" />
-                </button>
-              )}
-              {showClaims && (
-                <button 
-                  onClick={() => navigate(`/found/${item._id}/claims`)}
-                  className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium rounded-lg transition-all duration-150 bg-gray-900 text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700 cursor-pointer"
-                  aria-label="View claims for this item"
-                >
-                  <FiEye className="w-3.5 h-3.5" />
-                  <span>View Claims</span>
-                </button>
-              )}
-            </div>
+      <div className="px-6 py-4 bg-neutral-800/50 border-t border-neutral-700 group-hover:bg-neutral-800 transition-colors duration-300">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center text-sm text-neutral-400">
+            <FiClock className="w-3.5 h-3.5 mr-1.5 text-neutral-400" />
+            <span>Posted {format(new Date(item.createdAt || new Date()), 'MMM d, yyyy')}</span>
+          </div>
+          <div className="flex items-center gap-2">
+            {renderButton()}
+            {canDelete && (
+              <button 
+                onClick={handleDelete}
+                className="p-1.5 bg-neutral-800 border border-neutral-700 rounded-lg shadow-sm text-red-400 hover:text-red-300 hover:border-red-300 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-neutral-600 focus:ring-offset-neutral-800 flex items-center justify-center h-[34px] w-[34px] cursor-pointer"
+                aria-label="Delete this item"
+                title="Delete"
+              >
+                <FiTrash2 className="w-3.5 h-3.5" />
+              </button>
+            )}
+            {showClaims && (
+              <button 
+                onClick={() => navigate(`/found/${item._id}/claims`)}
+                className="flex items-center justify-center gap-1.5 h-[34px] px-3 text-sm font-medium rounded-md shadow-sm transition-all duration-200 bg-neutral-300 hover:bg-neutral-400 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-500 cursor-pointer"
+                aria-label="View claims for this item"
+              >
+                <FiEye className="w-3.5 h-3.5" />
+                <span>View Claims</span>
+              </button>
+            )}
           </div>
         </div>
       </div>
+    </div>
   )
 })
 

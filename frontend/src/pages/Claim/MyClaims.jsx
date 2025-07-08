@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react'
 import axios from '../../lib/axios'
-import LoadingSpinner from '../../shared/LoadingSpinner'
 import EmptyState from '../../shared/EmptyState'
 import ClaimCard from '../../features/claim/ClaimCard'
+import { FiChevronDown, FiAlertCircle } from 'react-icons/fi'
+import StatusFilter from '../../components/StatusFilter'
 import { DocumentTextIcon } from '@heroicons/react/24/outline'
-import { FiLoader, FiChevronDown, FiFilter } from 'react-icons/fi'
-import StatusFilter, { statuses } from '../../components/StatusFilter'
 
 const MyClaims = () => {
   const [claims, setClaims] = useState([])
@@ -124,69 +123,51 @@ const MyClaims = () => {
   const hasMoreClaims = filteredClaims.length > displayedClaims.length
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-neutral-950 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        <div className="mb-8 border-b border-gray-200 pb-6">
+        {/* Header Section */}
+        <div className="mb-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div className="flex items-center space-x-3">
-              <div className="p-2 rounded-lg bg-gray-100">
-                <DocumentTextIcon className="h-6 w-6 text-gray-500" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-semibold text-gray-900">My Claim Submissions</h1>
-                <p className="mt-1 text-sm text-gray-500">
-                  Track and manage all your submitted claims in one place
-                </p>
-              </div>
+            <div>
+              <h1 className="text-2xl font-semibold text-white flex items-center gap-2">
+                <DocumentTextIcon className="w-6 h-6 text-blue-500" />
+                My Claims
+              </h1>
+              <p className="mt-1 text-sm text-neutral-400">
+                View and manage your submitted claims
+              </p>
             </div>
             
-            {/* Status Filter */}
-            <div className="flex items-center space-x-2">
+            {/* Status Filter Dropdown */}
+            <div className="w-full sm:w-64">
               <StatusFilter 
                 selectedStatus={selectedStatus}
                 onSelectStatus={setSelectedStatus}
               />
             </div>
           </div>
+          
+          {/* Divider */}
+          <div className="mt-6 border-t border-neutral-800"></div>
         </div>
 
         {loading ? (
-          <div className="flex justify-center items-center py-16">
-            <LoadingSpinner />
+          <div className="flex flex-col items-center justify-center py-16 space-y-4">
+            <div className="w-12 h-12 border-4 border-neutral-700 border-t-neutral-400 rounded-full animate-spin"></div>
+            <p className="text-sm font-medium text-neutral-400">Loading your claims...</p>
           </div>
-        ) : filteredClaims.length === 0 ? (
+        ) : claims.length === 0 ? (
           <EmptyState 
-            title={
-              selectedStatus === 'all' 
-                ? "No Claims Found" 
-                : `No ${selectedStatus.charAt(0).toUpperCase() + selectedStatus.slice(1)} Claims`
-            }
-            message={
-              selectedStatus === 'all'
-                ? "You haven't submitted any claims yet. When you do, they'll appear here."
-                : `You don't have any ${selectedStatus} claims at the moment.`
-            }
-            icon={DocumentTextIcon}
+            icon={<FiAlertCircle className="w-12 h-12 text-neutral-400 mx-auto" />}
+            title="No claims found"
+            description="You haven't submitted any claims yet."
+            className="bg-neutral-900/50 border border-neutral-800 rounded-xl p-8 text-center"
           />
         ) : (
-          <div className="w-full space-y-6">
-            <div className="w-full grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-              {displayedClaims.map((claim, index) => (
-                <div 
-                  key={claim._id}
-                  className="animate-fadeIn"
-                  style={{
-                    animationDelay: `${Math.min(index * 50, 300)}ms`,
-                    opacity: 0,
-                    animationFillMode: 'forwards'
-                  }}
-                >
-                  <ClaimCard
-                    claim={claim}
-                    showFoundInfo={!!claim.foundItem}
-                    className="transition-all duration-200 hover:shadow-md"
-                  />
-                </div>
+          <>
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {displayedClaims.map((claim) => (
+                <ClaimCard key={claim._id} claim={claim} />
               ))}
             </div>
 
@@ -217,7 +198,7 @@ const MyClaims = () => {
                 </button>
               </div>
             )}
-          </div>
+          </>
         )}
       </div>
     </div>

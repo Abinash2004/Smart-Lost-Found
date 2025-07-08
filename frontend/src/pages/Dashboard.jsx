@@ -101,30 +101,26 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-neutral-950">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-10">
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">Dashboard Overview</h1>
-          <p className="mt-2 text-sm text-gray-600">Welcome back! Here's what's happening with your account.</p>
+        <div className="mb-8">
+          <h1 className="text-3xl font-semibold text-neutral-100 mb-1">Dashboard Overview</h1>
+          <p className="text-sm text-neutral-400">Welcome back! Here's what's happening with your account.</p>
         </div>
         
-        <div className="mb-10">
+        <div className="space-y-8">
           <StatPanel stats={stats} />
-        </div>
-        
-        <div className="mb-10">
           <QuickActions />
-        </div>
-        
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-          <div className="p-6 sm:p-8">
-            <RecentActivity 
-              foundItems={recentFoundItems}
-              myClaims={recentSubmittedClaims}
-              claimsOnMyPosts={recentReceivedClaims}
-              onApprove={handleApprove}
-              onReject={handleReject}
-            />
+          <div className="bg-neutral-900/60 backdrop-blur-sm rounded-2xl shadow-sm overflow-hidden">
+            <div className="p-6 sm:p-8">
+              <RecentActivity 
+                foundItems={recentFoundItems}
+                myClaims={recentSubmittedClaims}
+                claimsOnMyPosts={recentReceivedClaims}
+                onApprove={handleApprove}
+                onReject={handleReject}
+              />
+            </div>
           </div>
         </div>
       </div>

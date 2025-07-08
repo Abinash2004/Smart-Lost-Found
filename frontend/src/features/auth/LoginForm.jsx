@@ -27,33 +27,33 @@ const LoginForm = ({ onSubmit, onForgotPassword, isLoading = false }) => {
     <form onSubmit={handleSubmit} className="space-y-6 flex flex-col" noValidate action="#" method="POST">
       <div className="space-y-4">
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email address</label>
+          <label htmlFor="email" className="block text-sm font-medium text-neutral-200">Email address</label>
           <div className="mt-1 relative">
-            <FiMail className="absolute left-3 top-2.5 text-gray-400" />
+            <FiMail className="absolute left-3 top-2.5 text-neutral-400" />
             <input
               id="email" name="email" type="email" autoComplete="email" required
               value={formData.email} onChange={handleChange}
-              className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 sm:text-sm"
+              className="w-full pl-10 pr-3 py-2.5 bg-neutral-800 border border-neutral-700 text-neutral-100 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-neutral-400 focus:border-neutral-400 sm:text-sm placeholder-neutral-500 transition-colors"
               placeholder="Enter your email"
             />
           </div>
         </div>
         <div>
           <div className="flex justify-between">
-            <label htmlFor="password" className="text-sm font-medium text-gray-700">Password</label>
-            <button type="button" onClick={onForgotPassword} className="text-sm text-gray-600 hover:underline cursor-pointer">Forgot password?</button>
+            <label htmlFor="password" className="text-sm font-medium text-neutral-200">Password</label>
+            <button type="button" onClick={onForgotPassword} className="text-sm text-neutral-400 hover:text-neutral-300 hover:underline cursor-pointer">Forgot password?</button>
           </div>
           <div className="mt-1 relative">
-            <FiLock className="absolute left-3 top-2.5 text-gray-400" />
+            <FiLock className="absolute left-3 top-2.5 text-neutral-400" />
             <input
               id="password" name="password" type={showPassword ? 'text' : 'password'} autoComplete="current-password" required
               value={formData.password} onChange={handleChange}
-              className="w-full pl-10 pr-10 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 sm:text-sm"
+              className="w-full pl-10 pr-10 py-2.5 bg-neutral-800 border border-neutral-700 text-neutral-100 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-neutral-400 focus:border-neutral-400 sm:text-sm placeholder-neutral-500 transition-colors"
               placeholder="Enter your password"
             />
             <button
               type="button" onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600 cursor-pointer"
+              className="absolute right-3 top-2.5 text-neutral-400 hover:text-neutral-300 cursor-pointer"
               aria-label={showPassword ? "Hide password" : "Show password"}
             >
               {showPassword ? <FiEyeOff className="h-5 w-5" /> : <FiEye className="h-5 w-5" />}
@@ -62,11 +62,12 @@ const LoginForm = ({ onSubmit, onForgotPassword, isLoading = false }) => {
         </div>
       </div>
       <button
-        type="submit" disabled={!isFormValid || isLoading}
-        className={`w-full py-2 px-4 text-sm font-medium rounded-md shadow-sm text-white transition-colors ${
+        type="submit" 
+        disabled={!isFormValid || isLoading}
+        className={`w-full py-2.5 px-4 text-sm font-medium rounded-md shadow-sm transition-all duration-200 ${
           !isFormValid || isLoading
-            ? 'bg-gray-400 cursor-not-allowed'
-            : 'bg-gray-800 hover:bg-gray-700 focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 cursor-pointer'
+            ? 'bg-neutral-800 cursor-not-allowed text-neutral-500'
+            : 'bg-neutral-300 hover:bg-neutral-400 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-500 cursor-pointer'
         }`}
       >
         {isLoading ? 'Signing in...' : 'Sign in'}

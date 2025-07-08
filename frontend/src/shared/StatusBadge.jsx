@@ -3,24 +3,24 @@ import { FiClock, FiCheck, FiX, FiCheckCircle, FiMonitor, FiFileText,
 
 const statusConfig = status => ({
   Pending: { 
-    className: 'bg-yellow-50 text-yellow-700 border border-yellow-200', 
-    icon: <FiClock className="w-3 h-3" /> 
+    className: 'bg-yellow-900/30 text-yellow-300 border border-yellow-800 hover:bg-yellow-900/40', 
+    icon: <FiClock className="w-3 h-3 text-yellow-400" /> 
   },
   Approved: { 
-    className: 'bg-green-50 text-green-700 border border-green-200', 
-    icon: <FiCheck className="w-3 h-3" /> 
+    className: 'bg-green-900/30 text-green-300 border border-green-800 hover:bg-green-900/40', 
+    icon: <FiCheck className="w-3 h-3 text-green-400" /> 
   },
   Rejected: { 
-    className: 'bg-red-50 text-red-700 border border-red-200', 
-    icon: <FiX className="w-3 h-3" /> 
+    className: 'bg-red-900/30 text-red-300 border border-red-800 hover:bg-red-900/40', 
+    icon: <FiX className="w-3 h-3 text-red-400" /> 
   },
   Resolved: { 
-    className: 'bg-green-50 text-green-700 border border-green-200', 
-    icon: <FiCheckCircle className="w-3 h-3" /> 
+    className: 'bg-green-900/30 text-green-300 border border-green-800 hover:bg-green-900/40', 
+    icon: <FiCheckCircle className="w-3 h-3 text-green-400" /> 
   },
 })[status] || { 
-  className: 'bg-gray-50 text-gray-700 border border-gray-200', 
-  icon: <FiHelpCircle className="w-3 h-3" /> 
+  className: 'bg-neutral-800/50 text-neutral-300 border border-neutral-700 hover:bg-neutral-800/70', 
+  icon: <FiHelpCircle className="w-3 h-3 text-neutral-400" /> 
 };
 
 const categoryIcons = {
@@ -46,7 +46,7 @@ const categoryNameMap = {
 };
 
 const StatusBadge = ({ status, category = false, className = '' }) => {
-  const base = 'inline-flex items-center px-3 py-1 rounded-full text-xs font-medium space-x-2';
+  const base = 'inline-flex items-center px-3 py-1 rounded-full text-xs font-medium space-x-2 transition-all duration-200';
 
   if (category) {
     const mappedCategory = categoryNameMap[status] || status;

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { FiFilter, FiChevronDown, FiChevronRight, FiClock, FiCheck, FiX } from 'react-icons/fi'
 
 export const statuses = [
@@ -34,47 +34,51 @@ const StatusFilter = ({ selectedStatus, onSelectStatus, className = '' }) => {
   const selectedStatusData = statuses.find(s => s.value === selectedStatus) || statuses[0]
 
   return (
-    <div className={`relative inline-block text-left ${className}`} ref={dropdownRef}>
-      <div>
-        <button
-          type="button"
-          onClick={() => setIsOpen(!isOpen)}
-          className="inline-flex items-center justify-between w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 hover:cursor-pointer focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-100"
-          id="status-filter-button"
-          aria-expanded="true"
-          aria-haspopup="true"
-        >
-          <div className="flex items-center">
-            <span className="mr-2">{selectedStatusData.icon}</span>
-            <span>{selectedStatusData.name}</span>
-          </div>
-          <FiChevronDown className="ml-2 h-4 w-4 text-gray-500" />
-        </button>
-      </div>
-
+    <div className={`relative ${className}`} ref={dropdownRef}>
+      <button 
+        onClick={() => setIsOpen(!isOpen)}
+        className={`flex items-center justify-between w-full gap-3 px-4 py-2.5 text-sm font-medium rounded-lg border transition-all duration-200 ${
+          isOpen 
+            ? 'bg-neutral-800 border-neutral-600 text-white' 
+            : 'bg-neutral-900 border-neutral-700 text-neutral-200 hover:bg-neutral-800 hover:border-neutral-600'
+        } focus:outline-none focus:ring-1 focus:ring-neutral-500 cursor-pointer`}
+        aria-haspopup="listbox"
+        aria-expanded={isOpen}
+        aria-label="Filter by status"
+      >
+        <div className="flex items-center gap-3">
+          <FiFilter className="w-4 h-4 text-neutral-400" />
+          <span className="truncate">{selectedStatusData.name}</span>
+        </div>
+        <FiChevronDown className={`w-4 h-4 text-neutral-400 transition-transform duration-200 ${isOpen ? 'transform rotate-180' : ''}`} />
+      </button>
+      
       {isOpen && (
-        <div className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-          <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="status-filter-button">
+        <div className="absolute right-0 z-20 mt-2 w-56 origin-top-right rounded-lg bg-neutral-900 shadow-xl border border-neutral-700 focus:outline-none transition-all duration-200 transform opacity-100 scale-100 overflow-hidden">
+          <div className="py-1.5">
             {statuses.map((status) => (
               <button
                 key={status.value}
                 onClick={() => {
-                  onSelectStatus(status.value)
-                  setIsOpen(false)
+                  onSelectStatus(status.value);
+                  setIsOpen(false);
                 }}
-                className={`flex w-full items-center px-4 py-2 text-sm text-left ${
+                className={`flex items-center w-full px-4 py-2.5 text-sm text-left transition-colors duration-150 cursor-pointer ${
                   selectedStatus === status.value
-                    ? 'bg-gray-100 text-gray-900' 
-                    : 'text-gray-700 hover:bg-gray-50'
+                    ? 'bg-neutral-700 text-white'
+                    : 'text-neutral-300 hover:bg-neutral-700/70 hover:text-white'
                 }`}
-                role="menuitem"
               >
-                <span className="w-4 h-4 mr-3 flex items-center justify-center">
-                  {status.icon}
+                <span className="w-5 h-5 mr-3 flex items-center justify-center text-neutral-400">
+                  {React.cloneElement(status.icon, {
+                    className: `${status.icon.props.className || ''} ${
+                      selectedStatus === status.value ? 'text-white' : 'text-neutral-400'
+                    }`
+                  })}
                 </span>
-                <span className="flex-1">{status.name}</span>
+                <span className="flex-1 truncate">{status.name}</span>
                 {selectedStatus === status.value && (
-                  <FiChevronRight className="w-4 h-4 text-gray-500" />
+                  <FiChevronRight className="w-4 h-4 text-neutral-400" />
                 )}
               </button>
             ))}

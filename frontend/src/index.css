@@ -1,29 +1,45 @@
 @import "tailwindcss";
 
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #262626; /* neutral-800 */
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #525252; /* neutral-600 */
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #404040; /* neutral-700 */
+}
+
 @layer base {
   html {
     font-family: 'Poppins', sans-serif;
   }
 }
 
+/* Dashboard Animations */
 @keyframes marquee {
-  0% {
-    transform: translateX(0%);
-  }
-  100% {
-    transform: translateX(-150%);
-  }
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-150%); }
+}
+
+@keyframes smoothScroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(var(--scroll-distance, -100%)); }
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 @keyframes slideIn {
@@ -70,6 +86,64 @@
   @apply shadow-lg;
   transform: translateY(-2px);
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Dashboard Components */
+.dashboard-card {
+  @apply bg-neutral-900 rounded-xl border border-neutral-700 hover:border-neutral-600 transition-colors duration-200 shadow-sm hover:shadow-lg overflow-hidden;
+}
+
+.dashboard-section {
+  @apply mb-12 space-y-4;
+}
+
+.section-header {
+  @apply mb-6;
+}
+
+.section-title {
+  @apply text-xl font-semibold text-neutral-100 mb-1;
+}
+
+.section-subtitle {
+  @apply text-sm text-neutral-400;
+}
+
+.section-view-all {
+  @apply inline-flex items-center text-sm font-medium px-3 py-1.5 rounded-lg bg-neutral-800/50 hover:bg-neutral-700/50 text-neutral-300 hover:text-white transition-all duration-200 border border-neutral-700 hover:border-neutral-600;
+}
+
+/* Found Items Carousel */
+.marquee-container {
+  @apply flex gap-4 py-2 w-max;
+  animation: smoothScroll var(--scroll-duration, 20s) linear infinite;
+}
+
+.marquee-container:hover {
+  animation-play-state: paused;
+}
+
+.marquee-item {
+  @apply w-[320px] sm:w-[400px] flex-shrink-0;
+  flex: 0 0 auto;
+}
+
+/* Card Hover Effects */
+.card-hover {
+  @apply transition-all duration-300 ease-out transform hover:scale-[1.01];
+}
+
+/* Animation Utilities */
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+.animate-slideIn {
+  animation: slideIn 0.6s cubic-bezier(0.16, 0.77, 0.3, 0.98) forwards;
+}
+
+.animate-smoothScroll {
+  animation: smoothScroll var(--scroll-duration, 20s) linear infinite;
 }
 
 .group-hover\:paused:hover {
