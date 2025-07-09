@@ -23,8 +23,11 @@ const VerifyOtpPage = () => {
     : `We've sent a 6-digit verification code to ${email}`;
   const buttonText = isPasswordReset ? 'Continue to Reset' : 'Verify & Continue';
   const msgClass = 'mb-6 p-3 bg-neutral-900 border border-neutral-800 rounded-md text-sm text-neutral-200';
-  const btnClass = `w-full flex justify-center py-2.5 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white transition-colors ${
-    !isOtpComplete || isLoading ? 'bg-neutral-800 cursor-not-allowed text-neutral-500' : 'bg-neutral-800 hover:bg-neutral-700 cursor-pointer focus:outline-none focus:ring-1 focus:ring-neutral-400 focus:ring-offset-1'}`;
+  const btnClass = `w-full py-2.5 px-4 text-sm font-medium rounded-md shadow-sm transition-all duration-200 ${
+    !isOtpComplete || isLoading
+      ? 'bg-neutral-800 cursor-not-allowed text-neutral-500'
+      : 'bg-neutral-300 hover:bg-neutral-400 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-500 cursor-pointer'
+  }`;
 
   // Set up component based on flow type
   useEffect(() => {

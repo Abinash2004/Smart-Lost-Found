@@ -1,4 +1,3 @@
-// controllers/authController.js
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
@@ -22,7 +21,8 @@ const sendRegisterOtp = async (req, res) => {
     const redisKey = `register:${email}`;
     const userData = JSON.stringify({ fullName, email, password, contactNumber, designation, hashedOtp });
 
-    await redisClient.setEx(redisKey, 300, userData); // TTL = 5 mins
+    // Upstash Redis: use .set with ex option
+    await redisClient.set(redisKey, userData, { ex: 300 }); // TTL = 5 mins
 
     // 4. Send Email
     await sendEmail(email, "Your OTP for Smart Lost & Found", `Your OTP is: ${otp}`);
@@ -109,7 +109,7 @@ const sendPasswordOtp = async (req, res) => {
 
     // 3. Store OTP in Redis with TTL (5 min)
     const redisKey = `reset-password:${email}`;
-    await redisClient.setEx(redisKey, 300, hashedOtp);
+    await redisClient.set(redisKey, hashedOtp, { ex: 300 }); // <-- Changed here
 
     // 4. Send OTP via email
     await sendEmail(email, "Password Reset OTP", `Your OTP for password reset is: ${otp}`);
@@ -145,7 +145,7 @@ const verifyPasswordOtp = async (req, res) => {
 
     // Store the reset token in Redis with a short TTL
     const resetTokenKey = `reset-token:${email}`;
-    await redisClient.setEx(resetTokenKey, 900, resetToken); // 15 minutes
+    await redisClient.set(resetTokenKey, resetToken, { ex: 900 }); // <-- Changed here
 
     // Delete the OTP after successful verification
     await redisClient.del(redisKey);
