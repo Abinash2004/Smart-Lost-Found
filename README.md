@@ -1,54 +1,59 @@
 # 🧠 Smart Lost & Found System (AI-Integrated) 🎒
 
-A modern, AI-powered Lost and Found management system designed for institutions (schools, colleges, offices) to streamline the process of reporting found items and verifying rightful claims — with built-in email OTP authentication and AI assistance.
+A modern, full-stack Lost and Found management system designed for institutions (colleges, schools, offices) — streamlining the process of reporting found items and verifying rightful claims using smart automation, email OTP authentication, and integrated AI-powered decision making.
 
 ---
 
 ## 🚀 Features
 
 ### 🔐 Authentication
-- Secure **user registration & login** with **JWT**.
-- **Email OTP Verification** (via Redis) to block fake or invalid registrations/logins.
+- Secure **user registration & login** with **JWT**
+- **Email OTP Verification** via Redis to block spam or invalid users
 
 ### 📦 Found Item Management
-- Post found items with:
-  - Auto-filled user identity (name/contact).
-  - **AI-summarized descriptions**.
-  - **AI-predicted category tags**.
-- View all found items or filter by category.
-- Track **your personal found posts**.
-- Delete items only if still unresolved (pending).
+- Add found items with:
+  - Auto-filled user info (name + contact)
+  - **(Planned)** AI-summarized description & tag detection
+- Filter and manage posted found items
+- Delete only if item is not yet resolved
 
 ### 📨 Claim System
-- Claim on found items with description + proof.
-- View all claims on a particular item.
-- **Claim approval system**:
-  - Approve one → auto-reject others.
-  - Updates item status to "Resolved".
-  - Adds returned date & person’s info.
-- Option to **reject individual claims**.
+- Submit claims with description + proof image
+- Track claims made on found items
+- **Claim Approval Logic**:
+  - Admin approves the most valid claim
+  - Others get **auto-rejected**
+  - Item status changes to **Resolved** with returned date
+- Manual reject also supported
 
-### 🧠 AI Features
-- 💬 **Summarization** of item descriptions.
-- 🏷️ **Automatic tag detection** (e.g., Electronics, Books).
-- 🤖 **AI ranking of multiple claims** to assist in identifying the best match.
+### 🤖 Integrated AI (SimPulse)
+- 💬 AI-based **similarity scoring** of user claims against original found description
+- Enables **smart claim ranking** (e.g., “Accuracy: 85%”)
+- Admin sees ranked list to easily identify best matches  
+- 🔗 **[Test the SimPulse AI Model Here →](https://huggingface.co/spaces/abinash28/SimPulse)**
 
-### 📥 Returned Item Listing
-- Filter found items where `status === "Resolved"`.
-
----
-
-## 🛡️ Tech Stack
-
-- **Backend:** Node.js + Express.js
-- **Database:** MongoDB (with Mongoose)
-- **Authentication:** JWT + Bcrypt
-- **OTP Storage:** Redis
-- **Email Service:** Nodemailer (Gmail)
-- **AI:** (OpenAI / Gemini) for NLP tasks
-- **Deployment:** (Ready for Render / Railway)
+### 📥 Resolved Item Tracking
+- Filter to show only items that have been returned
 
 ---
 
-## 🧩 Folder Structure (Backend)
+## 🧠 SimPulse – Custom AI Model
+- Built using `MiniLM` sentence embeddings + `MLP regression`
+- Trained on 500+ real-world samples
+- Deployed as a Hugging Face Space
+- Dynamically used in backend to evaluate and rank claims for every found item  
+- 🌐 **Live Demo**: [https://huggingface.co/spaces/abinash28/SimPulse](https://huggingface.co/spaces/abinash28/SimPulse)
 
+---
+
+## 🛠 Tech Stack
+
+- **Frontend**: React + Tailwind CSS
+- **Backend**: Node.js + Express.js
+- **Database**: MongoDB Atlas
+- **Auth**: JWT + Bcrypt
+- **OTP Service**: Redis
+- **Email**: Nodemailer (Gmail)
+- **AI**: SimPulse (MiniLM + MLP) via Hugging Face
+- **Image Upload**: Cloudinary
+- **Deployment**: Vercel (Frontend), Render (Backend), Hugging Face (AI)
