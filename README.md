@@ -65,6 +65,6 @@ A modern, full-stack Lost and Found management system designed for institutions 
 | **Auth**    | JWT + Bcrypt                                                         |
 | **OTP**     | Redis via Upstash                                                    |
 | **Email**   | Nodemailer (Gmail SMTP)                                              |
-| **AI**      | Custom MLP model using MiniLM + sklearn, hosted on Hugging Face      |
+| **AI**      | Custom MLP model using MiniLM, hosted on Hugging Face                |
 | **Storage** | Cloudinary for image uploads                                         |
 | **Deploy**  | Render (frontend) + Render (backend) + Hugging Face (AI model)       |
