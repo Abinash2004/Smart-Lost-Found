@@ -9,15 +9,26 @@ import {
   FiBook,
 } from 'react-icons/fi'
 
+// Define icon components with their props
+const categoryIcons = {
+  filter: { component: FiFilter, className: 'w-4 h-4' },
+  monitor: { component: FiMonitor, className: 'w-4 h-4' },
+  fileText: { component: FiFileText, className: 'w-4 h-4' },
+  award: { component: FiAward, className: 'w-4 h-4' },
+  book: { component: FiBook, className: 'w-4 h-4' },
+  key: { component: FiKey, className: 'w-4 h-4' },
+  box: { component: FiBox, className: 'w-4 h-4' },
+};
+
 export const categories = [
-  { name: 'All Categories', icon: <FiFilter className="w-4 h-4" /> },
-  { name: 'Electronics', icon: <FiMonitor className="w-4 h-4" /> },
-  { name: 'Documents & ID', icon: <FiFileText className="w-4 h-4" /> },
-  { name: 'Clothing & Accessories', icon: <FiAward className="w-4 h-4" /> },
-  { name: 'Stationery & Books', icon: <FiBook className="w-4 h-4" /> },
-  { name: 'Keys & Cards', icon: <FiKey className="w-4 h-4" /> },
-  { name: 'Jewelry & Valuables', icon: <FiAward className="w-4 h-4" /> },
-  { name: 'Miscellaneous', icon: <FiBox className="w-4 h-4" /> }
+  { name: 'All Categories', icon: 'filter' },
+  { name: 'Electronics', icon: 'monitor' },
+  { name: 'Documents & ID', icon: 'fileText' },
+  { name: 'Clothing & Accessories', icon: 'award' },
+  { name: 'Stationery & Books', icon: 'book' },
+  { name: 'Keys & Cards', icon: 'key' },
+  { name: 'Jewelry & Valuables', icon: 'award' },
+  { name: 'Miscellaneous', icon: 'box' }
 ]
 
 const CategoryFilter = ({ selectedCategory, onSelectCategory, className = '' }) => {
@@ -80,9 +91,14 @@ const CategoryFilter = ({ selectedCategory, onSelectCategory, className = '' }) 
                 }`}
               >
                 <span className="w-5 h-5 mr-3 flex items-center justify-center text-neutral-400">
-                  {React.cloneElement(category.icon, {
-                    className: `${category.icon.props.className || ''} ${selectedCategory === category.name ? 'text-white' : 'text-neutral-400'}`
-                  })}
+                  {(() => {
+                    const { component: Icon, className } = categoryIcons[category.icon] || categoryIcons.filter;
+                    return (
+                      <Icon 
+                        className={`${className} ${selectedCategory === category.name ? 'text-white' : 'text-neutral-400'}`} 
+                      />
+                    );
+                  })()}
                 </span>
                 <span className="flex-1 truncate">{category.name}</span>
                 {selectedCategory === category.name && (

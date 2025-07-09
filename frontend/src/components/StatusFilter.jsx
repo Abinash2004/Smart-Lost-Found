@@ -1,11 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { FiFilter, FiChevronDown, FiChevronRight, FiClock, FiCheck, FiX } from 'react-icons/fi'
 
+// Define icon components with their props
+const statusIcons = {
+  filter: { component: FiFilter, className: 'w-4 h-4' },
+  clock: { component: FiClock, className: 'w-4 h-4' },
+  check: { component: FiCheck, className: 'w-4 h-4' },
+  x: { component: FiX, className: 'w-4 h-4' },
+};
+
 export const statuses = [
-  { name: 'No Filter', value: 'all', icon: <FiFilter className="w-4 h-4" /> },
-  { name: 'Pending', value: 'pending', icon: <FiClock className="w-4 h-4" /> },
-  { name: 'Approved', value: 'approved', icon: <FiCheck className="w-4 h-4" /> },
-  { name: 'Rejected', value: 'rejected', icon: <FiX className="w-4 h-4" /> },
+  { name: 'No Filter', value: 'all', icon: 'filter' },
+  { name: 'Pending', value: 'pending', icon: 'clock' },
+  { name: 'Approved', value: 'approved', icon: 'check' },
+  { name: 'Rejected', value: 'rejected', icon: 'x' },
 ]
 
 const StatusFilter = ({ selectedStatus, onSelectStatus, className = '' }) => {
@@ -70,11 +78,14 @@ const StatusFilter = ({ selectedStatus, onSelectStatus, className = '' }) => {
                 }`}
               >
                 <span className="w-5 h-5 mr-3 flex items-center justify-center text-neutral-400">
-                  {React.cloneElement(status.icon, {
-                    className: `${status.icon.props.className || ''} ${
-                      selectedStatus === status.value ? 'text-white' : 'text-neutral-400'
-                    }`
-                  })}
+                  {(() => {
+                    const { component: Icon, className } = statusIcons[status.icon] || statusIcons.filter;
+                    return (
+                      <Icon 
+                        className={`${className} ${selectedStatus === status.value ? 'text-white' : 'text-neutral-400'}`} 
+                      />
+                    );
+                  })()}
                 </span>
                 <span className="flex-1 truncate">{status.name}</span>
                 {selectedStatus === status.value && (
