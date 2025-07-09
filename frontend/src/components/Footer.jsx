@@ -41,14 +41,20 @@ const socialLinks = [
   },
 ];
 
-// Map route paths to icons
+// Map route paths to icon components
 const routeIcons = {
-  '/dashboard': <FaHome className="w-4 h-4" />,
-  '/found/post': <FaPlusCircle className="w-4 h-4" />,
-  '/found/pending': <FaClock className="w-4 h-4" />,
-  '/found/resolved': <FaCheckCircle className="w-4 h-4" />,
-  '/found/mine': <FaListAlt className="w-4 h-4" />,
-  '/claims/mine': <FaFileAlt className="w-4 h-4" />,
+  '/dashboard': { component: FaHome, className: 'w-4 h-4' },
+  '/found/post': { component: FaPlusCircle, className: 'w-4 h-4' },
+  '/found/pending': { component: FaClock, className: 'w-4 h-4' },
+  '/found/resolved': { component: FaCheckCircle, className: 'w-4 h-4' },
+  '/found/mine': { component: FaListAlt, className: 'w-4 h-4' },
+  '/claims/mine': { component: FaFileAlt, className: 'w-4 h-4' },
+};
+
+// Map legal link labels to icon components
+const legalIcons = {
+  'Terms & Conditions': { component: FaFileAlt, className: 'w-4 h-4' },
+  'Privacy Policy': { component: FaShieldAlt, className: 'w-4 h-4' },
 };
 
 const Footer = () => {
@@ -95,7 +101,8 @@ const Footer = () => {
             </h3>
             <nav className="space-y-3">
               {mainNavLinks.map(({ to, label }) => {
-                const Icon = routeIcons[to]?.type || FaSearch;
+                const IconConfig = routeIcons[to] || { component: FaSearch, className: 'w-4 h-4' };
+                const Icon = IconConfig.component;
                 return token ? (
                   <Link 
                     key={to} 
@@ -103,7 +110,7 @@ const Footer = () => {
                     className="group flex items-center space-x-3 text-sm text-neutral-400 hover:text-neutral-100 transition-all duration-200"
                   >
                     <span className="text-neutral-500 group-hover:text-neutral-300 transition-colors duration-200">
-                      <Icon className="w-4 h-4" />
+                      <Icon className={IconConfig.className} />
                     </span>
                     <span className="border-b border-transparent group-hover:border-neutral-400 transition-colors duration-200">
                       {label}
@@ -116,7 +123,7 @@ const Footer = () => {
                     title="Please log in to access this feature"
                   >
                     <span className="text-neutral-600">
-                      <Icon className="w-4 h-4" />
+                      <Icon className={IconConfig.className} />
                     </span>
                     <span>{label}</span>
                   </div>
@@ -138,11 +145,10 @@ const Footer = () => {
                   className="group flex items-center space-x-3 text-sm text-neutral-400 hover:text-neutral-100 transition-all duration-200"
                 >
                   <span className="text-neutral-600 group-hover:text-neutral-400 transition-colors duration-200">
-                    {label === 'Terms & Conditions' ? (
-                      <FaFileAlt className="w-4 h-4" />
-                    ) : (
-                      <FaShieldAlt className="w-4 h-4" />
-                    )}
+                    {(() => {
+                      const { component: LegalIcon, className } = legalIcons[label] || { component: FaFileAlt, className: 'w-4 h-4' };
+                      return <LegalIcon className={className} />;
+                    })()}
                   </span>
                   <span className="border-b border-transparent group-hover:border-neutral-500 transition-colors duration-200">
                     {label}

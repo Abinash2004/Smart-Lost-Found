@@ -13,14 +13,24 @@ import {
 } from 'react-icons/fi'
 
 const categories = [
-  { name: 'Electronics', icon: <FiMonitor className="w-5 h-5" /> },
-  { name: 'Documents & ID', icon: <FiFileText className="w-5 h-5" /> },
-  { name: 'Clothing & Accessories', icon: <FiAward className="w-5 h-5" /> },
-  { name: 'Stationery & Books', icon: <FiBook className="w-5 h-5" /> },
-  { name: 'Keys & Cards', icon: <FiKey className="w-5 h-5" /> },
-  { name: 'Jewelry & Valuables', icon: <FiAward className="w-5 h-5" /> },
-  { name: 'Miscellaneous', icon: <FiBox className="w-5 h-5" /> }
-]
+  { name: 'Electronics', icon: 'FiMonitor' },
+  { name: 'Documents & ID', icon: 'FiFileText' },
+  { name: 'Clothing & Accessories', icon: 'FiAward' },
+  { name: 'Stationery & Books', icon: 'FiBook' },
+  { name: 'Keys & Cards', icon: 'FiKey' },
+  { name: 'Jewelry & Valuables', icon: 'FiAward' },
+  { name: 'Miscellaneous', icon: 'FiBox' }
+];
+
+// Icon component map
+const iconComponents = {
+  FiMonitor,
+  FiFileText,
+  FiAward,
+  FiBook,
+  FiKey,
+  FiBox
+};
 
 
 const FoundForm = ({ onSubmit }) => {
@@ -109,7 +119,12 @@ const FoundForm = ({ onSubmit }) => {
                       ? 'border-neutral-500 bg-neutral-800 text-neutral-100 shadow-md' 
                       : 'border-neutral-800 hover:border-neutral-600 hover:bg-neutral-800 text-neutral-300 hover:text-neutral-100 shadow-sm hover:shadow'}`}
                 >
-                  <span className="text-neutral-400 mb-1.5">{category.icon}</span>
+                  <span className="text-neutral-400 mb-1.5">
+                    {(() => {
+                      const IconComponent = iconComponents[category.icon] || FiBox;
+                      return <IconComponent className="w-5 h-5" />;
+                    })()}
+                  </span>
                   <span className="text-xs font-medium">{category.name}</span>
                 </button>
               ))}

@@ -1,33 +1,42 @@
 import { Link } from 'react-router-dom';
 import { FaGavel, FaEdit, FaCheckCircle, FaShieldAlt, FaSync } from 'react-icons/fa';
 
+// Map of icon components
+const iconComponents = {
+  gavel: { component: FaGavel, className: 'w-5 h-5 text-neutral-400' },
+  edit: { component: FaEdit, className: 'w-5 h-5 text-neutral-400' },
+  checkCircle: { component: FaCheckCircle, className: 'w-5 h-5 text-neutral-400' },
+  shield: { component: FaShieldAlt, className: 'w-5 h-5 text-neutral-400' },
+  sync: { component: FaSync, className: 'w-5 h-5 text-neutral-400' },
+};
+
 const sections = [{
-  icon: <FaGavel className="w-5 h-5 text-neutral-400" />,
+  icon: 'gavel',
   title: "1. User Responsibility",
   items: [
     "You are responsible for the accuracy of any item you post.",
     "Misuse of the claim process may lead to account suspension."
   ]
 }, {
-  icon: <FaEdit className="w-5 h-5 text-neutral-400" />,
+  icon: 'edit',
   title: "2. Posting Guidelines",
   items: [
     "Only legitimate found items should be posted.",
     "Offensive, misleading, or fraudulent content is prohibited."
   ]
 }, {
-  icon: <FaCheckCircle className="w-5 h-5 text-neutral-400" />,
+  icon: 'checkCircle',
   title: "3. Claim Verification",
   items: [
     "The platform does not guarantee the approval of any claim.",
     "All approvals are handled manually by the item poster."
   ]
 }, {
-  icon: <FaShieldAlt className="w-5 h-5 text-neutral-400" />,
+  icon: 'shield',
   title: "4. Liability",
   content: "Smart Lost & Found is not liable for any loss, damage, or incorrect item recovery due to misinformation provided by users."
 }, {
-  icon: <FaSync className="w-5 h-5 text-neutral-400" />,
+  icon: 'sync',
   title: "5. Modifications",
   content: "We reserve the right to update these terms at any time."
 }];
@@ -50,25 +59,28 @@ const TermsPage = () => {
           <div className="p-6 sm:p-8">
             <p className="text-neutral-300 mb-8 leading-relaxed">Welcome to Smart Lost & Found! These terms and conditions outline the rules and regulations for using our platform.</p>
             <div className="space-y-10">
-              {sections.map(({ icon, title, items, content }, i) => (
-                <section key={i} className="group">
-                  <div className="flex items-start space-x-4">
-                    <span className="text-neutral-500 group-hover:text-neutral-300 transition-colors duration-200 mt-1">{icon}</span>
-                    <div className="flex-1">
-                      <h2 className="text-lg font-semibold text-neutral-100 mb-3">{title}</h2>
-                      {items ? (
-                        <ul className="space-y-2 text-neutral-300">
-                          {items.map((item, i) => (
-                            <li key={i} className="relative pl-5 before:absolute before:left-0 before:top-2.5 before:w-1.5 before:h-1.5 before:rounded-full before:bg-neutral-500">
-                              {item}
-                            </li>
-                          ))}
-                        </ul>
-                      ) : <p className="text-neutral-300 leading-relaxed">{content}</p>}
+              {sections.map((section, index) => {
+                const { component: Icon, className } = iconComponents[section.icon] || { component: FaGavel, className: 'w-5 h-5 text-neutral-400' };
+                return (
+                  <div key={index} className="mb-8 last:mb-0">
+                    <div className="flex items-start mb-3">
+                      <div className="flex-shrink-0 mr-3">
+                        <Icon className={className} />
+                      </div>
+                      <h2 className="text-xl font-semibold text-white">{section.title}</h2>
                     </div>
+                    {section.items ? (
+                      <ul className="space-y-2 text-neutral-300">
+                        {section.items.map((item, i) => (
+                          <li key={i} className="relative pl-5 before:absolute before:left-0 before:top-2.5 before:w-1.5 before:h-1.5 before:rounded-full before:bg-neutral-500">
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : <p className="text-neutral-300 leading-relaxed">{section.content}</p>}
                   </div>
-                </section>
-              ))}
+                );
+              })}
             </div>
             <div className="mt-12 pt-8 border-t border-neutral-700">
               <div className="bg-neutral-900 p-4 rounded-lg border border-neutral-700">
