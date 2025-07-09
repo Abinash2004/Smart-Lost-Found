@@ -6,6 +6,6 @@ export default defineConfig({
   plugins: [react()],
   server: {
     // Add your deployed domain to allowedHosts array
-    allowedHosts: ['smart-lost-found-frontend.onrender.com/']
+    allowedHosts: ['smart-lost-found-frontend.onrender.com']
   }
 });
