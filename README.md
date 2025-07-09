@@ -67,4 +67,4 @@ A modern, full-stack Lost and Found management system designed for institutions 
 | **Email**   | Nodemailer (Gmail SMTP)                                              |
 | **AI**      | Custom MLP model using MiniLM + sklearn, hosted on Hugging Face      |
 | **Storage** | Cloudinary for image uploads                                         |
-| **Deploy**  | Vercel (frontend) + Render (backend) + Hugging Face (AI model)       |
+| **Deploy**  | Render (frontend) + Render (backend) + Hugging Face (AI model)       |
