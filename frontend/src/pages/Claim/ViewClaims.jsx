@@ -5,7 +5,7 @@ import LoadingSpinner from '../../shared/LoadingSpinner'
 import EmptyState from '../../shared/EmptyState'
 import { format } from 'date-fns'
 import ClaimCard from '../../features/claim/ClaimCard'
-import { FiAlertCircle, FiClock } from 'react-icons/fi'
+import { FiAlertCircle, FiClock, FiAward } from 'react-icons/fi'
 import { DocumentTextIcon } from '@heroicons/react/24/outline'
 
 const ViewClaims = () => {
@@ -13,6 +13,9 @@ const ViewClaims = () => {
   const [claims, setClaims] = useState([])
   const [itemInfo, setItemInfo] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [isRanking, setIsRanking] = useState(false)
+  const [isRankedView, setIsRankedView] = useState(false)
+  const [error, setError] = useState(null)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -90,6 +93,36 @@ const ViewClaims = () => {
     }
   }
 
+  const handleRankByAI = async () => {
+    if (!foundItemId) return;
+    
+    setIsRanking(true);
+    setError(null);
+    
+    try {
+      const response = await axios.get(`/claim-items/ranked/${foundItemId}`);
+      if (response.data && response.data.claims) {
+        const claimsWithItem = response.data.claims.map(claim => ({
+          ...claim,
+          foundItem: itemInfo
+        }));
+        setClaims(claimsWithItem);
+        setIsRankedView(true);
+      }
+    } catch (err) {
+      console.error('Error ranking claims by AI:', err);
+      setError('Failed to rank claims by AI. Please try again later.');
+    } finally {
+      setIsRanking(false);
+    }
+  };
+
+  const resetToDefaultView = () => {
+    // Reload the default claims
+    fetchClaims();
+    setIsRankedView(false);
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-neutral-950 py-8 px-4 sm:px-6 lg:px-8">
@@ -111,7 +144,7 @@ const ViewClaims = () => {
         <div className="mb-8">
           <div>
             <h1 className="text-2xl font-semibold text-white flex items-center gap-2">
-              <FiClock className="w-6 h-6 text-blue-500" />
+              <DocumentTextIcon className="w-6 h-6 text-blue-500" />
               {itemInfo ? `Claims for ${itemInfo.title}` : 'Item Claims'}
             </h1>
             <p className="mt-1 text-sm text-neutral-400">
@@ -119,8 +152,59 @@ const ViewClaims = () => {
             </p>
           </div>
           
-          <div className="mt-6 border-t border-neutral-800"></div>
+          <div className="mt-6 border-t border-neutral-800 pt-5">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+              <div className="text-sm text-neutral-400">
+                {isRankedView ? (
+                  <div className="flex flex-wrap items-center gap-2 bg-neutral-800/50 rounded-lg px-3 py-1.5">
+                    <div className="flex items-center">
+                      <FiAward className="w-4 h-4 text-emerald-400 mr-2" />
+                      <span className="text-neutral-300">AI-ranked claims</span>
+                    </div>
+                    <button 
+                      onClick={resetToDefaultView}
+                      className="text-sm text-neutral-300 hover:text-white font-medium focus:outline-none focus:ring-1 focus:ring-neutral-400 focus:ring-offset-1 rounded px-2 py-1 transition-colors cursor-pointer"
+                    >
+                      Back to default view
+                    </button>
+                  </div>
+                ) : (
+                  <div className="text-neutral-400">
+                    {claims.length} claim{claims.length !== 1 ? 's' : ''} found
+                  </div>
+                )}
+              </div>
+              <button
+                onClick={handleRankByAI}
+                disabled={isRanking || claims.length === 0}
+                className={`py-2.5 px-6 text-sm font-medium rounded-md shadow-sm transition-all duration-200 flex items-center justify-center gap-2 whitespace-nowrap ${
+                  isRanking || claims.length === 0
+                    ? 'bg-neutral-800 cursor-not-allowed text-neutral-500'
+                    : 'bg-neutral-300 hover:bg-neutral-400 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-500 cursor-pointer'
+                }`}
+              >
+                {isRanking ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-neutral-900 border-t-transparent rounded-full animate-spin"></div>
+                    <span>Ranking</span>
+                  </>
+                ) : (
+                  <>
+                    <FiAward className="w-4 h-4" />
+                    <span>Rank By AI</span>
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
         </div>
+        
+        {error && (
+          <div className="mb-6 p-4 bg-rose-500/10 border border-rose-500/20 rounded-lg text-rose-400 text-sm flex items-start gap-3">
+            <FiAlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+            <span>{error}</span>
+          </div>
+        )}
         
         {claims.length === 0 ? (
           <div className="bg-neutral-900/50 border border-neutral-800 rounded-xl p-8 text-center">

@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
-import { FiUser, FiPhone, FiMapPin, FiCalendar, FiClock as FiClockIcon } from 'react-icons/fi';
+import { FiUser, FiPhone, FiMapPin, FiCalendar, FiClock as FiClockIcon, FiAward } from 'react-icons/fi';
 import StatusBadge from '../../shared/StatusBadge';
 
 const ClaimCard = ({ claim }) => {
@@ -26,7 +26,15 @@ const ClaimCard = ({ claim }) => {
             <h3 className="text-xl font-semibold text-white line-clamp-1 pr-2">
               {foundItem?.title || 'Untitled Item'}
             </h3>
-            <StatusBadge status={status} className="shrink-0" />
+            <div className="flex flex-col items-end gap-2">
+              <StatusBadge status={status} className="shrink-0" />
+              {claim.score !== undefined && (
+                <div className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium border border-blue-800 bg-blue-900/30 text-blue-300 hover:bg-blue-900/40 transition-colors">
+                  <FiAward className="w-3 h-3 mr-1.5 text-blue-400" />
+                  <span>{claim.score}% match</span>
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="space-y-3 text-neutral-300">
