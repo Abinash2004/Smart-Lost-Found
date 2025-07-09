@@ -1,6 +1,11 @@
 const express = require("express");
 const verifyToken = require("../middleware/authMiddleware");
-const { createClaim, getPersonalClaims, getClaimsForFoundItem} = require("../controllers/claimController");
+const { 
+  createClaim, 
+  getPersonalClaims, 
+  getClaimsForFoundItem, 
+  getRankedClaims 
+} = require("../controllers/claimController");
 const { approveClaim, rejectClaim } = require("../controllers/respondClaimController");
 const upload = require("../middleware/upload");
 const router = express.Router();
@@ -13,6 +18,9 @@ router.post("/:foundItemId", verifyToken, upload.single('itemProofImage'), creat
 
 // GET: Get all claims for a specific found item
 router.get("/found/:foundItemId", verifyToken, getClaimsForFoundItem);
+
+// GET: Get ranked claims for a found item based on AI similarity
+router.get("/ranked/:foundItemId", getRankedClaims);
 
 // GET: Approve the claim and delete all the other claims
 router.patch("/approve/:claimId", verifyToken, approveClaim);

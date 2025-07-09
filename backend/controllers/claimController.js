@@ -2,6 +2,7 @@ const Claim = require("../models/Claim");
 const FoundItem = require("../models/FoundItem");
 const Notification = require("../models/Notification");
 const cloudinary = require("../config/cloudinary");
+const path = require('path');
 
 // @desc Create a new claim
 const createClaim = async (req, res) => {
@@ -92,8 +93,28 @@ const getPersonalClaims = async (req, res) => {
 };
 
 
+// @desc Get ranked claims for a found item based on AI similarity
+const getRankedClaims = async (req, res) => {
+  try {
+    // Dynamically import the ESM module
+    const modulePath = path.join(process.cwd(), 'handlers', 'rankedClaimHandler.mjs');
+    const fileUrl = `file://${modulePath.replace(/\\/g, '/')}`;
+    const { getRankedClaims: getRankedClaimsHandler } = await import(fileUrl);
+    
+    // Delegate to the ESM handler
+    return getRankedClaimsHandler(req, res);
+  } catch (error) {
+    console.error('Failed to load ranked claims handler:', error);
+    return res.status(500).json({
+      message: "Failed to load ranking service",
+      error: error.message
+    });
+  }
+};
+
 module.exports = {
   createClaim,
   getPersonalClaims,
-  getClaimsForFoundItem
+  getClaimsForFoundItem,
+  getRankedClaims
 };
