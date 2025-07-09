@@ -1,13 +1,13 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react-swc'
-import tailwindcss from '@tailwindcss/vite'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite';
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
     react({
-      // Enable the new JSX transform
-      jsxImportSource: 'react',
+      // Use React 17+ automatic JSX transform
+      jsxRuntime: 'automatic',
       // Enable fast refresh
       fastRefresh: true,
     }),
@@ -16,8 +16,14 @@ export default defineConfig({
   server: {
     allowedHosts: ['smart-lost-found-frontend.onrender.com']
   },
-  // Ensure proper JSX runtime configuration
-  esbuild: {
-    jsxInject: `import React from 'react'`
-  }
+  // Clear the build directory on each build
+  build: {
+    emptyOutDir: true,
+  },
+  // Ensure proper module resolution
+  resolve: {
+    alias: {
+      // Add any necessary aliases here
+    },
+  },
 })
